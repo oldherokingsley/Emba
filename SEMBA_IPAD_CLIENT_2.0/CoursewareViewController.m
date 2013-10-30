@@ -63,6 +63,7 @@ NSString *NOTEFolderName = @"NOTE";
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
+//    [self.view setBackgroundColor:[UIColor whiteColor]];
 //    courseFolderName = @"1";
     if (![self downloadQueue]) {
         [self setDownloadQueue:[[ASINetworkQueue alloc]init]];
@@ -78,7 +79,9 @@ NSString *NOTEFolderName = @"NOTE";
                         @"http://www.hebeea.edu.cn/hbksy/www/upload/files/2012zhengji/20120725bener.pdf",
                         @"http://www.mof.gov.cn/zhengwuxinxi/zhengcefabu/201105/P020110526353346857840.pdf",
                         @"http://www.caac.gov.cn/B1/B4/200612/P020071102351432589230.pdf",
-                        @"http://www.calpower.it/9938.pdf",nil];
+                        @"http://www.calpower.it/9938.pdf",
+                        @"http://www.iccrom.org/pdf/ICCROM_ICS07_ConservingTextiles02_en.pdf",
+                        @"http://www.jitsuntech.com/EMBAWEB/file/EMBA%E6%88%98%E7%95%A5%E7%AE%A1%E7%90%862013-1.pdf",nil];
     NSLog(@"aaa");
     
     
@@ -122,11 +125,11 @@ NSString *NOTEFolderName = @"NOTE";
     self.courseTableView.delegate = self;
     self.courseTableView.dataSource = self;
     [self.courseTableView setSeparatorColor:[UIColor clearColor]];
-//    [self.courseTableView setBackgroundColor:[UIColor clearColor]];
     [self.courseTableView setSectionIndexColor:[UIColor clearColor]];
     [self.courseTableView setAllowsSelection:NO];
-
+    
     [self.view addSubview:self.courseTableView];
+    
     
     
 	self.view.backgroundColor = [UIColor clearColor]; // Transparent
@@ -490,7 +493,10 @@ NSString *NOTEFolderName = @"NOTE";
 {
     UIButton *button = (UIButton *)[buttonArray objectAtIndex:index];
     CoursewareItem *item = [displayArray objectAtIndex:index];
+//    NSString *url1 = [item.PDFURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL *url = [NSURL URLWithString:item.PDFURL];
+    NSLog(@"url %@",url);
+    
     NSString *filePath = item.PDFPath;
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSLog(@"filePath %@",filePath);
@@ -558,6 +564,14 @@ NSString *NOTEFolderName = @"NOTE";
 //下载出错处理
 - (void) requestWentWrong:(ASIHTTPRequest *)request{
     NSLog(@"download error : %@",request.error );
+    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"出错啦！" message:@"网络连接出错，请检查网络！" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+    [alertView show];
+    
+    int index = request.tag;
+    UIButton *button = [self.buttonArray objectAtIndex:index];
+    UIProgressView *progressView = (UIProgressView *)[button viewWithTag:PROGRESS_TAG];
+    [progressView setHidden:YES];
+
 }
 
 - (void)openCourseware:(id)sender

@@ -48,6 +48,8 @@
 	NSString *_password;
 
 	NSURL *_fileURL;
+    
+    NSMutableDictionary *_markTexts;
 }
 
 #pragma mark Properties
@@ -60,6 +62,7 @@
 @synthesize bookmarks = _bookmarks;
 @synthesize lastOpen = _lastOpen;
 @synthesize password = _password;
+@synthesize markTexts = _markTexts;
 @dynamic fileName, fileURL;
 
 #pragma mark ReaderDocument class methods
@@ -207,6 +210,12 @@
 			_password = [phrase copy]; // Keep copy of any document password
 
 			_bookmarks = [NSMutableIndexSet new]; // Bookmarked pages index set
+            
+//            _markTexts = [NSMutableDictionary new];     //书签内容
+            _markTexts = [[NSMutableDictionary alloc]initWithCapacity:10];
+            
+            
+//            [_markTexts setObject:@"hello World!" forKey:@"1"];
 
 			_pageNumber = [NSNumber numberWithInteger:1]; // Start on page 1
 
@@ -322,6 +331,8 @@
 	[encoder encodeObject:_fileSize forKey:@"FileSize"];
 
 	[encoder encodeObject:_lastOpen forKey:@"LastOpen"];
+    
+    [encoder encodeObject:_markTexts forKey:@"MarkTexts"];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder
@@ -343,6 +354,8 @@
 		_fileSize = [decoder decodeObjectForKey:@"FileSize"];
 
 		_lastOpen = [decoder decodeObjectForKey:@"LastOpen"];
+        
+        _markTexts = [decoder decodeObjectForKey:@"MarkTexts"];
 
 		if (_guid == nil) _guid = [ReaderDocument GUID];
 
@@ -350,8 +363,16 @@
 			_bookmarks = [_bookmarks mutableCopy];
 		else
 			_bookmarks = [NSMutableIndexSet new];
-	}
-
+        
+        if (_markTexts != nil) {
+            _markTexts = [_markTexts mutableCopy];
+            
+        }
+        else{
+            _markTexts = [[NSMutableDictionary alloc]initWithCapacity:10];
+           // [_markTexts setObject:@"hello World!" forKey:@"1"];
+        }
+    }
 	return self;
 }
 

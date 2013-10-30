@@ -75,6 +75,10 @@
 	BOOL isVisible;
     
     UIImage *noteImage;
+    
+    UIView *markEditView;
+    
+    UITextField *markField;
 }
 
 #pragma mark Constants
@@ -174,7 +178,8 @@
             drawNewView = nil;
         }
         
-		NSInteger minValue; NSInteger maxValue;
+		NSInteger minValue;
+        NSInteger maxValue;
 		NSInteger maxPage = [document.pageCount integerValue];
 		NSInteger minPage = 1;
 
@@ -208,7 +213,7 @@
 			NSNumber *key = [NSNumber numberWithInteger:number]; // # key
 
 			ReaderContentView *contentView = [contentViews objectForKey:key];
-
+            
 			if (contentView == nil) // Create a brand new document content view
 			{
 				NSURL *fileURL = document.fileURL; NSString *phrase = document.password; // Document properties
@@ -232,6 +237,17 @@
 
 				[unusedViews removeObjectForKey:key];
 			}
+            
+            //初始化以宽为边界
+            CGRect targetRect = CGRectInset(contentView.bounds, 4.0, 4.0);
+            
+            float scale = targetRect.size.width / contentView.theContainerView.bounds.size.width;
+            [contentView setZoomScale:scale];
+            NSLog(@"scale %f",scale);
+//            [theScrollView setContentOffset:CGPointZero];
+            CGPoint point = CGPointZero;
+            point.y += 10.0;
+            [contentView setContentOffset:point];
 
 			viewRect.origin.x += viewRect.size.width;
 		}
@@ -461,7 +477,7 @@
     
     
     // init the preview image
-
+    
 
 	assert(document != nil); // Must have a valid ReaderDocument
 
@@ -539,6 +555,48 @@
 	contentViews = [NSMutableDictionary new]; lastHideTime = [NSDate date];
     
     [self initSlider];
+    
+    [self initMarkEditView];
+    
+}
+//初始化书签编辑框
+- (void)initMarkEditView{
+    markEditView = [[UIView alloc]initWithFrame:CGRectMake(1024 - 300, 44 + 40, 200, 100)];
+    [markEditView setBackgroundColor:[UIColor redColor]];
+    [markEditView setAlpha:0.0f];
+    [self.view addSubview:markEditView];
+    
+    markField = [[UITextField alloc]initWithFrame:CGRectMake((markEditView.bounds.size.width - 150) / 2, 20, 150, 50)];
+    [markField setPlaceholder:@"请输入书签名称"];
+    [markEditView addSubview:markField];
+
+    UIButton *sureButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [sureButton setFrame:CGRectMake(20, markField.frame.origin.y + 30, 70, 50)];
+    [sureButton setTitle:@"确定" forState:UIControlStateNormal];
+    [sureButton addTarget:self action:@selector(sureAction:) forControlEvents:UIControlEventTouchUpInside];
+    [markEditView addSubview:sureButton];
+    
+    UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [cancelButton setFrame:CGRectMake(markEditView.bounds.size.width - 50 - 70, markField.frame.origin.y + 30, 70, 50)];
+    [cancelButton setTitle:@"取消" forState:UIControlStateNormal];
+    [cancelButton addTarget:self action:@selector(cancelAction:) forControlEvents:UIControlEventTouchUpInside];
+    [markEditView addSubview:cancelButton];
+    
+    
+}
+//书签编辑确定按钮
+-(void)sureAction:(id)sender
+{
+    [self showMarkEditView:markEditView];
+    NSString *text = markField.text;
+    int page = [document.pageNumber intValue];
+    [document.markTexts setObject:text forKey:[NSString stringWithFormat:@"%d",page]];
+}
+
+//书签编辑取消按钮
+-(void)cancelAction:(id)sender
+{
+    [self showMarkEditView:markEditView];
 }
 
 //初始化滑动条
@@ -1052,12 +1110,13 @@
 
 	ThumbsViewController *thumbsViewController = [[ThumbsViewController alloc] initWithReaderDocument:document];
 
-	thumbsViewController.delegate = self; thumbsViewController.title = self.title;
+	thumbsViewController.delegate = self;
+    thumbsViewController.title = self.title;
 
 	thumbsViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 	thumbsViewController.modalPresentationStyle = UIModalPresentationFullScreen;
 
-	[self presentViewController:thumbsViewController animated:NO completion:NULL];
+	[self presentViewController:thumbsViewController animated:YES completion:nil];
 }
 
 - (void)tappedInToolbar:(ReaderMainToolbar *)toolbar printButton:(UIButton *)button
@@ -1150,19 +1209,47 @@
 
 - (void)tappedInToolbar:(ReaderMainToolbar *)toolbar markButton:(UIButton *)button
 {
+    
+    [self showMarkEditView:markEditView];
 	if (printInteraction != nil) [printInteraction dismissAnimated:YES];
 
 	NSInteger page = [document.pageNumber integerValue];
 
 	if ([document.bookmarks containsIndex:page]) // Remove bookmark
 	{
-		[mainToolbar setBookmarkState:NO]; [document.bookmarks removeIndex:page];
+		[mainToolbar setBookmarkState:NO];
+        [document.bookmarks removeIndex:page];
+        
 	}
 	else // Add the bookmarked page index to the bookmarks set
 	{
-		[mainToolbar setBookmarkState:YES]; [document.bookmarks addIndex:page];
+		[mainToolbar setBookmarkState:YES];
+        [document.bookmarks addIndex:page];
+        
 	}
 }
+- (void)showMarkEditView:(UIView *)view
+{
+    if (view.alpha == 0) {
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDuration:0.5];
+        CGRect rect = view.frame;
+        rect.origin.y -= 20;
+        view.frame = rect;
+        view.alpha = 1.0;
+        [UIView commitAnimations];
+    }
+    else if (view.alpha == 1){
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDuration:0.5];
+        CGRect rect = view.frame;
+        rect.origin.y += 20;
+        view.frame = rect;
+        view.alpha = 0.0;
+        [UIView commitAnimations];
+    }
+}
+
 
 #pragma mark MFMailComposeViewControllerDelegate methods
 

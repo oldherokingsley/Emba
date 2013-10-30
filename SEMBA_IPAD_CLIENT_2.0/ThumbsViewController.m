@@ -75,11 +75,13 @@
 	{
 		if ((self = [super initWithNibName:nil bundle:nil])) // Designated initializer
 		{
-			updateBookmarked = YES; bookmarked = [NSMutableArray new]; // Bookmarked pages
+			updateBookmarked = YES;
+            bookmarked = [NSMutableArray new]; // Bookmarked pages
 
 			document = object; // Retain the ReaderDocument object for our use
 
 			thumbs = self; // Return an initialized ThumbsViewController object
+//            showBookmarked = YES;
 		}
 	}
 
@@ -118,7 +120,8 @@
 
 	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
 	{
-		thumbsRect.origin.y += TOOLBAR_HEIGHT; thumbsRect.size.height -= TOOLBAR_HEIGHT;
+		thumbsRect.origin.y += TOOLBAR_HEIGHT;
+        thumbsRect.size.height -= TOOLBAR_HEIGHT;
 	}
 	else // Set UIScrollView insets for non-UIUserInterfaceIdiomPad case
 	{
@@ -127,7 +130,8 @@
 
 	theThumbsView = [[ReaderThumbsView alloc] initWithFrame:thumbsRect]; // Rest
 
-	theThumbsView.contentInset = insets; theThumbsView.scrollIndicatorInsets = insets;
+	theThumbsView.contentInset = insets;
+    theThumbsView.scrollIndicatorInsets = insets;
 
 	theThumbsView.delegate = self;
 
@@ -258,6 +262,7 @@
 
 - (void)tappedInToolbar:(ThumbsMainToolbar *)toolbar doneButton:(UIButton *)button
 {
+//    [document.markTexts setObject:@"sssssss" forKey:@"1"];
 	[delegate dismissThumbsViewController:self]; // Dismiss thumbs display
 }
 
@@ -279,7 +284,15 @@
 
 	NSInteger page = (showBookmarked ? [[bookmarked objectAtIndex:index] integerValue] : (index + 1));
 
-	[thumbCell showText:[NSString stringWithFormat:@"%i", page]]; // Page number place holder
+    NSMutableDictionary *dict = document.markTexts;
+    NSString *text = [dict objectForKey:[NSString stringWithFormat:@"%d",page]];
+    if (text != NULL) {
+        [thumbCell showText:[NSString stringWithFormat:@"page%li %@", (long)page,text]]; // Page number place holder
+    }
+    else{
+        [thumbCell showText:[NSString stringWithFormat:@"page%li %@", (long)page,@""]]; // Page number place holder
+    }
+	
 
 	[thumbCell showBookmark:[document.bookmarks containsIndex:page]]; // Show bookmarked status
 
@@ -289,7 +302,8 @@
 
 	UIImage *image = [[ReaderThumbCache sharedInstance] thumbRequest:thumbRequest priority:YES]; // Request the thumbnail
 
-	if ([image isKindOfClass:[UIImage class]]) [thumbCell showImage:image]; // Show image from cache
+	if ([image isKindOfClass:[UIImage class]])
+        [thumbCell showImage:image]; // Show image from cache
 }
 
 - (void)thumbsView:(ReaderThumbsView *)thumbsView refreshThumbCell:(ThumbsPageThumb *)thumbCell forIndex:(NSInteger)index
@@ -350,7 +364,8 @@
 {
 	CGRect iconRect = bookMark.frame; iconRect.origin.y = (-2.0f);
 
-	iconRect.origin.x = (imageView.bounds.size.width - bookMark.image.size.width - 8.0f);
+//	iconRect.origin.x = (imageView.bounds.size.width - bookMark.image.size.width - 8.0f);
+    iconRect.origin.x = (8.0f);
 
 	return iconRect; // Frame position rect inside of image view
 }
@@ -362,16 +377,20 @@
 		imageView.contentMode = UIViewContentModeCenter;
 
 		defaultRect = CGRectInset(self.bounds, CONTENT_INSET, CONTENT_INSET);
-
+        
+//        defaultRect.size.height -= 40;//记号
+//        defaultRect.size.width -= 40;
 		maximumSize = defaultRect.size; // Maximum thumb content size
-
+        
 		CGFloat newWidth = ((defaultRect.size.width / 4.0f) * 3.0f);
 
 		CGFloat offsetX = ((defaultRect.size.width - newWidth) / 2.0f);
 
 		defaultRect.size.width = newWidth; defaultRect.origin.x += offsetX;
-
+//        defaultRect.size.height -= 100;//记号
+//        defaultRect = CGRectMake(0, 0, 100, 100);
 		imageView.frame = defaultRect; // Update the image view frame
+        
 
 		CGFloat fontSize = (([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) ? 19.0f : 16.0f);
 
@@ -384,9 +403,9 @@
 		textLabel.textAlignment = NSTextAlignmentCenter;
 		textLabel.font = [UIFont systemFontOfSize:fontSize];
 		textLabel.textColor = [UIColor colorWithWhite:0.24f alpha:1.0f];
-		textLabel.backgroundColor = [UIColor whiteColor];
+		textLabel.backgroundColor = [UIColor clearColor];
 
-		[self insertSubview:textLabel belowSubview:imageView];
+		[self insertSubview:textLabel aboveSubview:imageView];
 
 		backView = [[UIView alloc] initWithFrame:defaultRect];
 
@@ -404,7 +423,7 @@
 
 #endif // end of READER_SHOW_SHADOWS Option
 
-		[self insertSubview:backView belowSubview:textLabel];
+		[self insertSubview:backView belowSubview:imageView];
 
 		tintView = [[UIView alloc] initWithFrame:imageView.bounds];
 
@@ -446,15 +465,24 @@
 
 	CGPoint location = CGPointMake(x, y); // Center point
 
-	CGRect viewRect = CGRectZero; viewRect.size = image.size;
+	CGRect viewRect = CGRectZero;
+    
+    viewRect.size = image.size;
+    NSLog(@"size %f %f",image.size.width,image.size.height);
+//    viewRect.size.height -= 400;
+    CGRect textRect = CGRectMake(0, defaultRect.size.height + 20 , self.bounds.size.width, 50);//记号
+	textLabel.frame = textRect;
+    [textLabel setNumberOfLines:0];
+    
+//    textLabel.center = CGPointMake(x, self.bounds.size.height - 50); // Position
 
-	textLabel.bounds = viewRect; textLabel.center = location; // Position
-
-	imageView.bounds = viewRect; imageView.center = location; imageView.image = image;
+	imageView.bounds = viewRect; imageView.center = location;
+    imageView.image = image;
 
 	bookMark.frame = [self markRectInImageView]; // Position bookmark image
 
-	tintView.frame = imageView.bounds; backView.bounds = viewRect; backView.center = location;
+	tintView.frame = imageView.bounds;
+    backView.bounds = viewRect; backView.center = location;
 
 #if (READER_SHOW_SHADOWS == TRUE) // Option
 

@@ -175,13 +175,16 @@
 
 - (CGRect)thumbCellFrameForIndex:(NSInteger)index
 {
-	CGRect thumbRect; thumbRect.size = _thumbSize;
-
+	CGRect thumbRect;
+    thumbRect.size = _thumbSize;
+//    thumbRect.size.height += 40;
 	NSInteger thumbY = ((index / _thumbsX) * _thumbSize.height); // X, Y
 
 	NSInteger thumbX = (((index % _thumbsX) * _thumbSize.width) + _thumbX);
 
-	thumbRect.origin.x = thumbX; thumbRect.origin.y = thumbY;
+	thumbRect.origin.x = thumbX;
+    thumbRect.origin.y = thumbY;
+//    thumbRect.origin.y += 40;
 
 	return thumbRect;
 }
@@ -264,7 +267,7 @@
 			^(NSUInteger index, BOOL *stop)
 			{
 				CGRect thumbRect = [self thumbCellFrameForIndex:index]; // Frame
-
+//                thumbRect.size.height += 100;//记号
 				ReaderThumbView *tvCell = [self dequeueThumbCellWithFrame:thumbRect];
 
 				[delegate thumbsView:self updateThumbCell:tvCell forIndex:index];
@@ -490,12 +493,13 @@
 					if ([visibleCellSet containsIndex:index] == NO) // Index not visible
 					{
 						CGRect thumbRect = [self thumbCellFrameForIndex:index]; // Frame
-
+//                        thumbRect.size.height += 100;//记号
 						ReaderThumbView *tvCell = [self dequeueThumbCellWithFrame:thumbRect];
 
 						[delegate thumbsView:self updateThumbCell:tvCell forIndex:index];
 
-						tvCell.tag = index; tvCell.hidden = NO; // Tag and show it
+						tvCell.tag = index;
+                        tvCell.hidden = NO; // Tag and show it
 					}
 				}
 			];

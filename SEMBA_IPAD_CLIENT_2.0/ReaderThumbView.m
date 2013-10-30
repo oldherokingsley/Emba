@@ -48,13 +48,15 @@
 		self.contentMode = UIViewContentModeRedraw;
 		self.autoresizingMask = UIViewAutoresizingNone;
 		self.backgroundColor = [UIColor clearColor];
-
-		imageView = [[UIImageView alloc] initWithFrame:self.bounds];
-
-		imageView.autoresizesSubviews = NO;
-		imageView.userInteractionEnabled = NO;
-		imageView.autoresizingMask = UIViewAutoresizingNone;
-		imageView.contentMode = UIViewContentModeScaleAspectFit;
+        CGRect rect = self.bounds;
+//        rect.size.height -= 100;//记号
+//        rect = CGRectMake(0, 0, 100, 100);
+		imageView = [[UIImageView alloc] initWithFrame:rect];
+        NSLog(@"初始化");
+//		imageView.autoresizesSubviews = NO;
+//		imageView.userInteractionEnabled = NO;
+//		imageView.autoresizingMask = UIViewAutoresizingNone;
+//		imageView.contentMode = UIViewContentModeScaleAspectFit;
 
 		[self addSubview:imageView];
 	}

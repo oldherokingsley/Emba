@@ -3676,8 +3676,9 @@ static NSOperationQueue *sharedQueue = nil;
 				reason = [NSString stringWithFormat:@"%@: SSL problem (Possible causes may include a bad/expired/self-signed certificate, clock set to wrong date)",reason];
 			}
 		}
-		[self cancelLoad];
+        [self cancelLoad];
 		[self failWithError:[NSError errorWithDomain:NetworkRequestErrorDomain code:ASIConnectionFailureErrorType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:reason,NSLocalizedDescriptionKey,underlyingError,NSUnderlyingErrorKey,nil]]];
+        
 	} else {
 		[self cancelLoad];
 	}

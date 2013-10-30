@@ -10,6 +10,7 @@
 #import "MainPageViewController.h"
 #import "DDMenuController.h"
 #import "MenuController.h"
+#import "LoginViewController.h"
 
 @interface WelcomeViewController ()
 
@@ -68,15 +69,8 @@
 - (void)jumpToMainPage
 {
 //    [self performSegueWithIdentifier:@"jumpFromWelToMainID" sender:nil];
-    MainPageViewController *mainController = [[MainPageViewController alloc] init];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:mainController];
-    hostController = [[DDMenuController alloc] initWithRootViewController:navController];
-    MenuController *menuController = [[MenuController alloc] init];
-    hostController.leftViewController = menuController;
-    
-    
-    [self presentViewController:hostController animated:YES completion:nil];
-    
+    LoginViewController *loginViewController = [[LoginViewController alloc]init];
+    [self presentViewController:loginViewController animated:YES completion:NO];
     
 }
 

@@ -50,6 +50,7 @@
 //    self.navigationItem.leftBarButtonItems = [[NSArray alloc]initWithObjects:menuButton, nil];
     
     scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 1024, 768)];
+    [scrollView setBackgroundColor:[UIColor whiteColor]];//课程页背景
     
     [self.view addSubview:scrollView];
     

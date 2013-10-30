@@ -229,13 +229,13 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
     
     
 	theContainerView.frame = viewFrame;
-    CGRect rect = theContentView.frame;
-    CGRect rect2 = theContainerView.bounds;
-    CGRect rect3 = theThumbView.frame;
-    NSLog(@"frame %f %f %f %f",rect.origin.x,rect.origin.y,rect.size.width,rect.size.height);
+//    CGRect rect = theContentView.frame;
+//    CGRect rect2 = theContainerView.bounds;
+//    CGRect rect3 = theThumbView.frame;
+//    NSLog(@"frame %f %f %f %f",rect.origin.x,rect.origin.y,rect.size.width,rect.size.height);
     
-    NSLog(@"frame2 %f %f %f %f",rect2.origin.x,rect2.origin.y,rect2.size.width,rect2.size.height);
-    NSLog(@"frame3 %f %f %f %f",rect3.origin.x,rect3.origin.y,rect3.size.width,rect3.size.height);
+//    NSLog(@"frame2 %f %f %f %f",rect2.origin.x,rect2.origin.y,rect2.size.width,rect2.size.height);
+//    NSLog(@"frame3 %f %f %f %f",rect3.origin.x,rect3.origin.y,rect3.size.width,rect3.size.height);
     
     
 }
@@ -291,7 +291,7 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
-    NSLog(@"zoom");
+//    NSLog(@"zoom %f",self.zoomScale);
     if (self.isNote) {
         return nil;
     }
