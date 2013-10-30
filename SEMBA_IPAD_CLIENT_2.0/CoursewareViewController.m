@@ -28,6 +28,7 @@
 #import "UIButton+associate.h"
 #import "ASIHTTPRequest.h"
 #import "CoursewareItem.h"
+#import "ASIHTTPRequest+category.h"
 
 #define ITEM_NUM_IN_ROW     4
 #define PROGRESS_TAG 111111
@@ -230,6 +231,10 @@ NSString *NOTEFolderName = @"NOTE";
 - (void)viewDidDisappear:(BOOL)animated
 {
 	[super viewDidDisappear:animated];
+    for (ASIHTTPRequest *request in self.downloadQueue.operations) {
+        [request clearDelegatesAndCancel];
+    }
+    NSLog(@"disappear");
 }
 
 - (void)viewDidUnload
@@ -239,6 +244,7 @@ NSString *NOTEFolderName = @"NOTE";
 #endif
 
 	[super viewDidUnload];
+    NSLog(@"unload");
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -398,29 +404,39 @@ NSString *NOTEFolderName = @"NOTE";
         }
         
         [button setHidden:NO];
+        UIProgressView *progressView = (UIProgressView *)[button viewWithTag:PROGRESS_TAG];
+        [progressView setHidden:YES];
         NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:index],@"index", nil];
         [button setMyDict:dict];
         CoursewareItem *item = [self.displayArray objectAtIndex:index];
         NSString *PDFName = item.PDFName;
         UIImage *PDFFirstImage = item.PDFFirstImage;
-        
+//        NSString *PDFPath = item.PDFPath;
+        NSString *PDFURL = item.PDFURL;
+        for (ASIHTTPRequest *request in self.downloadQueue.operations) {
+            if ([request.url isEqual:[NSURL URLWithString:PDFURL]]) {
+                request.tag = index;
+                
+                [request setDownloadProgressDelegate:progressView];
+                [progressView setHidden:NO];
+            }
+        }
         if (PDFFirstImage != nil) {
             
             NSLog(@"PDFFirstImage %d",index);
             [button setImage:PDFFirstImage forState:UIControlStateNormal];
             [button setImageEdgeInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
             
-            [button removeTarget:self action:@selector(openCourseware:) forControlEvents:UIControlEventTouchUpInside];
-            [button removeTarget:self action:@selector(courseItemAction:) forControlEvents:UIControlEventTouchUpInside];
-             
+            
+//            [button removeTarget:nil action:nil forControlEvents:UIControlEventTouchUpInside];
+            
             
 
             [button addTarget:self action:@selector(openCourseware:) forControlEvents:UIControlEventTouchUpInside];
         }
         else{
             
-            [button removeTarget:self action:@selector(openCourseware:) forControlEvents:UIControlEventTouchUpInside];
-            [button removeTarget:self action:@selector(courseItemAction:) forControlEvents:UIControlEventTouchUpInside];
+//            [button removeTarget:nil action:nil forControlEvents:UIControlEventTouchUpInside];
             
             [button setImage:nil forState:UIControlStateNormal];
             [button addTarget:self action:@selector(courseItemAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -472,7 +488,7 @@ NSString *NOTEFolderName = @"NOTE";
 //下载单个课件
 - (void) downloadPDF:(int)index
 {
-    UIButton *button = (UIButton *)[displayButtonArray objectAtIndex:index];
+    UIButton *button = (UIButton *)[buttonArray objectAtIndex:index];
     CoursewareItem *item = [displayArray objectAtIndex:index];
     NSURL *url = [NSURL URLWithString:item.PDFURL];
     NSString *filePath = item.PDFPath;
@@ -492,6 +508,8 @@ NSString *NOTEFolderName = @"NOTE";
     [request setDidFinishSelector:@selector(requestDone:)];     //下载完成处理
     [request setDidFailSelector:@selector(requestWentWrong:)];  //下载出错处理
     [request setDownloadProgressDelegate:progress];//设置每个任务的进度条信息
+    NSDictionary *myDict = [NSDictionary dictionaryWithObjectsAndKeys:item,@"item", nil];
+    [request setMyDict:myDict];
     ASIHTTPRequest *tempRequest = [[ASIHTTPRequest alloc]init];
     //判断是否已经存在队列中，
     for (tempRequest in [self.downloadQueue operations]) {
@@ -515,17 +533,24 @@ NSString *NOTEFolderName = @"NOTE";
 - (void) requestDone:(ASIHTTPRequest *)request{
     
     int index = request.tag;
-    NSString *filePath = [self.PDFPathArray objectAtIndex:index];
+    NSDictionary *myDict = request.myDict;
+    CoursewareItem *item = [myDict objectForKey:@"item"];
+    NSString *filePath = item.PDFPath;
     [request.responseData writeToFile:filePath atomically:YES];
     UIImage *image = [self getFirstPageFromPDF:filePath];
-    CoursewareItem *item = [displayArray objectAtIndex:index];
     item.PDFFirstImage = image;
-    UIButton *button = [self.displayButtonArray objectAtIndex:index];
+//    NSLog(@"index %d",index);
+    
+    if (index > [displayArray count]) {
+        return;
+    }
+    
+    UIButton *button = [self.buttonArray objectAtIndex:index];
     NSDictionary *dict = button.myDict;
     index = [(NSNumber *)[dict objectForKey:@"index"] intValue];
     [button setImage:image forState:UIControlStateNormal];
     [button setImageEdgeInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
-    [button removeTarget:self action:@selector(downloadPDF:) forControlEvents:UIControlEventTouchUpInside];
+    [button removeTarget:nil action:nil forControlEvents:UIControlEventTouchUpInside];
     [button addTarget:self action:@selector(openCourseware:) forControlEvents:UIControlEventTouchUpInside];
     UIProgressView *progressView = (UIProgressView *)[button viewWithTag:PROGRESS_TAG];
     [progressView setHidden:YES];

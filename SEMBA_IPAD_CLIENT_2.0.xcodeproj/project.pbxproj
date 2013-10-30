@@ -11,6 +11,7 @@
 		5931752C181F8E4B000BBC4F /* DDMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5931752B181F8E4B000BBC4F /* DDMenuController.m */; };
 		9C0F8AB0181F5BC100FEFABA /* CoursewareItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0F8AAF181F5BC100FEFABA /* CoursewareItem.m */; };
 		9C0F8AB3181FB88C00FEFABA /* CoursewareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0F8AB2181FB88C00FEFABA /* CoursewareViewController.m */; };
+		9C0F8AB618210C8A00FEFABA /* ASIHTTPRequest+category.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0F8AB518210C8A00FEFABA /* ASIHTTPRequest+category.m */; };
 		9CBD1587181E4DFB00075BDF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CBD1586181E4DFB00075BDF /* Foundation.framework */; };
 		9CBD1589181E4DFB00075BDF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CBD1588181E4DFB00075BDF /* CoreGraphics.framework */; };
 		9CBD158B181E4DFB00075BDF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CBD158A181E4DFB00075BDF /* UIKit.framework */; };
@@ -95,6 +96,8 @@
 		9C0F8AAF181F5BC100FEFABA /* CoursewareItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoursewareItem.m; sourceTree = "<group>"; };
 		9C0F8AB1181FB88C00FEFABA /* CoursewareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoursewareViewController.h; sourceTree = "<group>"; };
 		9C0F8AB2181FB88C00FEFABA /* CoursewareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoursewareViewController.m; sourceTree = "<group>"; };
+		9C0F8AB418210C8A00FEFABA /* ASIHTTPRequest+category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ASIHTTPRequest+category.h"; sourceTree = "<group>"; };
+		9C0F8AB518210C8A00FEFABA /* ASIHTTPRequest+category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ASIHTTPRequest+category.m"; sourceTree = "<group>"; };
 		9CBD1583181E4DFB00075BDF /* SEMBA_IPAD_CLIENT_2.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SEMBA_IPAD_CLIENT_2.0.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CBD1586181E4DFB00075BDF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9CBD1588181E4DFB00075BDF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -254,6 +257,15 @@
 			name = Host;
 			sourceTree = "<group>";
 		};
+		9C0F8AB718210C9000FEFABA /* ASIHTTPRequest+category */ = {
+			isa = PBXGroup;
+			children = (
+				9C0F8AB418210C8A00FEFABA /* ASIHTTPRequest+category.h */,
+				9C0F8AB518210C8A00FEFABA /* ASIHTTPRequest+category.m */,
+			);
+			name = "ASIHTTPRequest+category";
+			sourceTree = "<group>";
+		};
 		9CBD157A181E4DFB00075BDF = {
 			isa = PBXGroup;
 			children = (
@@ -348,32 +360,33 @@
 			name = Resourse;
 			sourceTree = "<group>";
 		};
-		9CBD15CE181E674E00075BDF /* UITapGestureRecognizer */ = {
+		9CBD15CE181E674E00075BDF /* UITapGestureRecognizer+category */ = {
 			isa = PBXGroup;
 			children = (
 				9CBD15D2181E679600075BDF /* UITapGestureRecognizer+category.h */,
 				9CBD15D3181E679600075BDF /* UITapGestureRecognizer+category.m */,
 			);
-			name = UITapGestureRecognizer;
+			name = "UITapGestureRecognizer+category";
 			sourceTree = "<group>";
 		};
-		9CBD15D5181E68BA00075BDF /* UIButton */ = {
+		9CBD15D5181E68BA00075BDF /* UIButton+associate */ = {
 			isa = PBXGroup;
 			children = (
 				9CBD15D6181E68CA00075BDF /* UIButton+associate.h */,
 				9CBD15D7181E68CA00075BDF /* UIButton+associate.m */,
 			);
-			name = UIButton;
+			name = "UIButton+associate";
 			sourceTree = "<group>";
 		};
 		9CBD15D9181E68D800075BDF /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				9CBD15CE181E674E00075BDF /* UITapGestureRecognizer+category */,
+				9CBD15D5181E68BA00075BDF /* UIButton+associate */,
+				9C0F8AB718210C9000FEFABA /* ASIHTTPRequest+category */,
 				9CBD1627181E698800075BDF /* ASIHTTP */,
 				9CBD1623181E696B00075BDF /* NetworkCheck */,
 				9CBD15DA181E68E600075BDF /* Reader */,
-				9CBD15CE181E674E00075BDF /* UITapGestureRecognizer */,
-				9CBD15D5181E68BA00075BDF /* UIButton */,
 			);
 			name = Custom;
 			sourceTree = "<group>";
@@ -668,6 +681,7 @@
 				5904031A181F913C001A1E60 /* MenuController.m in Sources */,
 				9CBD1601181E692800075BDF /* UIXToolbarView.m in Sources */,
 				9CBD161B181E695900075BDF /* ReaderViewController.m in Sources */,
+				9C0F8AB618210C8A00FEFABA /* ASIHTTPRequest+category.m in Sources */,
 				9CBD15BD181E4E2D00075BDF /* WelcomeViewController.m in Sources */,
 				9CBD1656181E6C6800075BDF /* ASIDataDecompressor.m in Sources */,
 				9CBD15CD181E5B3500075BDF /* CourseItem.m in Sources */,
