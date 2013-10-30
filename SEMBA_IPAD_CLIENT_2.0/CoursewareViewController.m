@@ -78,7 +78,7 @@ NSString *NOTEFolderName = @"NOTE";
                         @"http://www.mof.gov.cn/zhengwuxinxi/zhengcefabu/201105/P020110526353346857840.pdf",
                         @"http://www.caac.gov.cn/B1/B4/200612/P020071102351432589230.pdf",
                         @"http://www.calpower.it/9938.pdf",nil];
-    
+    NSLog(@"aaa");
     
     
     self.PDFPathArray = [[NSMutableArray alloc]init];
