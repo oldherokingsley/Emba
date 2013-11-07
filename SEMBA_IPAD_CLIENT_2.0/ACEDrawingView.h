@@ -53,9 +53,9 @@ typedef enum {
 // get the current drawing
 @property (nonatomic, strong, readonly) UIImage *image;
 @property (nonatomic, readonly) NSUInteger undoSteps;
-@property (nonatomic, retain) NSMutableArray *undoImageArr;//存上次画完的image
-@property (nonatomic, retain) NSMutableArray *redoImageArr;//存从undoImageArr里面删除的image
-
+//@property (nonatomic, retain) NSMutableArray *undoImageArr;//存上次画完的image
+//@property (nonatomic, retain) NSMutableArray *redoImageArr;//存从undoImageArr里面删除的image
+@property (nonatomic, retain) NSThread *thread;
 
 
 // erase all
@@ -80,5 +80,7 @@ typedef enum {
 - (void)drawingView:(ACEDrawingView *)view willBeginDrawUsingTool:(id<ACEDrawingTool>)tool;
 - (void)drawingView:(ACEDrawingView *)view didEndDrawUsingTool:(id<ACEDrawingTool>)tool;
 
+- (void)intoDrawState:(ACEDrawingView *)view;
+- (void)cancelDrawState:(ACEDrawingView *)view;
 
 @end

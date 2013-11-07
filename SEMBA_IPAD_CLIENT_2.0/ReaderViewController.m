@@ -32,8 +32,9 @@
 #import "ReaderThumbCache.h"
 #import "ReaderThumbQueue.h"
 #import "NoteToolbar.h"
-
+#import "CourseMarkViewController.h"
 #import <MessageUI/MessageUI.h>
+#import "NoteToolDrawerBar.h"
 
 #define kActionSheetColor       100
 #define kActionSheetTool        101
@@ -44,6 +45,11 @@
 #define kPenAlphaMin            0.100000001490116f
 #define kPenAlphaMax            1.0f
 #define kPenAlphaDefault        1.0f
+
+#define SWATCH_VIEW_TAG     111111
+#define PEN_VIEW_TAG        222222
+#define MARKER_VIEW_TAG     333333
+#define ERASER_VIEW_TAG     444444
 
 
 @interface ReaderViewController () <UIScrollViewDelegate, UIGestureRecognizerDelegate, MFMailComposeViewControllerDelegate,
@@ -61,6 +67,8 @@
 	ReaderMainPagebar *mainPagebar;
     
     NoteToolbar *noteToolbar;
+    
+    NoteToolDrawerBar *noteToolDrawerBar;
 
 	NSMutableDictionary *contentViews;
 
@@ -79,6 +87,8 @@
     UIView *markEditView;
     
     UITextField *markField;
+    
+    int appearViewTag;
 }
 
 #pragma mark Constants
@@ -102,6 +112,10 @@
 @synthesize lineWidthSlider;
 @synthesize lineAlphaSlider;
 @synthesize notePath;
+@synthesize eraserWidthView;
+@synthesize markerWidthView;
+@synthesize penWidthView;
+@synthesize swatchView;
 #pragma mark Support methods
 
 - (void)updateScrollViewContentSize
@@ -237,7 +251,7 @@
 
 				[unusedViews removeObjectForKey:key];
 			}
-            
+            viewRect.origin.x += viewRect.size.width;
             //初始化以宽为边界
             CGRect targetRect = CGRectInset(contentView.bounds, 4.0, 4.0);
             
@@ -245,11 +259,11 @@
             [contentView setZoomScale:scale];
             NSLog(@"scale %f",scale);
 //            [theScrollView setContentOffset:CGPointZero];
-            CGPoint point = CGPointZero;
-            point.y += 10.0;
-            [contentView setContentOffset:point];
+//            CGPoint point = CGPointZero;
+//            point.y += 10.0;
+//            [contentView setContentOffset:point];
 
-			viewRect.origin.x += viewRect.size.width;
+			
 		}
 
 		[unusedViews enumerateKeysAndObjectsUsingBlock: // Remove unused views
@@ -355,6 +369,8 @@
     
     CGRect rect = readerContentView.theContainerView.bounds;
     self.drawingView = [[ACEDrawingView alloc]initWithFrame:CGRectMake(0, 0, rect.size.width, rect.size.height) :noteImage];
+//    self.delegate = self;
+    self.drawingView.delegate = self;
 //    [drawingView setUserInteractionEnabled:NO];
 
     [readerContentView.theContainerView addSubview:drawingView];
@@ -385,6 +401,7 @@
 //    [newContentView setUserInteractionEnabled:NO];
     CGRect rect = newContentView.theContainerView.frame;
     drawNewView = [[ACEDrawingView alloc]initWithFrame:CGRectMake(theScrollView.contentOffset.x + rect.origin.x + 4.0f, rect.origin.y + 4.0f, rect.size.width, rect.size.height) :noteImage];
+    drawNewView.delegate = self;
     drawNewView.lineWidth = self.lineWidthSlider.value;
     drawNewView.lineAlpha = self.lineAlphaSlider.value;
     drawNewView.drawTool = currentToolType;
@@ -477,7 +494,10 @@
     
     
     // init the preview image
+//    [self.navigationController.navigationBar setHidden:NO];
     
+    UIImage *image = [[UIImage alloc]initWithContentsOfFile:@"download_ppt.png"];
+    [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
 
 	assert(document != nil); // Must have a valid ReaderDocument
 
@@ -511,7 +531,7 @@
 
 	CGRect toolbarRect = viewRect;
 	toolbarRect.size.height = TOOLBAR_HEIGHT;
-
+//    toolbarRect.origin.y += 20;
 	mainToolbar = [[ReaderMainToolbar alloc] initWithFrame:toolbarRect document:document]; // At top
 
 	mainToolbar.delegate = self;
@@ -523,20 +543,24 @@
 	pagebarRect.origin.y = (viewRect.size.height - PAGEBAR_HEIGHT);
 
     
-//	mainPagebar = [[ReaderMainPagebar alloc] initWithFrame:pagebarRect document:document]; // At bottom
+	mainPagebar = [[ReaderMainPagebar alloc] initWithFrame:pagebarRect document:document]; // At bottom
 
-//	mainPagebar.delegate = self;
+	mainPagebar.delegate = self;
 
-//	[self.view addSubview:mainPagebar];
+	[self.view addSubview:mainPagebar];
     
     CGRect noteRect = viewRect;
     noteRect.size.height = NOTE_HEIGHT;
     noteRect.origin.y = (viewRect.size.height - NOTE_HEIGHT);
 
     NSLog(@"%f %f %f %f",noteRect.origin.x,noteRect.origin.y,noteRect.size.width,noteRect.size.height);
-    noteToolbar = [[NoteToolbar alloc] initWithFrame:CGRectMake(0, 648, 1024, 100)];
-    noteToolbar.delegate = self;
-    [self.view addSubview:noteToolbar];
+//    noteToolbar = [[NoteToolbar alloc] initWithFrame:CGRectMake(0, 648, 1024, 100)];
+//    noteToolbar.delegate = self;
+//    [self.view addSubview:noteToolbar];
+    
+    noteToolDrawerBar = [[NoteToolDrawerBar alloc]initWithFrame:CGRectMake(0, 0, 160, 568) parentView:self.view];
+    noteToolDrawerBar.delegate = self;
+    [self.view addSubview:noteToolDrawerBar];
     
 	UITapGestureRecognizer *singleTapOne = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
 	singleTapOne.numberOfTouchesRequired = 1; singleTapOne.numberOfTapsRequired = 1; singleTapOne.delegate = self;
@@ -558,7 +582,139 @@
     
     [self initMarkEditView];
     
+    [self initToolView];
+    
 }
+
+- (void)initToolView{
+    int colorNum = 6;
+    CGFloat buttonWidth = 60.0f;
+    CGFloat buttonHeight = 60.0f;
+    CGFloat viewY = 100.0f + 40.0f;
+    CGFloat viewX = 120.0f;
+    //colorNum * buttonWidth + 4 * 10  + 40
+    swatchView = [[UIView alloc]initWithFrame:CGRectMake(viewX, viewY, colorNum * buttonWidth + 4 * 10  + 40, buttonHeight)];
+    [swatchView setBackgroundColor:[UIColor grayColor]];
+    NSArray *colorArray = [[NSArray alloc]initWithObjects:[UIColor blackColor],[UIColor redColor],[UIColor greenColor],[UIColor blueColor],[UIColor yellowColor],[UIColor whiteColor], nil];
+    for (int i = 0; i < colorNum; i ++) {
+        UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(20 + (buttonWidth + 10) * i,0, buttonWidth, buttonHeight)];
+        [button setTag:i + 1];
+        [button setBackgroundColor:[colorArray objectAtIndex:i]];
+        [button addTarget:self action:@selector(choColorAction:) forControlEvents:UIControlEventTouchUpInside];
+        [swatchView addSubview:button];
+    }
+    swatchView.hidden = YES;
+    [self.view addSubview:swatchView];
+    
+    viewY += (buttonHeight + 20);
+    penWidthView = [[UIView alloc]initWithFrame:CGRectMake(viewX, viewY, 200, 60)];
+    [penWidthView setBackgroundColor:[UIColor grayColor]];
+    UISlider *penWidthSlider = [[UISlider alloc]initWithFrame:CGRectMake(25, 15, 150, 29)];
+    [penWidthSlider setMinimumValue:kPenWidthMin];
+    [penWidthSlider setMaximumValue:kPenWidthMax];
+    [penWidthSlider addTarget:self action:@selector(widthChange:) forControlEvents:UIControlEventValueChanged];
+    [penWidthSlider setValue:kPenWidthDefault];
+    penWidthSlider.backgroundColor = [UIColor clearColor];
+    [penWidthView addSubview:penWidthSlider];
+    penWidthView.hidden = YES;
+    [self.view addSubview:penWidthView];
+    
+    viewY += (buttonHeight + 20);
+    markerWidthView = [[UIView alloc]initWithFrame:CGRectMake(viewX, viewY, 200, 60)];
+    [markerWidthView setBackgroundColor:[UIColor grayColor]];
+    UISlider *markerWidthSlider = [[UISlider alloc]initWithFrame:CGRectMake(25, 15, 150, 29)];
+    [markerWidthSlider setMinimumValue:kPenWidthMin];
+    [markerWidthSlider setMaximumValue:kPenWidthMax];
+    [markerWidthSlider addTarget:self action:@selector(widthChange:) forControlEvents:UIControlEventValueChanged];
+    [markerWidthSlider setValue:kPenWidthDefault];
+    [markerWidthSlider setBackgroundColor:[UIColor clearColor]];
+    [markerWidthView addSubview:markerWidthSlider];
+    markerWidthView.hidden = YES;
+    [self.view addSubview:markerWidthView];
+    
+    viewY += (buttonHeight + 20);
+    eraserWidthView = [[UIView alloc]initWithFrame:CGRectMake(viewX, viewY, 300, 60)];
+    [eraserWidthView setBackgroundColor:[UIColor grayColor]];
+    UISlider *eraserWidthSlider = [[UISlider alloc]initWithFrame:CGRectMake(25, 15, 150, 29)];
+    [eraserWidthSlider setMinimumValue:kPenWidthMin];
+    [eraserWidthSlider setMaximumValue:kPenWidthMax];
+    [eraserWidthSlider addTarget:self action:@selector(widthChange:) forControlEvents:UIControlEventValueChanged];
+    [eraserWidthSlider setValue:kPenWidthDefault];
+    [eraserWidthSlider setBackgroundColor:[UIColor clearColor]];
+    eraserWidthView.hidden = YES;
+    [eraserWidthView addSubview:eraserWidthSlider];
+    
+    UIButton *clearButton = [[UIButton alloc]initWithFrame:CGRectMake(200, 10, 100, 40)];
+    [clearButton setTitle:@"清空全部" forState:UIControlStateNormal];
+    [clearButton addTarget:self action:@selector(clearAction:) forControlEvents:UIControlEventTouchUpInside];
+    [eraserWidthView addSubview:clearButton];
+    [self.view addSubview:eraserWidthView];
+    
+}
+
+- (void)swatchDisappear:(UIView *)view{
+    CGRect rect = view.frame;
+    
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.5];
+    rect.size.width = 0;
+    view.frame = rect;
+    [UIView commitAnimations];
+}
+- (void)swatchAppear:(UIView *)view{
+    CGRect rect = view.frame;
+    
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.2];
+    rect.size.width = 6 * 60 + 4 * 10 + 40;
+    view.frame = rect;
+    [UIView commitAnimations];
+}
+- (void)viewDisappear:(UIView *)view{
+    if (view.hidden == NO)
+	{
+//        NSLog(@"hide");
+		[UIView animateWithDuration:0.25 delay:0.0
+                            options:UIViewAnimationOptionCurveLinear | UIViewAnimationOptionAllowUserInteraction
+                         animations:^(void)
+         {
+             view.alpha = 0.0f;
+         }
+                         completion:^(BOOL finished)
+         {
+             view.hidden = YES;
+         }
+         ];
+	}
+}
+- (void)viewAppear:(UIView *)view{
+    if (view.hidden == YES)
+	{
+//        NSLog(@"show");
+		[UIView animateWithDuration:0.25 delay:0.0
+                            options:UIViewAnimationOptionCurveLinear | UIViewAnimationOptionAllowUserInteraction
+                         animations:^(void)
+         {
+             view.hidden = NO;
+             view.alpha = 1.0f;
+         }
+                         completion:NULL
+         ];
+	}
+
+}
+- (void)clearAction:(id)button{
+    [self.drawNewView clear];
+}
+
+- (void)choColorAction:(id)sender{
+    UIButton *button = (UIButton *)sender;
+    UIColor *color = button.backgroundColor;
+    UIButton *originalButton = [noteToolDrawerBar.buttonArray objectAtIndex:0];
+    [originalButton setBackgroundColor:color];
+    self.drawNewView.lineColor = color;
+}
+
 //初始化书签编辑框
 - (void)initMarkEditView{
     markEditView = [[UIView alloc]initWithFrame:CGRectMake(1024 - 300, 44 + 40, 200, 100)];
@@ -590,6 +746,10 @@
     [self showMarkEditView:markEditView];
     NSString *text = markField.text;
     int page = [document.pageNumber intValue];
+//    NSLog(@"")
+    if (text == nil) {
+        text = @" ";
+    }
     [document.markTexts setObject:text forKey:[NSString stringWithFormat:@"%d",page]];
 }
 
@@ -652,9 +812,6 @@
 #pragma Notebar delegate
 
 - (void)tappedInNoteToolbar:(NoteToolbar *)toolbar choiceColor:(UIButton *)button{
-    NSLog(@"pen");
-//    currentToolType = ACEDrawingToolTypePen;
-//    [self startDraw];
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Selet a color"
                                                              delegate:self
                                                     cancelButtonTitle:@"Cancel"
@@ -666,6 +823,7 @@
 }
 - (void)tappedInNoteToolbar:(NoteToolbar *)toolbar choiceWidth:(UIButton *)button{
     self.lineWidthSlider.hidden = !self.lineWidthSlider.hidden;
+    [self.navigationController.navigationBar setHidden:NO];
 }
 - (void)tappedInNoteToolbar:(NoteToolbar *)toolbar choicePen:(UIButton *)button{
     
@@ -968,9 +1126,16 @@
 			{
 				if ([lastHideTime timeIntervalSinceNow] < -0.75) // Delay since hide
 				{
-					if ((mainToolbar.hidden == YES) || noteToolbar.hidden == YES /*(mainPagebar.hidden == YES)*/)
+					if ((mainToolbar.hidden == YES) || (mainPagebar.hidden == YES)
+                        || (noteToolDrawerBar.hidden == YES))
 					{
-						[mainToolbar showToolbar]; [noteToolbar showNoteToolbar]; //[mainPagebar showPagebar]; // Show
+						[mainToolbar showToolbar];
+                        [mainPagebar showPagebar]; // Show
+                        [noteToolDrawerBar showNoteToolDrawerBar];
+//                        [self viewAppear:penWidthView];
+//                        [self viewAppear:swatchView];
+//                        [self viewAppear:eraserWidthView];
+//                        [self viewAppear:markerWidthView];
 					}
 				}
 			}
@@ -1058,7 +1223,8 @@
 
 - (void)contentView:(ReaderContentView *)contentView touchesBegan:(NSSet *)touches
 {
-	if ((mainToolbar.hidden == NO) || noteToolbar.hidden == NO /*(mainPagebar.hidden == NO)*/)
+	if ((mainToolbar.hidden == NO) || (mainPagebar.hidden == NO)
+        || (noteToolDrawerBar.hidden == NO))
 	{
 		if (touches.count == 1) // Single touches only
 		{
@@ -1071,7 +1237,13 @@
 			if (CGRectContainsPoint(areaRect, point) == false) return;
 		}
 
-		[mainToolbar hideToolbar]; [noteToolbar hideNoteToolbar];//[mainPagebar hidePagebar]; // Hide
+		[mainToolbar hideToolbar];
+        [mainPagebar hidePagebar]; // Hide
+        [noteToolDrawerBar hideNoteToolDrawerBar];
+        [self viewDisappear:markerWidthView];
+        [self viewDisappear:eraserWidthView];
+        [self viewDisappear:swatchView];
+        [self viewDisappear:penWidthView];
 
 		lastHideTime = [NSDate date];
 	}
@@ -1095,6 +1267,7 @@
 	if ([delegate respondsToSelector:@selector(dismissReaderViewController:)] == YES)
 	{
 		[delegate dismissReaderViewController:self]; // Dismiss the ReaderViewController
+        
 	}
 	else // We have a "Delegate must respond to -dismissReaderViewController: error"
 	{
@@ -1106,6 +1279,7 @@
 
 - (void)tappedInToolbar:(ReaderMainToolbar *)toolbar thumbsButton:(UIButton *)button
 {
+    /*
 	if (printInteraction != nil) [printInteraction dismissAnimated:NO]; // Dismiss
 
 	ThumbsViewController *thumbsViewController = [[ThumbsViewController alloc] initWithReaderDocument:document];
@@ -1117,6 +1291,12 @@
 	thumbsViewController.modalPresentationStyle = UIModalPresentationFullScreen;
 
 	[self presentViewController:thumbsViewController animated:YES completion:nil];
+     */
+    CourseMarkViewController *courseMarkViewController = [[CourseMarkViewController alloc]initWithReaderDocument:document];
+    courseMarkViewController.delegate = self;
+    
+    [self presentViewController:courseMarkViewController animated:YES completion:nil];
+//    [self.navigationController pushViewController:courseMarkViewController animated:YES];
 }
 
 - (void)tappedInToolbar:(ReaderMainToolbar *)toolbar printButton:(UIButton *)button
@@ -1225,6 +1405,7 @@
 	{
 		[mainToolbar setBookmarkState:YES];
         [document.bookmarks addIndex:page];
+        [document.markTexts setObject:@" " forKey:[NSString stringWithFormat:@"%d",page]];
         
 	}
 }
@@ -1363,5 +1544,145 @@
     }
 }
 
+#pragma CourseMarkView delegate
+- (void) courseMarkViewController:(CourseMarkViewController *)viewController gotoPage:(NSInteger)page
+{
+    [self showDocumentPage:page];
+}
+-(void) dismissMarkViewControoler:(CourseMarkViewController *)viewController
+{
+    [self updateToolbarBookmarkIcon]; // Update bookmark icon
+    
+	[self dismissViewControllerAnimated:YES completion:NULL]; // Dismiss
+}
+
+#pragma NoteToolDrawerBar delegate
+- (void)tappedInNoteToolDrawerBar:(NoteToolDrawerBar *)toolDrawerBar toolAction:(UIButton *)button{
+    NSLog(@"tag %d",button.tag);
+//    swatchView.hidden = YES;
+//    penWidthView.hidden = YES;
+//    eraserWidthView.hidden = YES;
+//    markerWidthView.hidden = YES;
+    [self viewDisappear:swatchView];
+    [self viewDisappear:penWidthView];
+    [self viewDisappear:eraserWidthView];
+    [self viewDisappear:markerWidthView];
+    switch (button.tag) {
+        case 1:         //选择颜色
+            if (button.selected) {
+//                swatchView.hidden = NO;
+//                [self swatchAppear:swatchView];
+                [self viewAppear:swatchView];
+            } else{
+//                swatchView.hidden = YES;
+//                [self swatchDisappear:swatchView];
+                [self viewDisappear:swatchView];
+            }
+            
+            break;
+        case 2:         //选择钢笔
+            if (button.selected) {
+                currentToolType = ACEDrawingToolTypePen;
+                drawNewView.drawTool = ACEDrawingToolTypePen;
+                drawNewView.lineAlpha = 1.0f;
+//                penWidthView.hidden = NO;
+                [self viewAppear:penWidthView];
+            } else{
+//                penWidthView.hidden = YES;
+                [self viewDisappear:penWidthView];
+            }
+            break;
+        case 3:         //选择荧光笔
+            if (button.selected) {
+                currentToolType = ACEDrawingToolTypePen;
+                drawNewView.drawTool = ACEDrawingToolTypePen;
+                drawNewView.lineAlpha = 0.5f;
+//                markerWidthView.hidden = NO;
+                [self viewAppear:markerWidthView];
+            } else{
+//                markerWidthView.hidden = YES;
+                [self viewDisappear:markerWidthView];
+            }
+            break;
+        case 4:         //选择橡皮
+            if (button.selected) {
+                currentToolType = ACEDrawingToolTypeEraser;
+                drawNewView.drawTool = ACEDrawingToolTypeEraser;
+//                eraserWidthView.hidden = NO;
+                [self viewAppear:eraserWidthView];
+            } else{
+//                eraserWidthView.hidden = YES;
+                [self viewDisappear:eraserWidthView];
+            }
+            break;
+        case 5:         //选择相机
+            
+            break;
+        case 6:         //选择录音
+            
+            break;
+        default:
+            break;
+    }
+}
+//打开drawer
+- (void)drawerOpen:(NoteToolDrawerBar *)toolDrawerBar{
+    currentToolType = ACEDrawingToolTypePen;
+    [self startDraw];
+}
+//关闭drawer
+-(void)drawerClose:(NoteToolDrawerBar *)toolDrawerBar{
+    [self viewDisappear:markerWidthView];
+    [self viewDisappear:penWidthView];
+    [self viewDisappear:swatchView];
+    [self viewDisappear:eraserWidthView];
+    [noteToolDrawerBar closeAllButton];
+    [self stopDraw];
+    [self saveDraw];
+    int page = [document.pageNumber intValue];
+    NSNumber *key = [NSNumber numberWithInteger:page]; // # key
+    ReaderContentView *newContentView = [contentViews objectForKey:key];
+    [self addDrawView:newContentView];
+}
+#pragma ACEDrawView delegate
+- (void)intoDrawState:(ACEDrawingView *)view{
+    [noteToolDrawerBar hideNoteToolDrawerBar];
+    [mainPagebar hidePagebar];
+    [mainToolbar hideToolbar];
+    if (!swatchView.hidden) {
+        appearViewTag = SWATCH_VIEW_TAG;
+    }
+    if (!penWidthView.hidden) {
+        appearViewTag = PEN_VIEW_TAG;
+    }
+    if (!markerWidthView.hidden) {
+        appearViewTag = MARKER_VIEW_TAG;
+    }
+    if (!eraserWidthView.hidden) {
+        appearViewTag = ERASER_VIEW_TAG;
+    }
+    [self viewDisappear:markerWidthView];
+    [self viewDisappear:penWidthView];
+    [self viewDisappear:swatchView];
+    [self viewDisappear:eraserWidthView];
+}
+
+- (void)cancelDrawState:(ACEDrawingView *)view{
+    [noteToolDrawerBar showNoteToolDrawerBar];
+    [mainToolbar showToolbar];
+    [mainPagebar showPagebar];
+    if (appearViewTag == SWATCH_VIEW_TAG) {
+        [self viewAppear:swatchView];
+    }
+    if (appearViewTag == PEN_VIEW_TAG) {
+        [self viewAppear:penWidthView];
+    }
+    if (appearViewTag == MARKER_VIEW_TAG) {
+        [self viewAppear:markerWidthView];
+    }
+    if (appearViewTag ==ERASER_VIEW_TAG) {
+        [self viewAppear:eraserWidthView];
+    }
+}
 
 @end

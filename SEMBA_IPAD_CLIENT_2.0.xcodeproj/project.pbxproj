@@ -27,6 +27,10 @@
 		9C0F8AE41827636200FEFABA /* Reader-Thumbs.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0F8AD61827636200FEFABA /* Reader-Thumbs.png */; };
 		9C0F8AE51827636200FEFABA /* Reader-Thumbs@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0F8AD71827636200FEFABA /* Reader-Thumbs@2x.png */; };
 		9C0F8AE61827636200FEFABA /* Reader-Button-H.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0F8AD81827636200FEFABA /* Reader-Button-H.png */; };
+		9C51BF88182B40D60071A1D1 /* CourseMarkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C51BF87182B40D60071A1D1 /* CourseMarkViewController.m */; };
+		9C51BF8B182B80BF0071A1D1 /* MarkToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C51BF8A182B80BF0071A1D1 /* MarkToolBar.m */; };
+		9C51BF8E182C97DB0071A1D1 /* NoteToolDrawerBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C51BF8D182C97DB0071A1D1 /* NoteToolDrawerBar.m */; };
+		9C51BF97182CDE0E0071A1D1 /* ReaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C51BF96182CDE0E0071A1D1 /* ReaderViewController.m */; };
 		9CBD1587181E4DFB00075BDF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CBD1586181E4DFB00075BDF /* Foundation.framework */; };
 		9CBD1589181E4DFB00075BDF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CBD1588181E4DFB00075BDF /* CoreGraphics.framework */; };
 		9CBD158B181E4DFB00075BDF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CBD158A181E4DFB00075BDF /* UIKit.framework */; };
@@ -62,7 +66,6 @@
 		9CBD1618181E695900075BDF /* NoteToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD1603181E695900075BDF /* NoteToolbar.m */; };
 		9CBD1619181E695900075BDF /* ReaderConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD1605181E695900075BDF /* ReaderConstants.m */; };
 		9CBD161A181E695900075BDF /* ReaderDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD1607181E695900075BDF /* ReaderDocument.m */; };
-		9CBD161B181E695900075BDF /* ReaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD1609181E695900075BDF /* ReaderViewController.m */; };
 		9CBD161C181E695900075BDF /* ReaderMainToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD160B181E695900075BDF /* ReaderMainToolbar.m */; };
 		9CBD161D181E695900075BDF /* ReaderMainPagebar.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD160D181E695900075BDF /* ReaderMainPagebar.m */; };
 		9CBD161E181E695900075BDF /* ReaderContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CBD160F181E695900075BDF /* ReaderContentView.m */; };
@@ -129,6 +132,14 @@
 		9C0F8AD61827636200FEFABA /* Reader-Thumbs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Reader-Thumbs.png"; sourceTree = "<group>"; };
 		9C0F8AD71827636200FEFABA /* Reader-Thumbs@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Reader-Thumbs@2x.png"; sourceTree = "<group>"; };
 		9C0F8AD81827636200FEFABA /* Reader-Button-H.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Reader-Button-H.png"; sourceTree = "<group>"; };
+		9C51BF86182B40D60071A1D1 /* CourseMarkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseMarkViewController.h; sourceTree = "<group>"; };
+		9C51BF87182B40D60071A1D1 /* CourseMarkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseMarkViewController.m; sourceTree = "<group>"; };
+		9C51BF89182B80BF0071A1D1 /* MarkToolBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarkToolBar.h; sourceTree = "<group>"; };
+		9C51BF8A182B80BF0071A1D1 /* MarkToolBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarkToolBar.m; sourceTree = "<group>"; };
+		9C51BF8C182C97DB0071A1D1 /* NoteToolDrawerBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteToolDrawerBar.h; sourceTree = "<group>"; };
+		9C51BF8D182C97DB0071A1D1 /* NoteToolDrawerBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteToolDrawerBar.m; sourceTree = "<group>"; };
+		9C51BF95182CDE0E0071A1D1 /* ReaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderViewController.h; sourceTree = "<group>"; };
+		9C51BF96182CDE0E0071A1D1 /* ReaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderViewController.m; sourceTree = "<group>"; };
 		9CBD1583181E4DFB00075BDF /* SEMBA_IPAD_CLIENT_2.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SEMBA_IPAD_CLIENT_2.0.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CBD1586181E4DFB00075BDF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9CBD1588181E4DFB00075BDF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -188,8 +199,6 @@
 		9CBD1605181E695900075BDF /* ReaderConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderConstants.m; sourceTree = "<group>"; };
 		9CBD1606181E695900075BDF /* ReaderDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderDocument.h; sourceTree = "<group>"; };
 		9CBD1607181E695900075BDF /* ReaderDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderDocument.m; sourceTree = "<group>"; };
-		9CBD1608181E695900075BDF /* ReaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderViewController.h; sourceTree = "<group>"; };
-		9CBD1609181E695900075BDF /* ReaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderViewController.m; sourceTree = "<group>"; };
 		9CBD160A181E695900075BDF /* ReaderMainToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderMainToolbar.h; sourceTree = "<group>"; };
 		9CBD160B181E695900075BDF /* ReaderMainToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderMainToolbar.m; sourceTree = "<group>"; };
 		9CBD160C181E695900075BDF /* ReaderMainPagebar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderMainPagebar.h; sourceTree = "<group>"; };
@@ -456,9 +465,9 @@
 		9CBD15DA181E68E600075BDF /* Reader */ = {
 			isa = PBXGroup;
 			children = (
+				9CBD15DB181E68F600075BDF /* ACEDrawingView */,
 				9CBD15E3181E691600075BDF /* Support */,
 				9CBD15E2181E690700075BDF /* Sources */,
-				9CBD15DB181E68F600075BDF /* ACEDrawingView */,
 			);
 			name = Reader;
 			sourceTree = "<group>";
@@ -479,6 +488,10 @@
 			children = (
 				9CBD1602181E695900075BDF /* NoteToolbar.h */,
 				9CBD1603181E695900075BDF /* NoteToolbar.m */,
+				9C51BF8C182C97DB0071A1D1 /* NoteToolDrawerBar.h */,
+				9C51BF8D182C97DB0071A1D1 /* NoteToolDrawerBar.m */,
+				9C51BF89182B80BF0071A1D1 /* MarkToolBar.h */,
+				9C51BF8A182B80BF0071A1D1 /* MarkToolBar.m */,
 				9CBD1604181E695900075BDF /* ReaderConstants.h */,
 				9CBD1605181E695900075BDF /* ReaderConstants.m */,
 				9CBD1606181E695900075BDF /* ReaderDocument.h */,
@@ -602,8 +615,10 @@
 			children = (
 				9C0F8AB1181FB88C00FEFABA /* CoursewareViewController.h */,
 				9C0F8AB2181FB88C00FEFABA /* CoursewareViewController.m */,
-				9CBD1608181E695900075BDF /* ReaderViewController.h */,
-				9CBD1609181E695900075BDF /* ReaderViewController.m */,
+				9C51BF95182CDE0E0071A1D1 /* ReaderViewController.h */,
+				9C51BF96182CDE0E0071A1D1 /* ReaderViewController.m */,
+				9C51BF86182B40D60071A1D1 /* CourseMarkViewController.h */,
+				9C51BF87182B40D60071A1D1 /* CourseMarkViewController.m */,
 				9C0F8AAE181F5BC100FEFABA /* CoursewareItem.h */,
 				9C0F8AAF181F5BC100FEFABA /* CoursewareItem.m */,
 			);
@@ -730,11 +745,14 @@
 				5931752C181F8E4B000BBC4F /* DDMenuController.m in Sources */,
 				9C0F8AB0181F5BC100FEFABA /* CoursewareItem.m in Sources */,
 				9C0F8AB3181FB88C00FEFABA /* CoursewareViewController.m in Sources */,
+				9C51BF97182CDE0E0071A1D1 /* ReaderViewController.m in Sources */,
+				9C51BF8B182B80BF0071A1D1 /* MarkToolBar.m in Sources */,
 				9CBD1619181E695900075BDF /* ReaderConstants.m in Sources */,
 				9CBD163C181E699D00075BDF /* ASIAuthenticationDialog.m in Sources */,
 				9CBD1622181E695900075BDF /* ThumbsMainToolbar.m in Sources */,
 				9CBD161C181E695900075BDF /* ReaderMainToolbar.m in Sources */,
 				9CBD15FF181E692800075BDF /* ReaderThumbsView.m in Sources */,
+				9C51BF88182B40D60071A1D1 /* CourseMarkViewController.m in Sources */,
 				9CBD15FD181E692800075BDF /* ReaderThumbFetch.m in Sources */,
 				9CBD1600181E692800075BDF /* ReaderThumbView.m in Sources */,
 				9CBD15FE181E692800075BDF /* ReaderThumbRender.m in Sources */,
@@ -758,7 +776,6 @@
 				9CBD15FB181E692800075BDF /* ReaderThumbCache.m in Sources */,
 				5904031A181F913C001A1E60 /* MenuController.m in Sources */,
 				9CBD1601181E692800075BDF /* UIXToolbarView.m in Sources */,
-				9CBD161B181E695900075BDF /* ReaderViewController.m in Sources */,
 				9C0F8AB618210C8A00FEFABA /* ASIHTTPRequest+category.m in Sources */,
 				9CBD15BD181E4E2D00075BDF /* WelcomeViewController.m in Sources */,
 				9CBD1656181E6C6800075BDF /* ASIDataDecompressor.m in Sources */,
@@ -769,6 +786,7 @@
 				9CBD15E1181E690200075BDF /* ACEDrawingView.m in Sources */,
 				9CBD163D181E699D00075BDF /* ASIInputStream.m in Sources */,
 				9CBD15D8181E68CA00075BDF /* UIButton+associate.m in Sources */,
+				9C51BF8E182C97DB0071A1D1 /* NoteToolDrawerBar.m in Sources */,
 				9CBD163F181E699D00075BDF /* ASIHTTPRequest.m in Sources */,
 				9CBD1593181E4DFB00075BDF /* main.m in Sources */,
 				9CBD161D181E695900075BDF /* ReaderMainPagebar.m in Sources */,

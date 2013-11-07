@@ -29,9 +29,9 @@
 #import <QuartzCore/QuartzCore.h>
 
 #define kDefaultLineColor       [UIColor blackColor]
-#define kDefaultLineWidth       10.0f;
+#define kDefaultLineWidth       10.0f
 #define kDefaultLineAlpha       1.0f
-
+#define WAITING_TIME 0.001f
 // experimental code
 #define PARTIAL_REDRAW          0
 
@@ -39,6 +39,8 @@
     CGPoint currentPoint;
     CGPoint previousPoint1;
     CGPoint previousPoint2;
+    
+    BOOL firstTouch;
 }
 
 @property (nonatomic, strong) NSMutableArray *pathArray;
@@ -48,19 +50,21 @@
 @property (nonatomic, retain) UIImage *testImage;
 
 
+
 @end
 
 #pragma mark -
 
 @implementation ACEDrawingView
-@synthesize undoImageArr;
-@synthesize redoImageArr;
+//@synthesize undoImageArr;
+//@synthesize redoImageArr;
 @synthesize testImage;
+@synthesize thread;
 
 
 - (id)initWithFrame:(CGRect)frame
 {
-    NSLog(@"frame");
+//    NSLog(@"frame");
     self = [super initWithFrame:frame];
     if (self) {
         [self configure];
@@ -77,7 +81,7 @@
         self.testImage = [UIImage imageNamed:@"faderKey.png"];
         //将原来有的image加到需要存的数组里，作为上次画的image
         if (image != nil) {
-            [undoImageArr addObject:image];
+//            [undoImageArr addObject:image];
         }
         
     }
@@ -86,7 +90,7 @@
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
-    NSLog(@"coder");
+//    NSLog(@"coder");
     self = [super initWithCoder:aDecoder];
     if (self) {
         [self configure];
@@ -96,13 +100,15 @@
 
 - (void)configure
 {
-    NSLog(@"configure");
+//    NSLog(@"configure");
     // init the private arrays
+    firstTouch= YES;
+//    thread = [[NSThread alloc]initWithTarget:self selector:@selector(waiting:) object:nil];
     self.pathArray = [NSMutableArray array];
     self.bufferArray = [NSMutableArray array];
     
-    self.undoImageArr = [[NSMutableArray alloc]init];
-    self.redoImageArr = [[NSMutableArray alloc]init];
+//    self.undoImageArr = [[NSMutableArray alloc]init];
+//    self.redoImageArr = [[NSMutableArray alloc]init];
     
     // set the default values for the public properties
     self.lineColor = kDefaultLineColor;
@@ -119,16 +125,16 @@
 //划线调用这里
 - (void)drawRect:(CGRect)rect
 {
-    NSLog(@"drawRect");
+//    NSLog(@"drawRect");
     
 #if PARTIAL_REDRAW
-    NSLog(@"drawRect1");
+//    NSLog(@"drawRect1");
     // TODO: draw only the updated part of the image
     
     
     [self drawPath];
 #else
-    NSLog(@"drawRect2");
+//    NSLog(@"drawRect2");
     //这里是画当前的image，更新画布
     
     [self.image drawInRect:self.bounds];
@@ -144,7 +150,7 @@
 
 - (void)updateCacheImage:(BOOL)redraw
 {
-    NSLog(@"update");
+//    NSLog(@"update");
     // init a context
     UIGraphicsBeginImageContextWithOptions(self.bounds.size, NO, 0.0);
 //    [self.image drawAtPoint:CGPointZero];
@@ -156,10 +162,10 @@
         
         // I need to redraw all the lines
         //undo和redo不仅要重画线条，还要重画背景，防止原本保存的背景被清掉
-        if ([undoImageArr count] > 0) {
-            UIImage *currentImage = [undoImageArr objectAtIndex:[undoImageArr count] - 1];
-            [currentImage drawAtPoint:CGPointZero];
-        }
+//        if ([undoImageArr count] > 0) {
+//            UIImage *currentImage = [undoImageArr objectAtIndex:[undoImageArr count] - 1];
+//            [currentImage drawAtPoint:CGPointZero];
+//        }
        
         for (id<ACEDrawingTool> tool in self.pathArray) {
             [tool draw];
@@ -171,7 +177,7 @@
         [self.currentTool draw];
         
         
-        [undoImageArr addObject:UIGraphicsGetImageFromCurrentImageContext()];
+//        [undoImageArr addObject:UIGraphicsGetImageFromCurrentImageContext()];
         
     }
     
@@ -237,6 +243,7 @@
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     // init the bezier path
+    
     self.currentTool = [self toolWithCurrentSettings];
     self.currentTool.lineWidth = self.lineWidth;
     self.currentTool.lineColor = self.lineColor;
@@ -255,6 +262,13 @@
     if ([self.delegate respondsToSelector:@selector(drawingView:willBeginDrawUsingTool:)]) {
         [self.delegate drawingView:self willBeginDrawUsingTool:self.currentTool];
     }
+    [self.delegate intoDrawState:self];
+    
+    if (!self.thread.isCancelled && !firstTouch) {
+        [self.thread cancel];
+        NSLog(@"cancel");
+    }
+    firstTouch = NO;
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -304,12 +318,36 @@
     if ([self.delegate respondsToSelector:@selector(drawingView:didEndDrawUsingTool:)]) {
         [self.delegate drawingView:self didEndDrawUsingTool:self.currentTool];
     }
+    if ([thread isExecuting]) {
+        [thread cancel];
+        [NSThread exit];
+    }
+    thread = [[NSThread alloc]initWithTarget:self selector:@selector(waiting:) object:nil];
+    [thread start];
+    NSLog(@"start");
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     // make sure a point is recorded
     [self touchesEnded:touches withEvent:event];
+    [self.delegate cancelDrawState:self];
+}
+
+- (void)waiting:(NSThread *)thread
+{
+    for (int i = 0; i < 1000; i ++) {
+        [NSThread sleepForTimeInterval:WAITING_TIME];
+        if ([[NSThread currentThread] isCancelled])
+            return;
+    }
+    [self performSelectorOnMainThread:@selector(threadFinish) withObject:nil waitUntilDone:YES];
+    NSLog(@"no stop");
+    
+}
+- (void)threadFinish
+{
+    [self.delegate cancelDrawState:self];
 }
 
 
@@ -319,8 +357,8 @@
 {
     [self.bufferArray removeAllObjects];
     [self.pathArray removeAllObjects];
-    [self.undoImageArr removeAllObjects];
-    [self.redoImageArr removeAllObjects];
+//    [self.undoImageArr removeAllObjects];
+//    [self.redoImageArr removeAllObjects];
     [self updateCacheImage:YES];
     [self setNeedsDisplay];
 }
@@ -342,11 +380,11 @@
 {
     if ([self canUndo]) {
         
-        UIImage *image = [self.undoImageArr lastObject];
-        [self.redoImageArr addObject:image];
-        if ([undoImageArr count] > 0) {
-            [self.undoImageArr removeLastObject];
-        }
+//        UIImage *image = [self.undoImageArr lastObject];
+//        [self.redoImageArr addObject:image];
+//        if ([undoImageArr count] > 0) {
+//            [self.undoImageArr removeLastObject];
+//        }
         
         
         id<ACEDrawingTool>tool = [self.pathArray lastObject];
@@ -366,11 +404,11 @@
 {
     if ([self canRedo]) {
         
-        UIImage *image = [self.redoImageArr lastObject];
-        [self.undoImageArr addObject:image];
-        if ([redoImageArr count] > 0) {
-            [self.redoImageArr removeLastObject];
-        }
+//        UIImage *image = [self.redoImageArr lastObject];
+//        [self.undoImageArr addObject:image];
+//        if ([redoImageArr count] > 0) {
+//            [self.redoImageArr removeLastObject];
+//        }
         
         
         id<ACEDrawingTool>tool = [self.bufferArray lastObject];
@@ -389,6 +427,8 @@
     self.bufferArray = nil;
     self.currentTool = nil;
     self.image = nil;
+    
+    
     [super dealloc];
 }
 

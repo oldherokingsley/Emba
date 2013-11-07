@@ -140,7 +140,7 @@ NSString *NOTEFolderName = @"NOTE";
 
 	NSString *version= [infoDictionary objectForKey:@"CFBundleVersion"];
 
-	self.title = [NSString stringWithFormat:@"%@ v%@", name, version];
+	self.title = @"课件";//[NSString stringWithFormat:@"%@ v%@", name, version];
     
     
     UIBarButtonItem *downloadAllButton = [[UIBarButtonItem alloc]initWithTitle:@"下载全部" style:UIBarButtonItemStyleBordered target:self action:@selector(downloadAllAction:)];
@@ -601,20 +601,20 @@ NSString *NOTEFolderName = @"NOTE";
         readerViewController.notePath = NOTEPDFPath;
 		readerViewController.delegate = self; // Set the ReaderViewController delegate to self
         
-#if (DEMO_VIEW_CONTROLLER_PUSH == TRUE)
+//#if (DEMO_VIEW_CONTROLLER_PUSH == TRUE)
         
-		[self.navigationController pushViewController:readerViewController animated:YES];
+//		[self.navigationController pushViewController:readerViewController animated:YES];
         
-#else // present in a modal view controller
+//#else // present in a modal view controller
         
 		readerViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 		readerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
-//        readerViewController.modalPresentationStyle = UIModalPresentationCustom;
-//        readerViewController.modalPresentationStyle = UIModalPresentationCurrentContext;
+        readerViewController.modalPresentationStyle = UIModalPresentationCustom;
+        readerViewController.modalPresentationStyle = UIModalPresentationCurrentContext;
         
-		[self presentViewController:readerViewController animated:YES completion:NULL];
+		[self presentViewController:readerViewController animated:YES completion:nil];
         
-#endif // DEMO_VIEW_CONTROLLER_PUSH
+//#endif // DEMO_VIEW_CONTROLLER_PUSH
 	}
 
     

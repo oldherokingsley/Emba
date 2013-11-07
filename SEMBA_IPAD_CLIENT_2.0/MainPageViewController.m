@@ -41,7 +41,7 @@
     [super viewDidLoad];
     
     NSLog(@"%f %f %f %f",self.view.frame.origin.x,self.view.frame.origin.y,self.view.frame.size.width,self.view.frame.size.height);
-    self.title = @"课件";
+    self.title = @"课程";
 //    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
 //    [button setFrame:CGRectMake(10, 0, 44, 44)];
 //    [button setTitle:@"菜单" forState:UIControlStateNormal];

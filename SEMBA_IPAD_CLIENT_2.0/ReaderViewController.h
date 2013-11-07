@@ -28,6 +28,8 @@
 #import "ReaderDocument.h"
 #import "ACEDrawingTools.h"
 #import "ACEDrawingView.h"
+#import "CourseMarkViewController.h"
+#import "NoteToolDrawerBar.h"
 
 @class ReaderViewController;
 
@@ -39,7 +41,7 @@
 
 @end
 
-@interface ReaderViewController : UIViewController <ACEDrawingViewDelegate,UIActionSheetDelegate>{
+@interface ReaderViewController : UIViewController <ACEDrawingViewDelegate,UIActionSheetDelegate,CourseMarkViewDelegate,NoteToolDrawerBarDelegate>{
     ACEDrawingToolType currentToolType;
 }
 
@@ -48,6 +50,10 @@
 @property (nonatomic, retain) ACEDrawingView *drawNewView;
 @property (nonatomic, retain) UISlider *lineWidthSlider;
 @property (nonatomic, retain) UISlider *lineAlphaSlider;
+@property (nonatomic, retain) UIView *swatchView;
+@property (nonatomic, retain) UIView *penWidthView;
+@property (nonatomic, retain) UIView *markerWidthView;
+@property (nonatomic, retain) UIView *eraserWidthView;
 
 @property (nonatomic, retain) NSString *notePath;
 - (id)initWithReaderDocument:(ReaderDocument *)object;
