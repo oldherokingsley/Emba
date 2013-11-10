@@ -29,6 +29,7 @@
 #import "ASIHTTPRequest.h"
 #import "CoursewareItem.h"
 #import "ASIHTTPRequest+category.h"
+#import "MRCircularProgressView.h"
 
 #define ITEM_NUM_IN_ROW     4
 #define PROGRESS_TAG 111111
@@ -370,7 +371,8 @@ NSString *NOTEFolderName = @"NOTE";
             [button setHidden:YES];
             [self.buttonArray addObject:button];
             
-            UIProgressView *progressView = [[UIProgressView alloc]initWithFrame:CGRectMake(13, 140, 200, 10)];
+//            UIProgressView *progressView = [[UIProgressView alloc]initWithFrame:CGRectMake(13, 140, 200, 10)];
+            MRCircularProgressView *progressView = [[MRCircularProgressView alloc]initWithFrame:CGRectMake(63, 40, 100, 100)];
             [progressView setHidden:YES];
             [progressView setTag:PROGRESS_TAG];
 //            [progressView setProgressViewStyle:UIProgressViewStyleBar];
@@ -407,7 +409,8 @@ NSString *NOTEFolderName = @"NOTE";
         }
         
         [button setHidden:NO];
-        UIProgressView *progressView = (UIProgressView *)[button viewWithTag:PROGRESS_TAG];
+//        UIProgressView *progressView = (UIProgressView *)[button viewWithTag:PROGRESS_TAG];
+        MRCircularProgressView *progressView = (MRCircularProgressView *)[button viewWithTag:PROGRESS_TAG];
         [progressView setHidden:YES];
         NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:index],@"index", nil];
         [button setMyDict:dict];
