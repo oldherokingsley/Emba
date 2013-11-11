@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2B5AA8C91830EBFC00CC0DBD /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9240B71830D01800415735 /* LoginViewController.m */; };
+		2B5AA8CA1830ECBB00CC0DBD /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C9240B81830D01800415735 /* LoginViewController.xib */; };
 		2BB8153A1830AD7C00736512 /* Dao.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BB815391830AD7B00736512 /* Dao.m */; };
 		2BB815471830AE0200736512 /* Course.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BB8153C1830AE0200736512 /* Course.m */; };
 		2BB815481830AE0200736512 /* File.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BB8153E1830AE0200736512 /* File.m */; };
@@ -19,7 +21,6 @@
 		9C0F8AB0181F5BC100FEFABA /* CoursewareItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0F8AAF181F5BC100FEFABA /* CoursewareItem.m */; };
 		9C0F8AB3181FB88C00FEFABA /* CoursewareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0F8AB2181FB88C00FEFABA /* CoursewareViewController.m */; };
 		9C0F8AB618210C8A00FEFABA /* ASIHTTPRequest+category.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0F8AB518210C8A00FEFABA /* ASIHTTPRequest+category.m */; };
-		9C0F8ABB182224A400FEFABA /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0F8ABA182224A400FEFABA /* LoginViewController.m */; };
 		9C0F8AD91827636200FEFABA /* Reader-Button-H@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0F8ACB1827636200FEFABA /* Reader-Button-H@2x.png */; };
 		9C0F8ADA1827636200FEFABA /* Reader-Button-N.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0F8ACC1827636200FEFABA /* Reader-Button-N.png */; };
 		9C0F8ADB1827636200FEFABA /* Reader-Button-N@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0F8ACD1827636200FEFABA /* Reader-Button-N@2x.png */; };
@@ -139,8 +140,6 @@
 		9C0F8AB2181FB88C00FEFABA /* CoursewareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoursewareViewController.m; sourceTree = "<group>"; };
 		9C0F8AB418210C8A00FEFABA /* ASIHTTPRequest+category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ASIHTTPRequest+category.h"; sourceTree = "<group>"; };
 		9C0F8AB518210C8A00FEFABA /* ASIHTTPRequest+category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ASIHTTPRequest+category.m"; sourceTree = "<group>"; };
-		9C0F8AB9182224A400FEFABA /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
-		9C0F8ABA182224A400FEFABA /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		9C0F8ACB1827636200FEFABA /* Reader-Button-H@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Reader-Button-H@2x.png"; sourceTree = "<group>"; };
 		9C0F8ACC1827636200FEFABA /* Reader-Button-N.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Reader-Button-N.png"; sourceTree = "<group>"; };
 		9C0F8ACD1827636200FEFABA /* Reader-Button-N@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Reader-Button-N@2x.png"; sourceTree = "<group>"; };
@@ -168,6 +167,9 @@
 		9C9240B21830B87600415735 /* MRProgressHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRProgressHelper.h; sourceTree = "<group>"; };
 		9C9240B31830B87600415735 /* MRWeakProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRWeakProxy.h; sourceTree = "<group>"; };
 		9C9240B41830B87600415735 /* MRWeakProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRWeakProxy.m; sourceTree = "<group>"; };
+		9C9240B61830D01800415735 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		9C9240B71830D01800415735 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		9C9240B81830D01800415735 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		9CBD1583181E4DFB00075BDF /* SEMBA_IPAD_CLIENT_2.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SEMBA_IPAD_CLIENT_2.0.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CBD1586181E4DFB00075BDF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9CBD1588181E4DFB00075BDF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -365,8 +367,9 @@
 		9C0F8AB81822248100FEFABA /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				9C0F8AB9182224A400FEFABA /* LoginViewController.h */,
-				9C0F8ABA182224A400FEFABA /* LoginViewController.m */,
+				9C9240B61830D01800415735 /* LoginViewController.h */,
+				9C9240B71830D01800415735 /* LoginViewController.m */,
+				9C9240B81830D01800415735 /* LoginViewController.xib */,
 			);
 			name = Login;
 			sourceTree = "<group>";
@@ -426,13 +429,13 @@
 		9CBD1585181E4DFB00075BDF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9CBD1657181E6CAA00075BDF /* libz.dylib */,
 				9CBD1663181E6CFE00075BDF /* ImageIO.framework */,
 				9CBD1661181E6CF900075BDF /* MessageUI.framework */,
 				9CBD165F181E6CF100075BDF /* QuartzCore.framework */,
 				9CBD165D181E6CE300075BDF /* MobileCoreServices.framework */,
 				9CBD165B181E6CD900075BDF /* SystemConfiguration.framework */,
 				9CBD1659181E6CCD00075BDF /* CFNetwork.framework */,
-				9CBD1657181E6CAA00075BDF /* libz.dylib */,
 				9CBD1586181E4DFB00075BDF /* Foundation.framework */,
 				9CBD1588181E4DFB00075BDF /* CoreGraphics.framework */,
 				9CBD158A181E4DFB00075BDF /* UIKit.framework */,
@@ -772,6 +775,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B5AA8CA1830ECBB00CC0DBD /* LoginViewController.xib in Resources */,
 				9C0F8AE11827636200FEFABA /* Reader-Mark-Y@2x.png in Resources */,
 				9CBD159F181E4DFB00075BDF /* Images.xcassets in Resources */,
 				9CBD15CA181E535F00075BDF /* Main.storyboard in Resources */,
@@ -813,6 +817,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B5AA8C91830EBFC00CC0DBD /* LoginViewController.m in Sources */,
 				5931752C181F8E4B000BBC4F /* DDMenuController.m in Sources */,
 				9C0F8AB0181F5BC100FEFABA /* CoursewareItem.m in Sources */,
 				9C0F8AB3181FB88C00FEFABA /* CoursewareViewController.m in Sources */,
@@ -835,7 +840,6 @@
 				9CBD1621181E695900075BDF /* ThumbsViewController.m in Sources */,
 				9C9240B51830B87600415735 /* MRWeakProxy.m in Sources */,
 				9CBD15C8181E50AA00075BDF /* MainPageViewController.m in Sources */,
-				9C0F8ABB182224A400FEFABA /* LoginViewController.m in Sources */,
 				9CBD161E181E695900075BDF /* ReaderContentView.m in Sources */,
 				9CBD1618181E695900075BDF /* NoteToolbar.m in Sources */,
 				9C9240B11830AF8E00415735 /* MRCircularProgressView.m in Sources */,
