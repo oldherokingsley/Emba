@@ -41,7 +41,7 @@ NSString* requestNameUrl = @"requestForName.php";
     @synchronized(self){
     if(sharedDaoer == nil){
         sharedDaoer = [[Dao alloc] init];
-        [self initNetworkStateObserver];
+        [sharedDaoer initNetworkStateObserver];
         }
     }
     return sharedDaoer;

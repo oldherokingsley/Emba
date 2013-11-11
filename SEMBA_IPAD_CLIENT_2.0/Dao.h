@@ -138,5 +138,6 @@
 -(NSMutableArray*)requestForEvaluationList:(int)uid;
 //
 //-(NSString *) requestForName:(int)tid;
- 
+-(void)reachabilityChanged:(NSNotification*)note;
+
 @end
