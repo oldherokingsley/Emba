@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2BB8153A1830AD7C00736512 /* Dao.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BB815391830AD7B00736512 /* Dao.m */; };
+		2BB815471830AE0200736512 /* Course.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BB8153C1830AE0200736512 /* Course.m */; };
+		2BB815481830AE0200736512 /* File.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BB8153E1830AE0200736512 /* File.m */; };
+		2BB815491830AE0200736512 /* MyCourse.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BB815401830AE0200736512 /* MyCourse.m */; };
+		2BB8154A1830AE0200736512 /* RecommendBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BB815421830AE0200736512 /* RecommendBook.m */; };
+		2BB8154B1830AE0200736512 /* SysbsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BB815441830AE0200736512 /* SysbsModel.m */; };
+		2BB8154C1830AE0200736512 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BB815461830AE0200736512 /* User.m */; };
 		5904031A181F913C001A1E60 /* MenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 59040319181F913C001A1E60 /* MenuController.m */; };
 		5931752C181F8E4B000BBC4F /* DDMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5931752B181F8E4B000BBC4F /* DDMenuController.m */; };
 		9C0F8AB0181F5BC100FEFABA /* CoursewareItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0F8AAF181F5BC100FEFABA /* CoursewareItem.m */; };
@@ -32,6 +39,7 @@
 		9C51BF8E182C97DB0071A1D1 /* NoteToolDrawerBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C51BF8D182C97DB0071A1D1 /* NoteToolDrawerBar.m */; };
 		9C51BF97182CDE0E0071A1D1 /* ReaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C51BF96182CDE0E0071A1D1 /* ReaderViewController.m */; };
 		9C9240B11830AF8E00415735 /* MRCircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9240B01830AF8E00415735 /* MRCircularProgressView.m */; };
+		9C9240B51830B87600415735 /* MRWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9240B41830B87600415735 /* MRWeakProxy.m */; };
 		9CBD1587181E4DFB00075BDF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CBD1586181E4DFB00075BDF /* Foundation.framework */; };
 		9CBD1589181E4DFB00075BDF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CBD1588181E4DFB00075BDF /* CoreGraphics.framework */; };
 		9CBD158B181E4DFB00075BDF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CBD158A181E4DFB00075BDF /* UIKit.framework */; };
@@ -107,6 +115,20 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2BB815381830AD7B00736512 /* Dao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dao.h; sourceTree = "<group>"; };
+		2BB815391830AD7B00736512 /* Dao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Dao.m; sourceTree = "<group>"; };
+		2BB8153B1830AE0200736512 /* Course.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Course.h; sourceTree = "<group>"; };
+		2BB8153C1830AE0200736512 /* Course.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Course.m; sourceTree = "<group>"; };
+		2BB8153D1830AE0200736512 /* File.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = File.h; sourceTree = "<group>"; };
+		2BB8153E1830AE0200736512 /* File.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = File.m; sourceTree = "<group>"; };
+		2BB8153F1830AE0200736512 /* MyCourse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCourse.h; sourceTree = "<group>"; };
+		2BB815401830AE0200736512 /* MyCourse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCourse.m; sourceTree = "<group>"; };
+		2BB815411830AE0200736512 /* RecommendBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommendBook.h; sourceTree = "<group>"; };
+		2BB815421830AE0200736512 /* RecommendBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommendBook.m; sourceTree = "<group>"; };
+		2BB815431830AE0200736512 /* SysbsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SysbsModel.h; sourceTree = "<group>"; };
+		2BB815441830AE0200736512 /* SysbsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SysbsModel.m; sourceTree = "<group>"; };
+		2BB815451830AE0200736512 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		2BB815461830AE0200736512 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		59040318181F913C001A1E60 /* MenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuController.h; sourceTree = "<group>"; };
 		59040319181F913C001A1E60 /* MenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuController.m; sourceTree = "<group>"; };
 		5931752A181F8E4B000BBC4F /* DDMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDMenuController.h; sourceTree = "<group>"; };
@@ -143,6 +165,9 @@
 		9C51BF96182CDE0E0071A1D1 /* ReaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderViewController.m; sourceTree = "<group>"; };
 		9C9240AF1830AF8E00415735 /* MRCircularProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRCircularProgressView.h; sourceTree = "<group>"; };
 		9C9240B01830AF8E00415735 /* MRCircularProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRCircularProgressView.m; sourceTree = "<group>"; };
+		9C9240B21830B87600415735 /* MRProgressHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRProgressHelper.h; sourceTree = "<group>"; };
+		9C9240B31830B87600415735 /* MRWeakProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRWeakProxy.h; sourceTree = "<group>"; };
+		9C9240B41830B87600415735 /* MRWeakProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRWeakProxy.m; sourceTree = "<group>"; };
 		9CBD1583181E4DFB00075BDF /* SEMBA_IPAD_CLIENT_2.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SEMBA_IPAD_CLIENT_2.0.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CBD1586181E4DFB00075BDF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9CBD1588181E4DFB00075BDF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -282,6 +307,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2BB815361830ACFA00736512 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				2BB8153B1830AE0200736512 /* Course.h */,
+				2BB8153C1830AE0200736512 /* Course.m */,
+				2BB8153D1830AE0200736512 /* File.h */,
+				2BB8153E1830AE0200736512 /* File.m */,
+				2BB8153F1830AE0200736512 /* MyCourse.h */,
+				2BB815401830AE0200736512 /* MyCourse.m */,
+				2BB815411830AE0200736512 /* RecommendBook.h */,
+				2BB815421830AE0200736512 /* RecommendBook.m */,
+				2BB815431830AE0200736512 /* SysbsModel.h */,
+				2BB815441830AE0200736512 /* SysbsModel.m */,
+				2BB815451830AE0200736512 /* User.h */,
+				2BB815461830AE0200736512 /* User.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		2BB815371830AD1D00736512 /* Net */ = {
+			isa = PBXGroup;
+			children = (
+				2BB815381830AD7B00736512 /* Dao.h */,
+				2BB815391830AD7B00736512 /* Dao.m */,
+			);
+			name = Net;
+			sourceTree = "<group>";
+		};
 		59317528181F8E19000BBC4F /* Menu */ = {
 			isa = PBXGroup;
 			children = (
@@ -344,6 +397,9 @@
 			children = (
 				9C9240AF1830AF8E00415735 /* MRCircularProgressView.h */,
 				9C9240B01830AF8E00415735 /* MRCircularProgressView.m */,
+				9C9240B21830B87600415735 /* MRProgressHelper.h */,
+				9C9240B31830B87600415735 /* MRWeakProxy.h */,
+				9C9240B41830B87600415735 /* MRWeakProxy.m */,
 			);
 			name = MRCircularProgressView;
 			sourceTree = "<group>";
@@ -388,6 +444,8 @@
 		9CBD158C181E4DFB00075BDF /* SEMBA_IPAD_CLIENT_2.0 */ = {
 			isa = PBXGroup;
 			children = (
+				2BB815371830AD1D00736512 /* Net */,
+				2BB815361830ACFA00736512 /* Model */,
 				9CBD164F181E69D000075BDF /* UI */,
 				9CBD15D9181E68D800075BDF /* Custom */,
 				9CBD15BE181E4FEC00075BDF /* Resourse */,
@@ -758,25 +816,31 @@
 				5931752C181F8E4B000BBC4F /* DDMenuController.m in Sources */,
 				9C0F8AB0181F5BC100FEFABA /* CoursewareItem.m in Sources */,
 				9C0F8AB3181FB88C00FEFABA /* CoursewareViewController.m in Sources */,
+				2BB8153A1830AD7C00736512 /* Dao.m in Sources */,
+				2BB8154A1830AE0200736512 /* RecommendBook.m in Sources */,
 				9C51BF97182CDE0E0071A1D1 /* ReaderViewController.m in Sources */,
 				9C51BF8B182B80BF0071A1D1 /* MarkToolBar.m in Sources */,
 				9CBD1619181E695900075BDF /* ReaderConstants.m in Sources */,
 				9CBD163C181E699D00075BDF /* ASIAuthenticationDialog.m in Sources */,
+				2BB815481830AE0200736512 /* File.m in Sources */,
 				9CBD1622181E695900075BDF /* ThumbsMainToolbar.m in Sources */,
 				9CBD161C181E695900075BDF /* ReaderMainToolbar.m in Sources */,
 				9CBD15FF181E692800075BDF /* ReaderThumbsView.m in Sources */,
 				9C51BF88182B40D60071A1D1 /* CourseMarkViewController.m in Sources */,
 				9CBD15FD181E692800075BDF /* ReaderThumbFetch.m in Sources */,
 				9CBD1600181E692800075BDF /* ReaderThumbView.m in Sources */,
+				2BB815471830AE0200736512 /* Course.m in Sources */,
 				9CBD15FE181E692800075BDF /* ReaderThumbRender.m in Sources */,
 				9CBD1641181E699D00075BDF /* ASIDownloadCache.m in Sources */,
 				9CBD1621181E695900075BDF /* ThumbsViewController.m in Sources */,
+				9C9240B51830B87600415735 /* MRWeakProxy.m in Sources */,
 				9CBD15C8181E50AA00075BDF /* MainPageViewController.m in Sources */,
 				9C0F8ABB182224A400FEFABA /* LoginViewController.m in Sources */,
 				9CBD161E181E695900075BDF /* ReaderContentView.m in Sources */,
 				9CBD1618181E695900075BDF /* NoteToolbar.m in Sources */,
 				9C9240B11830AF8E00415735 /* MRCircularProgressView.m in Sources */,
 				9CBD1626181E697800075BDF /* Reachability.m in Sources */,
+				2BB815491830AE0200736512 /* MyCourse.m in Sources */,
 				9CBD161A181E695900075BDF /* ReaderDocument.m in Sources */,
 				9CBD15F8181E692700075BDF /* CGPDFDocument.m in Sources */,
 				9CBD163E181E699D00075BDF /* ASIFormDataRequest.m in Sources */,
@@ -799,7 +863,9 @@
 				9CBD1597181E4DFB00075BDF /* AppDelegate.m in Sources */,
 				9CBD15E1181E690200075BDF /* ACEDrawingView.m in Sources */,
 				9CBD163D181E699D00075BDF /* ASIInputStream.m in Sources */,
+				2BB8154B1830AE0200736512 /* SysbsModel.m in Sources */,
 				9CBD15D8181E68CA00075BDF /* UIButton+associate.m in Sources */,
+				2BB8154C1830AE0200736512 /* User.m in Sources */,
 				9C51BF8E182C97DB0071A1D1 /* NoteToolDrawerBar.m in Sources */,
 				9CBD163F181E699D00075BDF /* ASIHTTPRequest.m in Sources */,
 				9CBD1593181E4DFB00075BDF /* main.m in Sources */,
