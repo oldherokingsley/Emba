@@ -26,13 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SEMBA_IPAD_CLIENT_2.0/LoginViewController.m"
-            timestampString = "405248039.574672"
+            timestampString = "405854893.036434"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "90"
-            endingLineNumber = "90"
-            landmarkName = "-loginAction:"
-            landmarkType = "5">
+            startingLineNumber = "216"
+            endingLineNumber = "216">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -42,13 +40,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SEMBA_IPAD_CLIENT_2.0/LoginViewController.m"
-            timestampString = "405248039.574672"
+            timestampString = "405854893.036434"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "88"
-            endingLineNumber = "88"
-            landmarkName = "-loginAction:"
-            landmarkType = "5">
+            startingLineNumber = "214"
+            endingLineNumber = "214">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -64,6 +60,22 @@
             startingLineNumber = "59"
             endingLineNumber = "59"
             landmarkName = "-initWithReaderDocument:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SEMBA_IPAD_CLIENT_2.0/Dao.m"
+            timestampString = "405854322.008904"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "52"
+            endingLineNumber = "52"
+            landmarkName = "-initNetworkStateObserver"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
