@@ -29,6 +29,7 @@
 #import "ASIHTTPRequest.h"
 #import "CoursewareItem.h"
 #import "ASIHTTPRequest+category.h"
+#import "MRCircularProgressView.h"
 
 #define ITEM_NUM_IN_ROW     4
 #define PROGRESS_TAG 111111
@@ -370,7 +371,8 @@ NSString *NOTEFolderName = @"NOTE";
             [button setHidden:YES];
             [self.buttonArray addObject:button];
             
-            UIProgressView *progressView = [[UIProgressView alloc]initWithFrame:CGRectMake(13, 140, 200, 10)];
+//            UIProgressView *progressView = [[UIProgressView alloc]initWithFrame:CGRectMake(13, 140, 200, 10)];
+            MRCircularProgressView *progressView = [[MRCircularProgressView alloc]initWithFrame:CGRectMake(63, 40, 100, 100)];
             [progressView setHidden:YES];
             [progressView setTag:PROGRESS_TAG];
 //            [progressView setProgressViewStyle:UIProgressViewStyleBar];
@@ -407,7 +409,8 @@ NSString *NOTEFolderName = @"NOTE";
         }
         
         [button setHidden:NO];
-        UIProgressView *progressView = (UIProgressView *)[button viewWithTag:PROGRESS_TAG];
+//        UIProgressView *progressView = (UIProgressView *)[button viewWithTag:PROGRESS_TAG];
+        MRCircularProgressView *progressView = (MRCircularProgressView *)[button viewWithTag:PROGRESS_TAG];
         [progressView setHidden:YES];
         NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:index],@"index", nil];
         [button setMyDict:dict];
@@ -506,7 +509,7 @@ NSString *NOTEFolderName = @"NOTE";
         return;
     }
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    UIProgressView *progress = (UIProgressView *)[button viewWithTag:PROGRESS_TAG];
+    MRCircularProgressView *progress = (MRCircularProgressView *)[button viewWithTag:PROGRESS_TAG];
     [progress setHidden:NO];
     
     [request setTag:index];
@@ -558,7 +561,8 @@ NSString *NOTEFolderName = @"NOTE";
     [button setImageEdgeInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
     [button removeTarget:nil action:nil forControlEvents:UIControlEventTouchUpInside];
     [button addTarget:self action:@selector(openCourseware:) forControlEvents:UIControlEventTouchUpInside];
-    UIProgressView *progressView = (UIProgressView *)[button viewWithTag:PROGRESS_TAG];
+//    UIProgressView *progressView = (UIProgressView *)[button viewWithTag:PROGRESS_TAG];
+    MRCircularProgressView *progressView = (MRCircularProgressView *)[button viewWithTag:PROGRESS_TAG];
     [progressView setHidden:YES];
 }
 //下载出错处理
@@ -569,7 +573,8 @@ NSString *NOTEFolderName = @"NOTE";
     
     int index = request.tag;
     UIButton *button = [self.buttonArray objectAtIndex:index];
-    UIProgressView *progressView = (UIProgressView *)[button viewWithTag:PROGRESS_TAG];
+//    UIProgressView *progressView = (UIProgressView *)[button viewWithTag:PROGRESS_TAG];
+    MRCircularProgressView *progressView = (MRCircularProgressView *)[button viewWithTag:PROGRESS_TAG];
     [progressView setHidden:YES];
 
 }
