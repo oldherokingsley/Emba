@@ -19,6 +19,7 @@
     window.backgroundColor = [UIColor whiteColor];
     WelcomeViewController *rootViewController = [[WelcomeViewController alloc]init];
     window.rootViewController = rootViewController;
+    Dao* dao = [Dao sharedDao];
     [window makeKeyAndVisible];
     return YES;
 }

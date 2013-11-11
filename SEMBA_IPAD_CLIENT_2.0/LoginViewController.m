@@ -79,7 +79,8 @@ BOOL shouldLogin;
     Dao *dao = [Dao sharedDao];
     int loginResult = [dao requestForLogin:accountText password:passwordText];
     if (loginResult == 1) {
-        [self jumpToMainPage];
+//        [self jumpToMainPage];
+        [self performSelectorOnMainThread:@selector(jumpToMainPage) withObject:nil waitUntilDone:NO];
     } else if (loginResult == 0){
         NSLog(@"网络连接失败！");
     } else if (loginResult == -1){
