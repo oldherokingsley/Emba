@@ -509,7 +509,7 @@ NSString *NOTEFolderName = @"NOTE";
         return;
     }
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    UIProgressView *progress = (UIProgressView *)[button viewWithTag:PROGRESS_TAG];
+    MRCircularProgressView *progress = (MRCircularProgressView *)[button viewWithTag:PROGRESS_TAG];
     [progress setHidden:NO];
     
     [request setTag:index];
@@ -561,7 +561,8 @@ NSString *NOTEFolderName = @"NOTE";
     [button setImageEdgeInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
     [button removeTarget:nil action:nil forControlEvents:UIControlEventTouchUpInside];
     [button addTarget:self action:@selector(openCourseware:) forControlEvents:UIControlEventTouchUpInside];
-    UIProgressView *progressView = (UIProgressView *)[button viewWithTag:PROGRESS_TAG];
+//    UIProgressView *progressView = (UIProgressView *)[button viewWithTag:PROGRESS_TAG];
+    MRCircularProgressView *progressView = (MRCircularProgressView *)[button viewWithTag:PROGRESS_TAG];
     [progressView setHidden:YES];
 }
 //下载出错处理
@@ -572,7 +573,8 @@ NSString *NOTEFolderName = @"NOTE";
     
     int index = request.tag;
     UIButton *button = [self.buttonArray objectAtIndex:index];
-    UIProgressView *progressView = (UIProgressView *)[button viewWithTag:PROGRESS_TAG];
+//    UIProgressView *progressView = (UIProgressView *)[button viewWithTag:PROGRESS_TAG];
+    MRCircularProgressView *progressView = (MRCircularProgressView *)[button viewWithTag:PROGRESS_TAG];
     [progressView setHidden:YES];
 
 }

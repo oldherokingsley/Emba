@@ -10,6 +10,7 @@
 #import "MRCircularProgressView.h"
 #import "MRProgressHelper.h"
 #import "MRWeakProxy.h"
+#import <CoreGraphics/CoreGraphics.h>
 
 
 @interface MRCircularProgressView ()
@@ -66,9 +67,13 @@
     numberFormatter.locale = NSLocale.currentLocale;
     
     self.layer.borderWidth = 2.0f;
+//    self.layer. = [[UIColor whiteColor] CGColor];
+    self.tintColor = [UIColor redColor];
     
-    self.shapeLayer.lineWidth = 2.0f;
+    self.shapeLayer.lineWidth = 8.0f;
     self.shapeLayer.fillColor = UIColor.clearColor.CGColor;
+//    self.shapeLayer.strokeColor = UIColor.redColor.CGColor;
+//    self.shapeLayer.borderColor = [[UIColor whiteColor] CGColor];
     
     UILabel *valueLabel = [UILabel new];
     self.valueLabel = valueLabel;
@@ -130,9 +135,16 @@
     [super tintColorDidChange];
     UIColor *tintColor = self.tintColor;
     self.shapeLayer.strokeColor = tintColor.CGColor;
-    self.layer.borderColor = tintColor.CGColor;
-    self.valueLabel.textColor = tintColor;
+//    self.shapeLayer.fillColor = UIColor.whiteColor.CGColor;
+//    self.shapeLayer.borderColor = UIColor.whiteColor.CGColor;
+    
+//    self.shapeLayer.backgroundColor = UIColor.whiteColor.CGColor;
+//    self.layer.borderColor = tintColor.CGColor;
+    self.layer.borderColor = UIColor.clearColor.CGColor;
+//    self.valueLabel.textColor = tintColor;
+    self.valueLabel.textColor = [UIColor whiteColor];
     self.stopView.backgroundColor = tintColor;
+    
 }
 
 
@@ -179,8 +191,9 @@
 
 - (void)setProgress:(float)progress {
     NSParameterAssert(progress >= 0 && progress <= 1);
-    
+    [self setProgress:progress animated:YES];
     // Stop running animation
+    /*
     if (self.displayLink) {
         [self.displayLink removeFromRunLoop:NSRunLoop.mainRunLoop forMode:NSRunLoopCommonModes];
         self.displayLink = nil;
@@ -189,6 +202,7 @@
     _progress = progress;
     
     [self updateProgress];
+     */
 }
 
 - (void)updateProgress {
