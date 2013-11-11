@@ -39,8 +39,11 @@
 		9C51BF97182CDE0E0071A1D1 /* ReaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C51BF96182CDE0E0071A1D1 /* ReaderViewController.m */; };
 		9C9240B11830AF8E00415735 /* MRCircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9240B01830AF8E00415735 /* MRCircularProgressView.m */; };
 		9C9240B51830B87600415735 /* MRWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9240B41830B87600415735 /* MRWeakProxy.m */; };
+<<<<<<< HEAD
 		9C9240B91830D01800415735 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9240B71830D01800415735 /* LoginViewController.m */; };
 		9C9240BA1830D01800415735 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C9240B81830D01800415735 /* LoginViewController.xib */; };
+=======
+>>>>>>> bbf300a7fe09e9bf81ec7d59289ec5b1d702a236
 		9CBD1587181E4DFB00075BDF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CBD1586181E4DFB00075BDF /* Foundation.framework */; };
 		9CBD1589181E4DFB00075BDF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CBD1588181E4DFB00075BDF /* CoreGraphics.framework */; };
 		9CBD158B181E4DFB00075BDF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CBD158A181E4DFB00075BDF /* UIKit.framework */; };
@@ -167,9 +170,12 @@
 		9C9240B21830B87600415735 /* MRProgressHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRProgressHelper.h; sourceTree = "<group>"; };
 		9C9240B31830B87600415735 /* MRWeakProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRWeakProxy.h; sourceTree = "<group>"; };
 		9C9240B41830B87600415735 /* MRWeakProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRWeakProxy.m; sourceTree = "<group>"; };
+<<<<<<< HEAD
 		9C9240B61830D01800415735 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		9C9240B71830D01800415735 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		9C9240B81830D01800415735 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
+=======
+>>>>>>> bbf300a7fe09e9bf81ec7d59289ec5b1d702a236
 		9CBD1583181E4DFB00075BDF /* SEMBA_IPAD_CLIENT_2.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SEMBA_IPAD_CLIENT_2.0.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CBD1586181E4DFB00075BDF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9CBD1588181E4DFB00075BDF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };

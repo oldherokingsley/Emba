@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import "WelcomeViewController.h"
-
+#import "Dao.h"
 @implementation AppDelegate
 @synthesize window;
 

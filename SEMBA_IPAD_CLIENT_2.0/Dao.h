@@ -49,14 +49,14 @@
  *  -2  代表签到失败，服务器出错
  */
 -(int)requestForCheckIn:(NSString*)uid;
-/**
+/**获取签到历史接口
  *返回
  *  1   代表成功，数据结构
  *  0   代表联网失败
  *  -1  获取失败,服务器出错。
  */
 -(int)requestForCheckInHistory:(NSString*)uid;
-/**
+/**登录接口
  *返回
  *  1   代表登陆成功
  *  0   代表联网失败
@@ -64,29 +64,80 @@
  *  -2  代表数据库不存在该用户 （后端还没实现）
  */
 -(int)requestForLogin:(NSString*)username password:(NSString*)passwd;
+/** 修改密码接口
+ *返回
+ *  1   代表成功修改密码
+ *  0   代表联网失败
+ *  -1  代表密码出错
+ *  -2  代表服务器出错
+ */
 -(int)requestForChangePasswd:(NSString *)oldPasswd NewPassword:(NSString*)newPassword;
-/*
+/**
 //获取欢迎页
--(WelcomePageResult *)requestForWelcomeImage;
-//获取我的课程
--(BOOL)requestForMyCourse:(int)uid;
+ *暂时废弃。
+ **/
+//-(WelcomePageResult *)requestForWelcomeImage;
+
+ /** 获取我的课程
+  *返回
+  * 1   代表成功获取 通过getModel可获取
+  * 0   代表联网失败
+  * -1  代表服务器出错
+  **/
+-(int)requestForMyCourse:(int)uid;
+
+/** 获取文件列表
+ *返回
+ * 1   代表成功获取 通过getModel可获取
+ * 0   代表联网失败
+ * -1  代表服务器出错
+ **/
 //获取文件列表
--(BOOL)requestForFileList:(int)cid;
+-(int)requestForFileList:(int)cid;
+/**暂时废弃
 //获取单个文件
 -(id)requestForAFile:(int)fid UserId:(int)uid;
 //获取头像
 -(id)requestForHeadImage:(int)uid;
 //获取推荐书目
 -(RecommendBookResult *)requestForRecommend:(int)cid;
-//获取课程时间
+**/
+
+/** 获取课程时间
+ *返回
+ * 1   代表成功获取 通过getModel可获取
+ * 0   代表联网失败
+ * -1  代表服务器出错
+ **/
+ //获取课程时间
 -(BOOL)requestForCourseDate:(int)cid;
 //获取最新文件
--(NSMutableArray *)requestForNewestFile :(int)uid;
+/** 获取最新文件
+ *返回
+ * 1   代表成功获取 通过getModel可获取
+ * 0   代表联网失败
+ * -1  代表服务器出错
+ **/
+-(int)requestForNewestFile :(int)uid;
 //
--(BOOL)requestForUpEvaluation:(NSDictionary*)dict;
-//改成model
+/** 评教接口
+ *返回
+ * 1   代表成功
+ * 0   代表联网失败
+ * -1  代表服务器出错
+ **/
+
+-(int)requestForUpEvaluation:(NSDictionary*)dict;
+/** 获取评教列表
+ *返回
+ * 1   代表成功获取 通过getModel可获取
+ * 0   代表联网失败
+ * -1  代表服务器出错
+ **/
+
 -(NSMutableArray*)requestForEvaluationList:(int)uid;
 //
--(NSString *) requestForName:(int)tid;
- */
+//-(NSString *) requestForName:(int)tid;
+-(void)reachabilityChanged:(NSNotification*)note;
+
 @end
