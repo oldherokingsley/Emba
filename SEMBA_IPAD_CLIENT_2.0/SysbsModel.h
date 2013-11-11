@@ -18,7 +18,7 @@
 
 +(SysbsModel*)getSysbsModel;
 -(User*)getUser;
-+(void)setUser:(User*)tempUser;
+-(void)setUser:(User*)tempUser;
 
 @end
 
