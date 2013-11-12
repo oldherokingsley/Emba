@@ -355,18 +355,20 @@ filename:(NSString*)filename{
     }
     return rs;
 }
-
--(BOOL)requestForMyCourse:(int)uid{
-    GetCourseResult *rs = [[GetCourseResult alloc] init];
+*/
+-(int)requestForMyCourse:(int)uid{
+    int ret = 0;
     NSString * urlString  = [NSString stringWithFormat:@"%@%@",baseUrl,courseUrl];
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     NSNumber *uidNum = [NSNumber numberWithInt:uid];
     [dict setObject:uidNum forKey:@"uid"];
-    NSDictionary *ret = [self request:urlString dict:dict];
-    int isSuccess = [(NSNumber *)[ret objectForKey:@"isSuccess" ] integerValue];
-    NSMutableArray *allMyCourse = [[NSMutableArray alloc] init];
-    if(isSuccess > 0){
-        NSArray *arr = [ret objectForKey:@"data"];
+    NSDictionary *rs = [self request:urlString dict:dict];
+    if(rs == nil)return 0;//network fail;
+    int isSuccess = [(NSNumber *)[rs objectForKey:@"isSuccess" ] intValue];
+    if(isSuccess == 1){
+        /*
+        NSMutableArray *allMyCourse = [[NSMutableArray alloc] init];
+        NSArray *arr = [rs objectForKey:@"data"];
         int l = [arr count];
         for (int i = 0; i < l; ++i) {
             NSDictionary *onedict = [arr objectAtIndex:i];
@@ -377,32 +379,35 @@ filename:(NSString*)filename{
             one.teacherName = [onedict objectForKey:@"teacher"];
             [allMyCourse addObject:one];
         }
-        MyCourse *myCourse = [MyCourse sharedMyCourse];
-        [myCourse setCourseArr:allMyCourse];
-        return true;
+        */
+        //获取课程数据
+        
     }else{
-        return false;
+        
     }
-    
+    return ret;
     //return rs;
 }
 
+
 -(int)requestForChangePasswd:(NSString *)oldPasswd NewPassword:(NSString *)newPassword{
-//    ChangePassword *rs = [[ChangePassword alloc]init];
+    int ret = 0;
     NSString *urlString = [NSString stringWithFormat:@"%@%@",baseUrl,changePasswdUrl];
     NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
     [dict setObject:oldPasswd forKey:@"passwd"];
     [dict setObject:newPassword forKey:@"newpasswd"];
-    User* user = [User sharedUser];
-    int uid = user.uid;
+    //push
+    int value;
+    int uid = ysbsModel getSysbsModel] getUser].uid;
     NSNumber *num = [NSNumber numberWithInt:uid];
     [dict setObject:num forKey:@"uid"];
-    NSDictionary * ret = [self request:urlString dict:dict];
-    NSNumber *nsNum = [ret objectForKey:@"isSuccess"];
-    int isSuccess = [nsNum integerValue];
-    return isSuccess;
+    NSDictionary * rs = [self request:urlString dict:dict];
+    NSNumber *nsNum = [rs objectForKey:@"isSuccess"];
+    ret = [nsNum intValue];
+    if(rs == nil)ret = 0;//network fail
+    return ret;
 }
-
+/*
 -(id)requestForAFile:(int)fid UserId:(int)uid{
     id ret;
     return ret;

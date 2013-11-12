@@ -11,7 +11,7 @@
 @interface SysbsModel (PRIVATEMETHOD)
 
 @property (strong,nonatomic)User *user;
-@property (strong,nonatomic)NSArray *myCourse;
+@property (strong,nonatomic)MyCourse *myCourse;
 
 @end
 
@@ -32,11 +32,26 @@ static SysbsModel* sharedModel = nil;
 }
 
 -(User*)getUser{
+    if(sharedModel == nil)return nil;
     return self.user;
 }
 
--(void)setUser:(User *)tempUser{
+-(void)setUser:(User*)tempUser{
+    if(sharedModel != nil){
+        return ;
+    }
     self.user = tempUser;
 }
 
+-(MyCourse*)getMyCourse{
+    if(sharedModel == nil)return nil;
+    return self.myCourse;
+}
+
+-(void)setMyCourse:(MyCourse *)tempMyCourse{
+    if(sharedModel != nil){
+        return;
+    }
+    self.myCourse = tempMyCourse;
+}
 @end

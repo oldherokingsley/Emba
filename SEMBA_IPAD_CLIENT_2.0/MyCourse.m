@@ -8,32 +8,40 @@
 
 #import "MyCourse.h"
 
+@interface MyCourse (PRIVATE)
 
+@property (strong,nonatomic)NSMutableArray *courseArr;
+
+@end
+
+@implementation MyCourse (PRIVATE)
+
+
+@end
 
 @implementation MyCourse
 
-@synthesize courseArr;
 
-static MyCourse *mMyCourse = nil;
+//static MyCourse *mMyCourse = nil;
 
-
+/*
 +(MyCourse *)sharedMyCourse{
     if(mMyCourse == nil){
         mMyCourse = [[self alloc] init];
     }
     return mMyCourse;
-}
+}*/
 
 -(void)addCourse:(Course *)course{
-    [courseArr addObject:course];
+    [self.courseArr addObject:course];
 }
 
 -(void)setCourses:(NSMutableArray *)arr{
-    courseArr = arr;
+    self.courseArr = arr;
 }
 
--(NSMutableArray *)getMyCourse{
-    return courseArr;
+-(NSArray *)getMyCourse{
+    return self.courseArr;
 }
 
 

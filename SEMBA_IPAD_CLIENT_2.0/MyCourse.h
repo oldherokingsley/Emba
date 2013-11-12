@@ -10,10 +10,9 @@
 #import "Course.h"
 @interface MyCourse : NSObject
 
-@property (strong,nonatomic)NSMutableArray *courseArr;
 
-+(MyCourse *)sharedMyCourse;
+//+(MyCourse *)sharedMyCourse;
 -(void) addCourse:(Course *)course;
 -(void) setCourses:(NSMutableArray *)arr;
--(NSMutableArray*)getMyCourse;
+-(NSArray*)getMyCourse;
 @end

@@ -11,6 +11,7 @@
 #import "Course.h"
 #import "File.h"
 #import "RecommendBook.h"
+#import "MyCourse.h"
 
 @class SysbsModel;
 
@@ -19,6 +20,8 @@
 +(SysbsModel*)getSysbsModel;
 -(User*)getUser;
 -(void)setUser:(User*)tempUser;
+-(MyCourse*)getMyCourse;
+-(void)setMyCourse:(MyCourse*)tempMyCourse;
 
 @end
 
