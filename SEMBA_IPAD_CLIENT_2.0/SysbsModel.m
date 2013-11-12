@@ -8,36 +8,32 @@
 
 #import "SysbsModel.h"
 
-@interface SysbsModel (PRIVATEMETHOD)
-
-@property (strong,nonatomic)User *user;
-@property (strong,nonatomic)MyCourse *myCourse;
-
-@end
-
-@implementation SysbsModel (PRIVATEMETHOD)
-
-static SysbsModel* sharedModel = nil;
-
-
-@end
 
 @implementation SysbsModel
 
+static SysbsModel* sharedModel = nil;
+User *user;
+MyCourse *myCourse;
+
+
 +(SysbsModel*)getSysbsModel{
     if(sharedModel == nil){
+        NSLog(@"create!!!");
         sharedModel = [[SysbsModel alloc] init];
     }
     return sharedModel;
 }
 
 -(User*)getUser{
-    if(sharedModel == nil)return nil;
-    return self.user;
+    if(sharedModel == nil ){
+        NSLog(@"空的");
+        return nil;
+    }
+    return sharedModel.user;
 }
 
 -(void)setUser:(User*)tempUser{
-    if(sharedModel != nil){
+    if(sharedModel == nil){
         return ;
     }
     self.user = tempUser;
@@ -49,7 +45,7 @@ static SysbsModel* sharedModel = nil;
 }
 
 -(void)setMyCourse:(MyCourse *)tempMyCourse{
-    if(sharedModel != nil){
+    if(sharedModel == nil){
         return;
     }
     self.myCourse = tempMyCourse;
