@@ -10,7 +10,6 @@
 
 @interface MyCourse (PRIVATE)
 
-@property (strong,nonatomic)NSMutableArray *courseArr;
 
 @end
 
@@ -21,7 +20,7 @@
 
 @implementation MyCourse
 
-
+@synthesize  courseArr;
 //static MyCourse *mMyCourse = nil;
 
 /*

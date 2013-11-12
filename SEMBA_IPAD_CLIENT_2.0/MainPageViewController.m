@@ -47,7 +47,7 @@
     [super viewDidLoad];
     courseArray = [[NSArray alloc]init];
     NSThread *thread = [[NSThread alloc]initWithTarget:self selector:@selector(loadDataSelector:) object:nil];
-//    [thread start];
+    [thread start];
     
     NSLog(@"%f %f %f %f",self.view.frame.origin.x,self.view.frame.origin.y,self.view.frame.size.width,self.view.frame.size.height);
     self.title = @"课程";

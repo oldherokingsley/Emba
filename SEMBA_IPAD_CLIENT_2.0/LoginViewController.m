@@ -79,7 +79,7 @@ BOOL shouldLogin;
         return;
     }
     Dao *dao = [Dao sharedDao];
-    int loginResult = 1;//[dao requestForLogin:accountText password:passwordText];
+    int loginResult = [dao requestForLogin:accountText password:passwordText];
     if (loginResult == 1) {
 //<<<<<<< HEAD
 //        [self jumpToMainPage];

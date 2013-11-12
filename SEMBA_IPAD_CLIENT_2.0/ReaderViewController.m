@@ -368,6 +368,7 @@
     }
     
     CGRect rect = readerContentView.theContainerView.bounds;
+//    CGRect rect2 = readerContentView.bounds;
     self.drawingView = [[ACEDrawingView alloc]initWithFrame:CGRectMake(0, 0, rect.size.width, rect.size.height) :noteImage];
 //    self.delegate = self;
     self.drawingView.delegate = self;
@@ -399,6 +400,7 @@
     NSLog(@"theScrollView frame %f %f %f %f",point.x,point.y,size.width,size.height);
     
     if (drawingView != nil) {
+        NSLog(@"remove");
         [drawingView removeFromSuperview];
         drawingView = nil;
     }
@@ -409,7 +411,9 @@
     
     
 //    drawNewView = [[ACEDrawingView alloc]initWithFrame:CGRectMake(theScrollView.contentOffset.x + rect.origin.x + 4.0f, rect.origin.y + 4.0f, rect.size.width, rect.size.height) :noteImage];
+//    UIImage *scaleImage = self scaleImage:noteImage toScale:<#(float)#>
     drawNewView = [[ACEDrawingView alloc]initWithFrame:CGRectMake(theScrollView.contentOffset.x + rect.origin.x + 4.0f, rect.origin.y + 4.0f - rect2.origin.y - 4.0f, rect.size.width, rect.size.height) :noteImage];
+    
     drawNewView.delegate = self;
     drawNewView.lineWidth = self.lineWidthSlider.value;
     drawNewView.lineAlpha = self.lineAlphaSlider.value;
@@ -417,6 +421,19 @@
     [theScrollView addSubview:drawNewView];
     
 
+}
+
+- (UIImage *)scaleImage:(UIImage *)image toScale:(float)scaleSize
+
+{
+    
+    UIGraphicsBeginImageContext(CGSizeMake(image.size.width * scaleSize, image.size.height * scaleSize));
+    [image drawInRect:CGRectMake(0, 0, image.size.width * scaleSize, image.size.height * scaleSize)];
+    UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+                                
+    return scaledImage;
+                                
 }
 - (void)stopDraw{
     
