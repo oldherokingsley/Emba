@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "WelcomeViewController.h"
 #import "Dao.h"
+#import "SysbsModel.h"
 @implementation AppDelegate
 @synthesize window;
 
@@ -21,6 +22,8 @@
     window.rootViewController = rootViewController;
     Dao* dao = [Dao sharedDao];
     [window makeKeyAndVisible];
+//    Dao *dao = [Dao sharedDao];
+    SysbsModel *model = [SysbsModel getSysbsModel];
     return YES;
 }
 							

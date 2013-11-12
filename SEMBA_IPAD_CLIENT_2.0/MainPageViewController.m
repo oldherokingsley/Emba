@@ -119,7 +119,7 @@
 - (void)loadDataSelector:(NSThread *)thread{
     Dao *dao = [Dao sharedDao];
     SysbsModel *sysbsModel = [SysbsModel getSysbsModel];
-    User *user = [sysbsModel getUser];
+    User *user = sysbsModel.user;
     int myCourseRequest = [dao requestForMyCourse:user.uid];
     
     if (myCourseRequest == 1) {

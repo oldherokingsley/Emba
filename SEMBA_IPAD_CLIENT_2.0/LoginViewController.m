@@ -41,6 +41,8 @@ BOOL shouldLogin;
     // Do any additional setup after loading the view from its nib.
     accountTF.delegate = self;
     passwordTF.delegate = self;
+    [accountTF setText:@"common"];
+    [passwordTF setText:@"72"];
     passwordTF.secureTextEntry = YES;
 }
 
@@ -79,9 +81,15 @@ BOOL shouldLogin;
     Dao *dao = [Dao sharedDao];
     int loginResult = 1;//[dao requestForLogin:accountText password:passwordText];
     if (loginResult == 1) {
+//<<<<<<< HEAD
 //        [self jumpToMainPage];
         NSLog(@"login success");
         [self performSelectorOnMainThread:@selector(jumpToMainPage) withObject:nil waitUntilDone:NO];
+//=======
+        SysbsModel *model = [SysbsModel getSysbsModel];
+        NSLog(@"%d",model.user.uid);
+        //[self jumpToMainPage];
+//>>>>>>> de9b828f95e397c50e37a804bbb966e5d71cd4fc
     } else if (loginResult == 0){
         NSLog(@"网络连接失败！");
     } else if (loginResult == -1){

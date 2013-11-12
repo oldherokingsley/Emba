@@ -409,7 +409,7 @@
     
     
 //    drawNewView = [[ACEDrawingView alloc]initWithFrame:CGRectMake(theScrollView.contentOffset.x + rect.origin.x + 4.0f, rect.origin.y + 4.0f, rect.size.width, rect.size.height) :noteImage];
-    drawNewView = [[ACEDrawingView alloc]initWithFrame:CGRectMake(theScrollView.contentOffset.x + rect.origin.x + 4.0f, rect.origin.y + 4.0f, rect.size.width, rect.size.height) :noteImage];
+    drawNewView = [[ACEDrawingView alloc]initWithFrame:CGRectMake(theScrollView.contentOffset.x + rect.origin.x + 4.0f, rect.origin.y + 4.0f - rect2.origin.y - 4.0f, rect.size.width, rect.size.height) :noteImage];
     drawNewView.delegate = self;
     drawNewView.lineWidth = self.lineWidthSlider.value;
     drawNewView.lineAlpha = self.lineAlphaSlider.value;

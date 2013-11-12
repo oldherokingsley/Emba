@@ -304,8 +304,8 @@ filename:(NSString*)filename{
         NSLog(@"uid%d",uid);
         NSString *name = [rs objectForKey:@"username"];
         user.username = name;
-        [model setUser:user];
-        NSLog(@"modeluid%d",[model getUser].uid);
+        model.user = user;
+        NSLog(@"modeluid%d",model.user.uid);
     }
     //ret.isSuccess = [NSnum integerValue];
     return ret;
@@ -384,7 +384,7 @@ filename:(NSString*)filename{
         MyCourse *myCourse = [[MyCourse alloc] init];
         [myCourse setCourses:allMyCourse];
         SysbsModel *model = [SysbsModel getSysbsModel];
-        [model setMyCourse:myCourse];
+        [model setCourses:myCourse];
         //获取课程数据
     }else{
         
@@ -401,7 +401,7 @@ filename:(NSString*)filename{
     [dict setObject:oldPasswd forKey:@"passwd"];
     [dict setObject:newPassword forKey:@"newpasswd"];
     
-    int uid = [[SysbsModel getSysbsModel] getUser].uid;
+    int uid = [SysbsModel getSysbsModel].user.uid;
     NSNumber *num = [NSNumber numberWithInt:uid];
     [dict setObject:num forKey:@"uid"];
     NSDictionary * rs = [self request:urlString dict:dict];
@@ -426,7 +426,7 @@ filename:(NSString*)filename{
     if(rs == nil)return 0;//network fail;
     if(ret == 1){
         SysbsModel *model = [SysbsModel getSysbsModel];
-        MyCourse *myCourse = [model getMyCourse];
+        MyCourse *myCourse = model.myCourse;
         Course *nowCourse = [myCourse findCourse:cid];
         NSArray *arr = [rs objectForKey:@"data"];
         int l = [arr  count];
