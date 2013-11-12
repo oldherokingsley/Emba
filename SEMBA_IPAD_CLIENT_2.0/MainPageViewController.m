@@ -31,6 +31,7 @@
 @synthesize teachLabel;
 @synthesize dateLabel;
 @synthesize courseButton;
+@synthesize courseArray;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -44,9 +45,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    courseArray = [[NSArray alloc]init];
     NSThread *thread = [[NSThread alloc]initWithTarget:self selector:@selector(loadDataSelector:) object:nil];
-    [thread start];
+//    [thread start];
     
     NSLog(@"%f %f %f %f",self.view.frame.origin.x,self.view.frame.origin.y,self.view.frame.size.width,self.view.frame.size.height);
     self.title = @"课程";
@@ -120,11 +121,15 @@
     SysbsModel *sysbsModel = [SysbsModel getSysbsModel];
     User *user = [sysbsModel getUser];
     int myCourseRequest = [dao requestForMyCourse:user.uid];
-    NSArray *courseArray = [[NSArray alloc]init];
+    
     if (myCourseRequest == 1) {
         NSLog(@"myCourse success！");
         MyCourse *myCourse = [sysbsModel getMyCourse];
         courseArray = [myCourse getMyCourse];
+        for (int i = 0 ; i < [courseArray count]; i ++) {
+            Course *course = [courseArray objectAtIndex:i];
+            NSLog(@"coursID %d",course.cid);
+        }
     } else if (myCourseRequest == 0) {
         NSLog(@"网络连接失败！");
     } else if (myCourseRequest == -1){

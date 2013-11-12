@@ -383,6 +383,18 @@
     [theScrollView setScrollEnabled:NO];
 
     [drawNewView setUserInteractionEnabled:YES];
+    int page = [document.pageNumber intValue];
+    
+    NSNumber *key = [NSNumber numberWithInteger:page]; // # key
+    ReaderContentView *newContentView = [contentViews objectForKey:key];
+    newContentView.isNote = YES;
+    //    [newContentView setUserInteractionEnabled:NO];
+    CGRect rect = newContentView.theContainerView.frame;
+    CGRect rect2 = newContentView.frame;
+    NSLog(@"frame %f %f %f %f",rect2.origin.x,rect2.origin.y,rect2.size.width,rect2.size.height);
+    CGPoint point = theScrollView.contentOffset;
+    CGSize size = theScrollView.contentSize;
+    NSLog(@"theScrollView frame %f %f %f %f",point.x,point.y,size.width,size.height);
     
     if (drawingView != nil) {
         [drawingView removeFromSuperview];
@@ -393,13 +405,8 @@
         return;
     }
     
-    int page = [document.pageNumber intValue];
     
-    NSNumber *key = [NSNumber numberWithInteger:page]; // # key
-    ReaderContentView *newContentView = [contentViews objectForKey:key];
-    newContentView.isNote = YES;
-//    [newContentView setUserInteractionEnabled:NO];
-    CGRect rect = newContentView.theContainerView.frame;
+//    drawNewView = [[ACEDrawingView alloc]initWithFrame:CGRectMake(theScrollView.contentOffset.x + rect.origin.x + 4.0f, rect.origin.y + 4.0f, rect.size.width, rect.size.height) :noteImage];
     drawNewView = [[ACEDrawingView alloc]initWithFrame:CGRectMake(theScrollView.contentOffset.x + rect.origin.x + 4.0f, rect.origin.y + 4.0f, rect.size.width, rect.size.height) :noteImage];
     drawNewView.delegate = self;
     drawNewView.lineWidth = self.lineWidthSlider.value;

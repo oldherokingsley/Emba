@@ -18,4 +18,5 @@
 @property (nonatomic, retain) UILabel *teachLabel;
 @property (nonatomic, retain) UILabel *classRoomLabel;
 @property (nonatomic, retain) UIButton *courseButton;
+@property (nonatomic, retain) NSArray *courseArray;
 @end
