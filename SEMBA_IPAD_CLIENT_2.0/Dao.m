@@ -8,6 +8,7 @@
 
 #import "Dao.h"
 #import "SysbsModel.h"
+
 @interface Dao (privatemethod)
 -(id)getResultFromNetwork:(NSString*)url keyAndValue:(NSDictionary*)dict;
 @end
@@ -237,12 +238,15 @@ filename:(NSString*)filename{
     [dict setObject:uid forKey:@"uid"];
     
     NSDictionary *rs = [self request:url dict:dict];
-    
+    if(rs == nil){
+        ret = 0;
+        return ret;
+    }
     NSNumber *number = [rs objectForKey:@"isSuccess"];
-    ret = [number integerValue];
+    ret = [number intValue];
     if([number integerValue] == 1){
         
-    }else if([number integerValue] == -1){
+    }else if([number integerValue] == 0){
         //network fail
         
     }else{
@@ -258,13 +262,16 @@ filename:(NSString*)filename{
     [dict setObject:uid forKey:@"uid"];
     
     NSDictionary *rs = [self request:url dict:dict];
-    
     NSNumber *number = [rs objectForKey:@"isSuccess"];
-    ret = [number integerValue];
+    ret = [number intValue];
+    if(rs  == nil){
+        ret = 0;
+    }
+
     if([number integerValue] == 1){
         //成功放数据
         
-    }else if([number integerValue] == -1){
+    }else if([number integerValue] == 0){
         //network fail
         
     }else{
@@ -284,14 +291,21 @@ filename:(NSString*)filename{
     NSDictionary *rs = [self request:url dict:dict];
     
     NSNumber *NSnum = [rs objectForKey:@"isSuccess"];
-    int ret = [NSnum integerValue];
+    int ret = [NSnum intValue];
+    if(rs  == nil){
+        ret = 0;
+    }
     if(ret == 1){
         SysbsModel *model = [SysbsModel getSysbsModel];
         User *user = [[User alloc]init];
-        //user.uid = ;
+        NSNumber *num = [rs objectForKey:@"uid"];
+        int uid = [num intValue];
+        user.uid = uid;
+        NSString *name = [rs objectForKey:@"username"];
+        user.username = name;
+        [model setUser:user];
     }
     //ret.isSuccess = [NSnum integerValue];
-    NSNumber *num = [rs objectForKey:@"uid"];
     return ret;
 }
 /*

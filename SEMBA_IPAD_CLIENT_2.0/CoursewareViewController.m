@@ -581,7 +581,7 @@ NSString *NOTEFolderName = @"NOTE";
 
 - (void)openCourseware:(id)sender
 {
-    
+ ////
     NSString *phrase = nil; // Document password (for unlocking most encrypted PDF files)
     
     UIButton *button = (UIButton *)sender;
