@@ -366,8 +366,8 @@ filename:(NSString*)filename{
     [dict setObject:uidNum forKey:@"uid"];
     NSDictionary *rs = [self request:urlString dict:dict];
     if(rs == nil)return 0;//network fail;
-    int isSuccess = [(NSNumber *)[rs objectForKey:@"isSuccess" ] intValue];
-    if(isSuccess == 1){
+    ret = [(NSNumber *)[rs objectForKey:@"isSuccess" ] intValue];
+    if(ret == 1){
         
         NSMutableArray *allMyCourse = [[NSMutableArray alloc] init];
         NSArray *arr = [rs objectForKey:@"data"];

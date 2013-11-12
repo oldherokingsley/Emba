@@ -40,4 +40,5 @@
 @property (nonatomic, retain) NSMutableArray *displayArray;
 @property (nonatomic, retain) NSMutableArray *displayButtonArray;
 @property (nonatomic, retain) NSMutableArray *displayProgArray;
+@property (nonatomic) int buttonNumber;
 @end

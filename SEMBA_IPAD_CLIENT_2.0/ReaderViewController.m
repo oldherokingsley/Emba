@@ -398,12 +398,16 @@
     CGSize size = theScrollView.bounds.size;
     
     NSLog(@"theScrollView frame %f %f %f %f",point.x,point.y,size.width,size.height);
-    
+    CGSize beforeSize;
     if (drawingView != nil) {
-        NSLog(@"remove");
+        
+        beforeSize = drawingView.image.size;
+        NSLog(@"remove %f %f",beforeSize.width,beforeSize.height);
         [drawingView removeFromSuperview];
         drawingView = nil;
     }
+    else
+        beforeSize = CGSizeZero;
     if (drawNewView != nil) {
         drawNewView.drawTool = currentToolType;
         return;
@@ -411,8 +415,15 @@
     
     
 //    drawNewView = [[ACEDrawingView alloc]initWithFrame:CGRectMake(theScrollView.contentOffset.x + rect.origin.x + 4.0f, rect.origin.y + 4.0f, rect.size.width, rect.size.height) :noteImage];
-//    UIImage *scaleImage = self scaleImage:noteImage toScale:<#(float)#>
-    drawNewView = [[ACEDrawingView alloc]initWithFrame:CGRectMake(theScrollView.contentOffset.x + rect.origin.x + 4.0f, rect.origin.y + 4.0f - rect2.origin.y - 4.0f, rect.size.width, rect.size.height) :noteImage];
+    CGSize nowSize =rect.size;
+    CGFloat scale = 1;
+    if (beforeSize.width != CGSizeZero.width) {
+        scale = nowSize.width / beforeSize.width;
+    }
+    NSLog(@"scale %f %f %f",scale,nowSize.width,beforeSize.width);
+    NSLog(@"now scale %f maxScale %f",newContentView.zoomScale,newContentView.maximumZoomScale);
+    UIImage *scaleImage = [self scaleImage:noteImage toScale:scale];
+    drawNewView = [[ACEDrawingView alloc]initWithFrame:CGRectMake(theScrollView.contentOffset.x + rect.origin.x + 4.0f - rect2.origin.x - 4.0f, rect.origin.y + 4.0f - rect2.origin.y - 4.0f, rect.size.width, rect.size.height) :scaleImage];
     
     drawNewView.delegate = self;
     drawNewView.lineWidth = self.lineWidthSlider.value;
