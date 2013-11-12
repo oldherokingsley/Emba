@@ -380,6 +380,7 @@ filename:(NSString*)filename{
             [allMyCourse addObject:one];
         }
         MyCourse *myCourse = [[MyCourse alloc] init];
+        [myCourse setCourses:allMyCourse];
         SysbsModel *model = [SysbsModel getSysbsModel];
         [model setMyCourse:myCourse];
         //获取课程数据
