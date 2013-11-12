@@ -96,23 +96,6 @@
     [courseButton setTitle:@"查看相关课件" forState:UIControlStateNormal];
     [self.courseImageView addSubview:courseButton];
     
-    
-    int courseNumber = 7;
-    int rowNum = (courseNumber % 4 == 0) ? (courseNumber / 4) : (courseNumber / 4 + 1);
-    [self.scrollView setContentSize:CGSizeMake(1024, START_Y + 224 + 20 + rowNum * 250)];
-    for (int i = 0;  i < courseNumber; i ++) {
-        NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:@"战略管理",@"courseName",@"谁谁谁",@"teachName",@"2013/11/11",@"date", nil];
-        CourseItem *courseItem = [[CourseItem alloc]initWithFrame:CGRectMake(20 + (i % 4) * 250,START_Y + 224 + 20 + (i / 4) * 250, 235, 235) :dict];
-        UITapGestureRecognizer *singleTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(jumpToCourseware:)];
-        NSDictionary *myDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:i],@"tag", nil];
-        [singleTapGesture setMyDict:myDict];
-        
-        [courseItem addGestureRecognizer:singleTapGesture];
-        [self.scrollView addSubview:courseItem];
-    }
-    
-    
-    
 	// Do any additional setup after loading the view.
 }
 
@@ -124,11 +107,12 @@
     
     if (myCourseRequest == 1) {
         NSLog(@"myCourse success！");
-        MyCourse *myCourse = [sysbsModel getMyCourse];
+        MyCourse *myCourse = sysbsModel.myCourse;
         courseArray = [myCourse getMyCourse];
-        for (int i = 0 ; i < [courseArray count]; i ++) {
+        [self performSelectorOnMainThread:@selector(initCourse) withObject:nil waitUntilDone:YES];
+        for (int i = 0; i < [courseArray count]; i ++) {
             Course *course = [courseArray objectAtIndex:i];
-            NSLog(@"coursID %d",course.cid);
+            [dao requestForFileList:course.cid];
         }
     } else if (myCourseRequest == 0) {
         NSLog(@"网络连接失败！");
@@ -137,6 +121,24 @@
     }
 }
 
+- (void)initCourse{
+    int courseNumber = [courseArray count];
+    int rowNum = (courseNumber % 4 == 0) ? (courseNumber / 4) : (courseNumber / 4 + 1);
+    [self.scrollView setContentSize:CGSizeMake(1024, START_Y + 224 + 20 + rowNum * 250)];
+    for (int i = 0;  i < courseNumber; i ++) {
+        Course *course = [courseArray objectAtIndex:i];
+        
+        NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:course.courseName,@"courseName",course.teacherName,@"teachName",@"2013/11/11",@"date", nil];
+        CourseItem *courseItem = [[CourseItem alloc]initWithFrame:CGRectMake(20 + (i % 4) * 250,START_Y + 224 + 20 + (i / 4) * 250, 235, 235) :dict];
+        UITapGestureRecognizer *singleTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(jumpToCourseware:)];
+        NSDictionary *myDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:course.cid],@"tag", nil];
+        [singleTapGesture setMyDict:myDict];
+        
+        [courseItem addGestureRecognizer:singleTapGesture];
+        [self.scrollView addSubview:courseItem];
+    }
+
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

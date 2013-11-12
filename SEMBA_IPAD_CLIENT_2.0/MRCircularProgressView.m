@@ -191,7 +191,14 @@
 
 - (void)setProgress:(float)progress {
     NSParameterAssert(progress >= 0 && progress <= 1);
-    [self setProgress:progress animated:YES];
+    int beforePro = self.progress;
+    BOOL animate;
+    if (beforePro > progress) {
+        animate = NO;
+    } else{
+        animate = YES;
+    }
+    [self setProgress:progress animated:animate];
     // Stop running animation
     /*
     if (self.displayLink) {
@@ -233,7 +240,10 @@
             [self animateToProgress:progress];
         }
     } else {
-        self.progress = progress;
+//        self.progress = progress;
+        _progress = progress;
+        
+        [self updateProgress];
     }
 }
 

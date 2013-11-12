@@ -30,8 +30,12 @@
 #import "CoursewareItem.h"
 #import "ASIHTTPRequest+category.h"
 #import "MRCircularProgressView.h"
-
+#import "File.h"
+#import "Course.h"
+#import "MyCourse.h"
+#import "SysbsModel.h"
 #define ITEM_NUM_IN_ROW     4
+#define MAX_DOWNLOAD_NUM    3
 #define PROGRESS_TAG 111111
 
 NSString *PDFFolderName = @"PDF";
@@ -55,6 +59,7 @@ NSString *NOTEFolderName = @"NOTE";
 @synthesize originalArray;
 @synthesize displayButtonArray;
 @synthesize displayProgArray;
+@synthesize buttonNumber;
 #pragma mark Constants
 
 #define DEMO_VIEW_CONTROLLER_PUSH FALSE
@@ -64,28 +69,48 @@ NSString *NOTEFolderName = @"NOTE";
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
-//    [self.view setBackgroundColor:[UIColor whiteColor]];
-//    courseFolderName = @"1";
+    
     if (![self downloadQueue]) {
         [self setDownloadQueue:[[ASINetworkQueue alloc]init]];
     }
-    [self.downloadQueue setMaxConcurrentOperationCount:3];
+    [self.downloadQueue setMaxConcurrentOperationCount:MAX_DOWNLOAD_NUM];      //最大同时下载数
     [self.downloadQueue setShowAccurateProgress:YES];        //是否显示详细进度
     
-    self.PDFUrlArray = [[NSMutableArray alloc]initWithObjects:@"http://www1.1kejian.com/edu/UploadFile/2009-6/%D3%EF%CE%C4%CE%E5%C4%EA%BC%B6%CF%C2%B2%E1S%B0%E6%C9%FA%D7%D6%B1%ED.pdf",
-                        @"http://www.miit.gov.cn/n11293472/n11293832/n11293907/n11368223/n14784682.files/n14784429.pdf",
-                        @"http://www.zhb.gov.cn/info/gw/juling/200612/W020061231508366641124.pdf",
-                        @"http://www.sdpc.gov.cn/zcfb/zcfbtz/2012tz/W020120206559410516007.pdf",
-                        @"http://www.cninfo.com.cn/finalpage/2013-08-22/62976562.PDF",
-                        @"http://www.hebeea.edu.cn/hbksy/www/upload/files/2012zhengji/20120725bener.pdf",
-                        @"http://www.mof.gov.cn/zhengwuxinxi/zhengcefabu/201105/P020110526353346857840.pdf",
-                        @"http://www.caac.gov.cn/B1/B4/200612/P020071102351432589230.pdf",
-                        @"http://www.calpower.it/9938.pdf",
-                        @"http://www.iccrom.org/pdf/ICCROM_ICS07_ConservingTextiles02_en.pdf",
-                        @"http://www.jitsuntech.com/EMBAWEB/file/EMBA%E6%88%98%E7%95%A5%E7%AE%A1%E7%90%862013-1.pdf",nil];
-    NSLog(@"aaa");
+    
+    self.courseTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.height, self.view.frame.size.width)];
+    self.courseTableView.delegate = self;
+    self.courseTableView.dataSource = self;
+    [self.courseTableView setSeparatorColor:[UIColor clearColor]];
+    [self.courseTableView setSectionIndexColor:[UIColor clearColor]];
+    [self.courseTableView setAllowsSelection:NO];
+    
+    [self.view addSubview:self.courseTableView];
+    
+    NSThread *thread = [[NSThread alloc]initWithTarget:self selector:@selector(initDatas) object:nil];
+    [thread start];
+    
+	self.view.backgroundColor = [UIColor clearColor]; // Transparent
+
+	self.title = @"课件";
     
     
+    UIBarButtonItem *downloadAllButton = [[UIBarButtonItem alloc]initWithTitle:@"下载全部" style:UIBarButtonItemStyleBordered target:self action:@selector(downloadAllAction:)];
+    self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:downloadAllButton, nil];
+    
+    self.searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(800 - 150, 0, 150, 44)];
+    [self.searchBar setSearchBarStyle:UISearchBarStyleMinimal];
+    [self.searchBar setPlaceholder:@""];
+    self.searchBar.delegate = self;
+    
+    UIView *searchView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 800, 44)];
+    searchView.backgroundColor = [UIColor clearColor];
+    [searchView addSubview:searchBar];
+    
+    self.navigationItem.titleView = searchView;
+}
+
+- (void) initDatas{
+    self.PDFUrlArray = [[NSMutableArray alloc]init];
     self.PDFPathArray = [[NSMutableArray alloc]init];
     self.progressArray = [[NSMutableArray alloc]init];
     self.buttonArray = [[NSMutableArray alloc]init];
@@ -97,12 +122,18 @@ NSString *NOTEFolderName = @"NOTE";
     NSString *PDFPath = [contents stringByAppendingPathComponent:PDFFolderName];
     NSString *PDFCoursePath = [PDFPath stringByAppendingPathComponent:courseFolderName];
     
+    int cid = [courseFolderName intValue];
+    SysbsModel *sysbsModel = [SysbsModel getSysbsModel];
+    MyCourse *myCourse = sysbsModel.myCourse;
+    Course *course = [myCourse findCourse:cid];
     
     [self createDir:PDFCoursePath];
-    for (int i = 0 ; i < PDFUrlArray.count; i ++) {
-        NSString *url = [self.PDFUrlArray objectAtIndex:i];
-        NSString *fileName = [PDFCoursePath stringByAppendingPathComponent:[url lastPathComponent]];
-        NSString *filePath = [NSString stringWithFormat:@"%@",fileName];
+    for (int i = 0 ; i < [course.fileArr count]; i ++) {
+        File *file = [course.fileArr objectAtIndex:i];
+        NSString *url = file.filePath;
+        NSString *fileName = file.fileName;
+        NSString *filePath = [PDFCoursePath stringByAppendingPathComponent:fileName];
+        [self.PDFUrlArray addObject:url];
         [self.PDFPathArray addObject:filePath];
     }
     for (int i = 0 ; i < [self.PDFUrlArray count]; i ++) {
@@ -118,75 +149,16 @@ NSString *NOTEFolderName = @"NOTE";
         else
             [item setPDFFirstImage:nil];
         [originalArray addObject:item];
-        
+        [displayArray addObject:item];
+        [self performSelectorOnMainThread:@selector(displayTableView) withObject:nil waitUntilDone:NO];
     }
-    displayArray = originalArray;
-    
-    self.courseTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.height, self.view.frame.size.width)];
-    self.courseTableView.delegate = self;
-    self.courseTableView.dataSource = self;
-    [self.courseTableView setSeparatorColor:[UIColor clearColor]];
-    [self.courseTableView setSectionIndexColor:[UIColor clearColor]];
-    [self.courseTableView setAllowsSelection:NO];
-    
-    [self.view addSubview:self.courseTableView];
-    
-    
-    
-	self.view.backgroundColor = [UIColor clearColor]; // Transparent
-
-	NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
-
-	NSString *name = [infoDictionary objectForKey:@"CFBundleName"];
-
-	NSString *version= [infoDictionary objectForKey:@"CFBundleVersion"];
-
-	self.title = @"课件";//[NSString stringWithFormat:@"%@ v%@", name, version];
-    
-    
-    UIBarButtonItem *downloadAllButton = [[UIBarButtonItem alloc]initWithTitle:@"下载全部" style:UIBarButtonItemStyleBordered target:self action:@selector(downloadAllAction:)];
-    self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:downloadAllButton, nil];
-    
-    self.searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(800 - 150, 0, 150, 44)];
-//    self.searchBar.backgroundColor = [UIColor whiteColor];
-//    self.searchBar.hidden = YES;
-    [self.searchBar setSearchBarStyle:UISearchBarStyleMinimal];
-//    [self.searchBar setSearchBarStyle:UISearchBarStyleProminent];
-//    [self.searchBar setSearchBarStyle:UISearchBarStyleDefault];
-    [self.searchBar setPlaceholder:@""];
-    self.searchBar.delegate = self;
-    
-    UIView *searchView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 800, 44)];
-    searchView.backgroundColor = [UIColor clearColor];
-    [searchView addSubview:searchBar];
-    
-    self.navigationItem.titleView = searchView;
-//    [self.navigationController.navigationBar addSubview:searchBar];
-    
-/*
-	CGSize viewSize = self.view.bounds.size;
-
-	CGRect labelRect = CGRectMake(0.0f, 0.0f, 80.0f, 32.0f);
-
-	UILabel *tapLabel = [[UILabel alloc] initWithFrame:labelRect];
-
-	tapLabel.text = @"Tap";
-	tapLabel.textColor = [UIColor whiteColor];
-	tapLabel.textAlignment = NSTextAlignmentCenter;
-	tapLabel.backgroundColor = [UIColor clearColor];
-	tapLabel.font = [UIFont systemFontOfSize:24.0f];
-	tapLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-	tapLabel.autoresizingMask |= UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-	tapLabel.center = CGPointMake(viewSize.width / 2.0f, viewSize.height / 2.0f);
-
-	[self.view addSubview:tapLabel]; 
-
-	UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
-	//singleTap.numberOfTouchesRequired = 1; singleTap.numberOfTapsRequired = 1; //singleTap.delegate = self;
-	[self.view addGestureRecognizer:singleTap]; 
-     */
+//    displayArray = originalArray;
+//    [self performSelectorOnMainThread:@selector(displayTableView) withObject:nil waitUntilDone:YES];
 }
 
+- (void)displayTableView{
+    [self.courseTableView reloadData];
+}
 
 
 
@@ -340,6 +312,7 @@ NSString *NOTEFolderName = @"NOTE";
 {
     
     int num;
+    NSLog(@"display count %d",self.displayArray.count);
     if (self.displayArray.count % ITEM_NUM_IN_ROW == 0) {
         num = self.displayArray.count / ITEM_NUM_IN_ROW;
     }
@@ -357,9 +330,10 @@ NSString *NOTEFolderName = @"NOTE";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+//    static NSString *CellIdentifier = @"Cell";
+    NSString *CellIdentifier = [NSString stringWithFormat:@"Cell%d%d",[indexPath section],[indexPath row]]; //以indexPath来唯一确定cell,不使用完全重用机制
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
+//    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     int row = indexPath.row;
 //    NSLog(@"row--------------------------- %d",row);
     int count = ITEM_NUM_IN_ROW;
@@ -393,8 +367,17 @@ NSString *NOTEFolderName = @"NOTE";
             [cell.contentView addSubview:label];
             
         }
+        NSLog(@"button count %d",[self.buttonArray count]);
+        buttonNumber = [self.buttonArray count];
         displayButtonArray = buttonArray;
         displayProgArray = progressArray;
+    } else{
+        for (int i = 0 ; i < count; i ++) {
+            UIButton *button = (UIButton *)[cell viewWithTag:i + 1];
+            MRCircularProgressView *progressView = (MRCircularProgressView *)[button viewWithTag:PROGRESS_TAG];
+            [progressView setHidden:YES];
+//            [progressView setProgress:0];
+        }
     }
     for (int i = 0 ; i < count; i ++) {
         UIButton *button = (UIButton *)[cell viewWithTag:i + 1];
@@ -429,7 +412,7 @@ NSString *NOTEFolderName = @"NOTE";
         }
         if (PDFFirstImage != nil) {
             
-            NSLog(@"PDFFirstImage %d",index);
+//            NSLog(@"PDFFirstImage %d",index);
             [button setImage:PDFFirstImage forState:UIControlStateNormal];
             [button setImageEdgeInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
             
@@ -468,35 +451,14 @@ NSString *NOTEFolderName = @"NOTE";
     [self downloadPDF:index];
     
     [self.downloadQueue go];
-   /*
-    NSURL *url = [NSURL URLWithString:[self.PDFUrlArray objectAtIndex:index]];
-    NSString *filePath = [self.PDFPathArray objectAtIndex:index];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSLog(@"filePath %@",filePath);
-    if ([fileManager fileExistsAtPath:filePath]) {
-        NSLog(@"return");
-        return;
-    }
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    UIProgressView *progress = (UIProgressView *)[button viewWithTag:PROGRESS_TAG];
-    [progress setHidden:NO];
-    NSLog(@"no hidden");
-    [request setTag:index];
-    [request setDelegate:self];
-    [request setDidFinishSelector:@selector(requestDone:)];     //下载完成处理
-    [request setDidFailSelector:@selector(requestWentWrong:)];  //下载出错处理
-    [request setDownloadProgressDelegate:progress];//设置每个任务的进度条信息
-    [[self downloadQueue] addOperation:request];
-    [self.downloadQueue go];
-    */
     
 }
 //下载单个课件
 - (void) downloadPDF:(int)index
 {
-    UIButton *button = (UIButton *)[buttonArray objectAtIndex:index];
+    UIButton *button = (UIButton *)[buttonArray objectAtIndex:index % buttonNumber];
+    
     CoursewareItem *item = [displayArray objectAtIndex:index];
-//    NSString *url1 = [item.PDFURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL *url = [NSURL URLWithString:item.PDFURL];
     NSLog(@"url %@",url);
     
@@ -509,8 +471,18 @@ NSString *NOTEFolderName = @"NOTE";
         return;
     }
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
+
+    ASIHTTPRequest *tempRequest = [[ASIHTTPRequest alloc]init];
+    //判断是否已经存在队列中，
+    for (tempRequest in [self.downloadQueue operations]) {
+        if ([tempRequest.url isEqual:request.url]) {
+            return;
+        }
+    }
+
     MRCircularProgressView *progress = (MRCircularProgressView *)[button viewWithTag:PROGRESS_TAG];
     [progress setHidden:NO];
+    progress.progress = 0;
     
     [request setTag:index];
     [request setDelegate:self];
@@ -519,13 +491,6 @@ NSString *NOTEFolderName = @"NOTE";
     [request setDownloadProgressDelegate:progress];//设置每个任务的进度条信息
     NSDictionary *myDict = [NSDictionary dictionaryWithObjectsAndKeys:item,@"item", nil];
     [request setMyDict:myDict];
-    ASIHTTPRequest *tempRequest = [[ASIHTTPRequest alloc]init];
-    //判断是否已经存在队列中，
-    for (tempRequest in [self.downloadQueue operations]) {
-        if ([tempRequest.url isEqual:request.url]) {
-            return;
-        }
-    }
     [[self downloadQueue] addOperation:request];
     
 }
@@ -533,14 +498,16 @@ NSString *NOTEFolderName = @"NOTE";
 - (void)downloadAllAction:(id)sender
 {
     for (int i = 0; i < [displayArray count]; i ++) {
+//        if ([self.downloadQueue operationCount] < buttonNumber) {
         [self downloadPDF:i];
+//        }
+        
     }
     [self.downloadQueue go];
 }
 
 //下载完成
 - (void) requestDone:(ASIHTTPRequest *)request{
-    
     int index = request.tag;
     NSDictionary *myDict = request.myDict;
     CoursewareItem *item = [myDict objectForKey:@"item"];
@@ -548,23 +515,53 @@ NSString *NOTEFolderName = @"NOTE";
     [request.responseData writeToFile:filePath atomically:YES];
     UIImage *image = [self getFirstPageFromPDF:filePath];
     item.PDFFirstImage = image;
-//    NSLog(@"index %d",index);
-    
     if (index > [displayArray count]) {
         return;
     }
     
-    UIButton *button = [self.buttonArray objectAtIndex:index];
+    UIButton *button = [self.buttonArray objectAtIndex:index % buttonNumber];
     NSDictionary *dict = button.myDict;
     index = [(NSNumber *)[dict objectForKey:@"index"] intValue];
     [button setImage:image forState:UIControlStateNormal];
     [button setImageEdgeInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
     [button removeTarget:nil action:nil forControlEvents:UIControlEventTouchUpInside];
     [button addTarget:self action:@selector(openCourseware:) forControlEvents:UIControlEventTouchUpInside];
-//    UIProgressView *progressView = (UIProgressView *)[button viewWithTag:PROGRESS_TAG];
     MRCircularProgressView *progressView = (MRCircularProgressView *)[button viewWithTag:PROGRESS_TAG];
     [progressView setHidden:YES];
 }
+
+//下载后加载图片
+- (void) loadImageThred:(NSDictionary *)dict{
+    ASIHTTPRequest *request = (ASIHTTPRequest *)[dict objectForKey:@"request"];
+    
+    NSDictionary *myDict = request.myDict;
+    CoursewareItem *item = [myDict objectForKey:@"item"];
+    NSString *filePath = item.PDFPath;
+    [request.responseData writeToFile:filePath atomically:YES];
+    UIImage *image = [self getFirstPageFromPDF:filePath];
+    item.PDFFirstImage = image;
+    NSDictionary *newDict = [NSDictionary dictionaryWithObjectsAndKeys:request,@"request",image,@"image", nil];
+    [self performSelectorOnMainThread:@selector(displayImage:) withObject:newDict waitUntilDone:YES];
+}
+
+//加载完图片显示出来
+- (void) displayImage:(NSDictionary *)dict{
+    ASIHTTPRequest *request = (ASIHTTPRequest *)[dict objectForKey:@"request"];
+    UIImage *image = (UIImage *)[dict objectForKey:@"image"];
+    int index = request.tag;
+    UIButton *button = [self.buttonArray objectAtIndex:index % buttonNumber];
+    NSDictionary *myDict = button.myDict;
+    index = [(NSNumber *)[myDict objectForKey:@"index"] intValue];
+    [button setImage:image forState:UIControlStateNormal];
+    [button setImageEdgeInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
+    [button removeTarget:nil action:nil forControlEvents:UIControlEventTouchUpInside];
+    [button addTarget:self action:@selector(openCourseware:) forControlEvents:UIControlEventTouchUpInside];
+    MRCircularProgressView *progressView = (MRCircularProgressView *)[button viewWithTag:PROGRESS_TAG];
+    [progressView setHidden:YES];
+    
+}
+
+
 //下载出错处理
 - (void) requestWentWrong:(ASIHTTPRequest *)request{
     NSLog(@"download error : %@",request.error );
@@ -572,7 +569,7 @@ NSString *NOTEFolderName = @"NOTE";
     [alertView show];
     
     int index = request.tag;
-    UIButton *button = [self.buttonArray objectAtIndex:index];
+    UIButton *button = [self.buttonArray objectAtIndex:index % buttonNumber];
 //    UIProgressView *progressView = (UIProgressView *)[button viewWithTag:PROGRESS_TAG];
     MRCircularProgressView *progressView = (MRCircularProgressView *)[button viewWithTag:PROGRESS_TAG];
     [progressView setHidden:YES];
@@ -695,7 +692,7 @@ NSString *NOTEFolderName = @"NOTE";
         self.displayButtonArray = [NSMutableArray array];
         for (int i = 0 ; i < [originalArray count];i ++) {
             CoursewareItem *item = [originalArray objectAtIndex:i];
-            UIButton *button = [buttonArray objectAtIndex:i];
+            UIButton *button = [buttonArray objectAtIndex:i % buttonNumber];
             if ([item.PDFName rangeOfString:searchText options:NSCaseInsensitiveSearch].length >0 ) {
                 [self.displayArray addObject:item];
                 [self.displayButtonArray addObject:button];

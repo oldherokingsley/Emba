@@ -191,8 +191,11 @@
 		[pageNumberView addSubview:pageNumberLabel]; // Add label view
 
 		[self addSubview:pageNumberView]; // Add page numbers display view
-
-		trackControl = [[ReaderTrackControl alloc] initWithFrame:self.bounds]; // Track control view
+        
+        CGRect rect = self.bounds;
+//        rect.origin.x += 150;
+//        rect.size.width -= 300;
+		trackControl = [[ReaderTrackControl alloc] initWithFrame:rect]; // Track control view
 
 		[trackControl addTarget:self action:@selector(trackViewTouchDown:) forControlEvents:UIControlEventTouchDown];
 		[trackControl addTarget:self action:@selector(trackViewValueChanged:) forControlEvents:UIControlEventValueChanged];
@@ -287,9 +290,16 @@
 
 			ReaderThumbRequest *thumbRequest = [ReaderThumbRequest newForView:smallThumbView fileURL:fileURL password:phrase guid:guid page:page size:size];
 
-			UIImage *image = [[ReaderThumbCache sharedInstance] thumbRequest:thumbRequest priority:NO]; // Request the thumb
-
-			if ([image isKindOfClass:[UIImage class]]) [smallThumbView showImage:image]; // Use thumb image from cache
+//			UIImage *image = [[ReaderThumbCache sharedInstance] thumbRequest:thumbRequest priority:NO]; // Request the thumb
+            UIImage *image = [UIImage imageNamed:@"ppt_indicator_purple"];
+            
+			if ([image isKindOfClass:[UIImage class]])
+            {
+                NSLog(@"show image");
+                [smallThumbView showImage:image]; // Use thumb image from cache
+            } else{
+                NSLog(@"no show");
+            }
 
 			[trackControl addSubview:smallThumbView]; [miniThumbViews setObject:smallThumbView forKey:key];
 		}
@@ -564,7 +574,8 @@
 
 		UIColor *background = [UIColor colorWithWhite:0.8f alpha:value];
 
-		self.backgroundColor = background; imageView.backgroundColor = background;
+		self.backgroundColor = [UIColor clearColor];
+        imageView.backgroundColor = [UIColor clearColor];
 
 		imageView.layer.borderColor = [UIColor colorWithWhite:0.4f alpha:0.6f].CGColor;
 

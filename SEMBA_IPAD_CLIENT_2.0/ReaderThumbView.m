@@ -49,8 +49,13 @@
 		self.autoresizingMask = UIViewAutoresizingNone;
 		self.backgroundColor = [UIColor clearColor];
         CGRect rect = self.bounds;
+        rect.origin.x = self.bounds.size.width / 2 - 4;
+        rect.origin.y = self.bounds.size.height / 2 - 4;
+        rect.size.width = 8;
+        rect.size.height = 8;
 //        rect.size.height -= 100;//记号
 //        rect = CGRectMake(0, 0, 100, 100);
+        [imageView setBackgroundColor:[UIColor clearColor]];
 		imageView = [[UIImageView alloc] initWithFrame:rect];
         NSLog(@"初始化");
 //		imageView.autoresizesSubviews = NO;
