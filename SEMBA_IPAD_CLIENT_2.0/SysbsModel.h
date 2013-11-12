@@ -24,7 +24,7 @@
 -(User*)getUser;
 -(void)setUser:(User*)tempUser;
 -(MyCourse*)getMyCourse;
--(void)setMyCourse:(MyCourse*)tempMyCourse;
+-(void)setCourses:(MyCourse*)tempMyCourse;
 
 @end
 

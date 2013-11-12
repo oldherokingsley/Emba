@@ -12,9 +12,8 @@
 @implementation SysbsModel
 
 static SysbsModel* sharedModel = nil;
-User *user;
-MyCourse *myCourse;
 
+@synthesize user,myCourse;
 
 +(SysbsModel*)getSysbsModel{
     if(sharedModel == nil){
@@ -23,31 +22,33 @@ MyCourse *myCourse;
     }
     return sharedModel;
 }
-
+/*
 -(User*)getUser{
     if(sharedModel == nil ){
         NSLog(@"空的");
         return nil;
     }
-    return sharedModel.user;
+    return self.user;
 }
 
 -(void)setUser:(User*)tempUser{
     if(sharedModel == nil){
         return ;
     }
+    NSLog(@"tempuid%d",tempUser.uid);
     self.user = tempUser;
 }
-
--(MyCourse*)getMyCourse{
+*/
+-(MyCourse*)getCourses{
     if(sharedModel == nil)return nil;
     return self.myCourse;
 }
 
--(void)setMyCourse:(MyCourse *)tempMyCourse{
+-(void)setCourses:(MyCourse *)tempMyCourse{
     if(sharedModel == nil){
         return;
     }
     self.myCourse = tempMyCourse;
 }
+ 
 @end
