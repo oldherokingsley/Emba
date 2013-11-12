@@ -120,9 +120,11 @@
     SysbsModel *sysbsModel = [SysbsModel getSysbsModel];
     User *user = [sysbsModel getUser];
     int myCourseRequest = [dao requestForMyCourse:user.uid];
+    NSArray *courseArray = [[NSArray alloc]init];
     if (myCourseRequest == 1) {
         NSLog(@"myCourse success！");
-        
+        MyCourse *myCourse = [sysbsModel getMyCourse];
+        courseArray = [myCourse getMyCourse];
     } else if (myCourseRequest == 0) {
         NSLog(@"网络连接失败！");
     } else if (myCourseRequest == -1){

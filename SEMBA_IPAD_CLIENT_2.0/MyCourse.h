@@ -15,4 +15,5 @@
 -(void) addCourse:(Course *)course;
 -(void) setCourses:(NSMutableArray *)arr;
 -(NSArray*)getMyCourse;
+-(Course*)findCourse:(int)cid;
 @end
