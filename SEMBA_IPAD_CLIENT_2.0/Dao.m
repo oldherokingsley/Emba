@@ -396,9 +396,8 @@ filename:(NSString*)filename{
     NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
     [dict setObject:oldPasswd forKey:@"passwd"];
     [dict setObject:newPassword forKey:@"newpasswd"];
-    //push
-    int value;
-    int uid = ysbsModel getSysbsModel] getUser].uid;
+    
+    int uid = [[SysbsModel getSysbsModel] getUser].uid;
     NSNumber *num = [NSNumber numberWithInt:uid];
     [dict setObject:num forKey:@"uid"];
     NSDictionary * rs = [self request:urlString dict:dict];
