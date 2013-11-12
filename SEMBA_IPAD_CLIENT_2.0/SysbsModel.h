@@ -17,6 +17,9 @@
 
 @interface SysbsModel : NSObject
 
+@property (nonatomic,strong)User *user;
+@property (nonatomic,strong)MyCourse *myCourse;
+
 +(SysbsModel*)getSysbsModel;
 -(User*)getUser;
 -(void)setUser:(User*)tempUser;

@@ -301,9 +301,11 @@ filename:(NSString*)filename{
         NSNumber *num = [rs objectForKey:@"uid"];
         int uid = [num intValue];
         user.uid = uid;
+        NSLog(@"uid%d",uid);
         NSString *name = [rs objectForKey:@"username"];
         user.username = name;
         [model setUser:user];
+        NSLog(@"modeluid%d",[model getUser].uid);
     }
     //ret.isSuccess = [NSnum integerValue];
     return ret;

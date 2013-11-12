@@ -390,10 +390,12 @@
     newContentView.isNote = YES;
     //    [newContentView setUserInteractionEnabled:NO];
     CGRect rect = newContentView.theContainerView.frame;
-    CGRect rect2 = newContentView.frame;
-    NSLog(@"frame %f %f %f %f",rect2.origin.x,rect2.origin.y,rect2.size.width,rect2.size.height);
-    CGPoint point = theScrollView.contentOffset;
-    CGSize size = theScrollView.contentSize;
+    CGRect rect2 = newContentView.bounds;
+    
+    NSLog(@"frame %f %f %f %f",rect.origin.x,rect.origin.y,rect.size.width,rect.size.height);
+    CGPoint point = theScrollView.bounds.origin;
+    CGSize size = theScrollView.bounds.size;
+    
     NSLog(@"theScrollView frame %f %f %f %f",point.x,point.y,size.width,size.height);
     
     if (drawingView != nil) {

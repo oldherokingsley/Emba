@@ -77,7 +77,7 @@ BOOL shouldLogin;
         return;
     }
     Dao *dao = [Dao sharedDao];
-    int loginResult = [dao requestForLogin:accountText password:passwordText];
+    int loginResult = 1;//[dao requestForLogin:accountText password:passwordText];
     if (loginResult == 1) {
 //        [self jumpToMainPage];
         NSLog(@"login success");
