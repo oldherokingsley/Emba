@@ -44,6 +44,17 @@
     return self.courseArr;
 }
 
-
+-(Course*)findCourse:(int)cid{
+    Course *ret = nil;
+    int l = [self.courseArr count];
+    for(int i = 0 ; i < l; ++i){
+        Course *temp = [self.courseArr objectAtIndex:i];
+        if(temp.cid == cid){
+            ret = temp;
+            break;
+        }
+    }
+    return ret;
+}
 
 @end

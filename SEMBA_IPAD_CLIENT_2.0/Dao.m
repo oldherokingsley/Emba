@@ -366,7 +366,7 @@ filename:(NSString*)filename{
     if(rs == nil)return 0;//network fail;
     int isSuccess = [(NSNumber *)[rs objectForKey:@"isSuccess" ] intValue];
     if(isSuccess == 1){
-        /*
+        
         NSMutableArray *allMyCourse = [[NSMutableArray alloc] init];
         NSArray *arr = [rs objectForKey:@"data"];
         int l = [arr count];
@@ -379,9 +379,10 @@ filename:(NSString*)filename{
             one.teacherName = [onedict objectForKey:@"teacher"];
             [allMyCourse addObject:one];
         }
-        */
+        MyCourse *myCourse = [[MyCourse alloc] init];
+        SysbsModel *model = [SysbsModel getSysbsModel];
+        [model setMyCourse:myCourse];
         //获取课程数据
-        
     }else{
         
     }
@@ -411,30 +412,19 @@ filename:(NSString*)filename{
     id ret;
     return ret;
 }
-
--(BOOL)requestForFileList:(int)cid{
-    id ret;
+*/
+-(int)requestForFileList:(int)cid{
+    int ret;
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     [dict setObject:[NSNumber numberWithInt:cid] forKey:@"cid"];
     NSString *urlString = [NSString stringWithFormat:@"%@%@",baseUrl,filedirUrl];
     NSDictionary * rs = [self request:urlString dict:dict];
-    int isSuccess = [(NSNumber*) [rs objectForKey:@"isSuccess"] integerValue];
-    if(isSuccess > 0){
-        
-        //Course
-        //MyCourse *myCourse = [MyCourse sharedMyCourse];
-        //int size = [myCourse.courseArr count];
-        Course *now = nil;
-        for(int i = 0 ; i < size;++i){
-           // Course *temp = [myCourse.courseArr objectAtIndex:i];
-            if(temp.cid == cid){
-                now = temp;
-                break;
-            }
-        }
-        if(now == nil){
-            return false;
-        }
+    ret = [(NSNumber*) [rs objectForKey:@"isSuccess"] integerValue];
+    if(rs == nil)return 0;//network fail;
+    if(ret == 1){
+        SysbsModel *model = [SysbsModel getSysbsModel];
+        MyCourse *myCourse = [model getMyCourse];
+        Course *nowCourse = [myCourse findCourse:cid];
         NSArray *arr = [rs objectForKey:@"data"];
         int l = [arr  count];
         for (int i = 0 ; i < l; ++i) {
@@ -445,17 +435,17 @@ filename:(NSString*)filename{
             one.date = [onedict objectForKey:@"date"];
             NSLog(@"filepath%@",one.filePath);
 //            NSLog(@"now%d",now.cid);
-            one.course = now;
-            [now.fileArr addObject:one];
+            one.course = nowCourse;
+            //这里可能还需要重构。
+            [nowCourse.fileArr addObject:one];
 //            NSLog(@"arrNum%d",[now.fileArr count]);
         }
-        return true;
     }else{
-        return false;
+        
     }
-    //return ret;
+    return ret;
 }
-
+/*
 -(RecommendBookResult*)requestForRecommend:(int)cid{
     //id ret;
     NSString *urlString = [NSString stringWithFormat:@"%@%@",baseUrl,recommendUrl];

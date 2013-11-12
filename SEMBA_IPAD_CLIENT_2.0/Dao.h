@@ -9,8 +9,22 @@
 #import <Foundation/Foundation.h>
 #import "Reachability.h"
 
-//直接引用SysbsModel作为model，调用sysbsmodel下方法访问属性。
-
+/**
+ ！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+ ！                                                          ！
+ ！                                                          ！
+ ！                                                          ！
+ ！                                                          ！
+ ！                                                          ！
+ ！                                                          ！
+    直接引用SysbsModel作为model，调用sysbsmodel下方法访问属性。
+ 
+ ！                                                          ！
+ ！                                                          ！
+ ！                                                          ！
+ ！                                                          ！
+ ！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+ **/
 //坑爹写法。。。
 #define LOGIN_PASSWORD_ERROR  -1
 #define LOGIN_NETWORK_ERROR  0
