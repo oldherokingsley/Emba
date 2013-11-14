@@ -557,6 +557,7 @@ NSString *NOTEFolderName = @"NOTE";
     [button removeTarget:nil action:nil forControlEvents:UIControlEventTouchUpInside];
     [button addTarget:self action:@selector(openCourseware:) forControlEvents:UIControlEventTouchUpInside];
     MRCircularProgressView *progressView = (MRCircularProgressView *)[button viewWithTag:PROGRESS_TAG];
+
     [progressView setHidden:YES];
     
 }

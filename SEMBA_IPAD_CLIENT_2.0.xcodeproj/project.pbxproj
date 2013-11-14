@@ -78,6 +78,7 @@
 		9C0203B1183478DE00060D96 /* ppt_toolbox_red@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C020375183478DE00060D96 /* ppt_toolbox_red@2X.png */; };
 		9C0203B2183478DE00060D96 /* ppt_toolbox_yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C020376183478DE00060D96 /* ppt_toolbox_yellow.png */; };
 		9C0203B3183478DE00060D96 /* ppt_toolbox_yellow@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C020377183478DE00060D96 /* ppt_toolbox_yellow@2X.png */; };
+		9C0203B918347CC400060D96 /* ReaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0203B818347CC400060D96 /* ReaderViewController.m */; };
 		9C0F8AB0181F5BC100FEFABA /* CoursewareItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0F8AAF181F5BC100FEFABA /* CoursewareItem.m */; };
 		9C0F8AB3181FB88C00FEFABA /* CoursewareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0F8AB2181FB88C00FEFABA /* CoursewareViewController.m */; };
 		9C0F8AB618210C8A00FEFABA /* ASIHTTPRequest+category.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0F8AB518210C8A00FEFABA /* ASIHTTPRequest+category.m */; };
@@ -253,6 +254,7 @@
 		9C020375183478DE00060D96 /* ppt_toolbox_red@2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ppt_toolbox_red@2X.png"; sourceTree = "<group>"; };
 		9C020376183478DE00060D96 /* ppt_toolbox_yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ppt_toolbox_yellow.png; sourceTree = "<group>"; };
 		9C020377183478DE00060D96 /* ppt_toolbox_yellow@2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ppt_toolbox_yellow@2X.png"; sourceTree = "<group>"; };
+		9C0203B818347CC400060D96 /* ReaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderViewController.m; sourceTree = "<group>"; };
 		9C0F8AAE181F5BC100FEFABA /* CoursewareItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoursewareItem.h; sourceTree = "<group>"; };
 		9C0F8AAF181F5BC100FEFABA /* CoursewareItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoursewareItem.m; sourceTree = "<group>"; };
 		9C0F8AB1181FB88C00FEFABA /* CoursewareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoursewareViewController.h; sourceTree = "<group>"; };
@@ -876,6 +878,7 @@
 				9C0F8AB1181FB88C00FEFABA /* CoursewareViewController.h */,
 				9C0F8AB2181FB88C00FEFABA /* CoursewareViewController.m */,
 				9C51BF95182CDE0E0071A1D1 /* ReaderViewController.h */,
+				9C0203B818347CC400060D96 /* ReaderViewController.m */,
 				9C51BF86182B40D60071A1D1 /* CourseMarkViewController.h */,
 				9C51BF87182B40D60071A1D1 /* CourseMarkViewController.m */,
 				9C0F8AAE181F5BC100FEFABA /* CoursewareItem.h */,
@@ -1113,6 +1116,7 @@
 				9CBD163D181E699D00075BDF /* ASIInputStream.m in Sources */,
 				2BB8154B1830AE0200736512 /* SysbsModel.m in Sources */,
 				9CBD15D8181E68CA00075BDF /* UIButton+associate.m in Sources */,
+				9C0203B918347CC400060D96 /* ReaderViewController.m in Sources */,
 				2BB8154C1830AE0200736512 /* User.m in Sources */,
 				9C51BF8E182C97DB0071A1D1 /* NoteToolDrawerBar.m in Sources */,
 				9CBD163F181E699D00075BDF /* ASIHTTPRequest.m in Sources */,
