@@ -233,7 +233,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 //    return 280;
-    return imageRect.size.height + 40;
+    return imageRect.size.height + 60;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -246,7 +246,6 @@
         for (int i = 0; i < ITEM_NUM_IN_ROW; i ++) {
             UIView *view = [[UIView alloc]initWithFrame:CGRectMake(i * 256, 0, 256, 280)];
             [view setHidden:YES];
-            [view setBackgroundColor:[UIColor yellowColor]];
             [view setTag:i + 1];
             [cell addSubview:view];
             
@@ -254,17 +253,23 @@
             [button setTag:BUTTON_TAG];
             [view addSubview:button];
             
-            UITextField *markText = [[UITextField alloc]initWithFrame:CGRectMake(imageRect.origin.x, 8 + imageRect.size.height, imageRect.size.width, 40)];
-            [markText setTextColor:[UIColor redColor]];
+            UITextView *markText = [[UITextView alloc]initWithFrame:CGRectMake(imageRect.origin.x, 8 + imageRect.size.height, imageRect.size.width, 40)];
+            [markText setAllowsEditingTextAttributes:NO];
+            [markText setTextColor:[UIColor colorWithRed:85.0 / 255 green:85.0 / 255 blue:85.0 / 255 alpha:1.0]];
             [markText setTag:TEXT_FIELD_TAG];
             [markText setTextAlignment:NSTextAlignmentCenter];
             [view addSubview:markText];
             
-            UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeContactAdd];
-            deleteButton.frame = CGRectMake(256 - 70, 20, 50, 50);
+            UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            [deleteButton setImage:[UIImage imageNamed:@"bookmark_edit_delete"] forState:UIControlStateNormal];
+            deleteButton.frame = CGRectMake(256 - 30, 0, 28, 28);
             [deleteButton setTag:CLOSE_TAG];
             [deleteButton setHidden:YES];
             [view addSubview:deleteButton];
+            
+            UIImageView *markImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"bookmark_tag"]];
+            [markImage setFrame:CGRectMake(20, 4, markImage.frame.size.width, markImage.frame.size.height)];
+            [view addSubview:markImage];
                                      
             
             
@@ -274,7 +279,8 @@
         UIView *view = [cell viewWithTag:i + 1];
 //        UIImageView *imageView = (UIImageView *)[view viewWithTag:0];
         UIButton *button = (UIButton *)[view viewWithTag:BUTTON_TAG];
-        UITextField *markText = (UITextField *)[view viewWithTag:TEXT_FIELD_TAG];
+        UITextView *markText = (UITextView *)[view viewWithTag:TEXT_FIELD_TAG];
+        [markText setFont:[UIFont systemFontOfSize:15]];
         UIButton *deleteButton = (UIButton *)[view viewWithTag:CLOSE_TAG];
         int index = row * ITEM_NUM_IN_ROW + i;
         if (index >= [displayImageArray count]) {
@@ -287,13 +293,18 @@
         [deleteButton addTarget:self action:@selector(deleteAction:) forControlEvents:UIControlEventTouchUpInside];
         if (isEdit) {
             [deleteButton setHidden:NO];
+            [markText setEditable:YES];
+            
         } else{
             [deleteButton setHidden:YES];
+            [markText setEditable:NO];
         }
         
         UIImage *image = [displayImageArray objectAtIndex:index];
 //        [imageView setImage:image];
         [button setImage:image forState:UIControlStateNormal];
+        [button setBackgroundImage:[UIImage imageNamed:@"bookmark_item_bg"] forState:UIControlStateNormal];
+        [button setImageEdgeInsets:UIEdgeInsetsMake(2, 2, 2, 2)];
         [button setMyDict:dict];
         if (!isEdit) {
             [button addTarget:self action:@selector(gotoPageAction:) forControlEvents:UIControlEventTouchUpInside];

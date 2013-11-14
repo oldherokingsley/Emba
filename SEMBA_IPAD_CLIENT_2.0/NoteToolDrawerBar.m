@@ -9,10 +9,10 @@
 #import "NoteToolDrawerBar.h"
 
 #define BUTTON_X    0.0f
-#define BUTTON_Y    40.0f
-#define BUTTON_WIDTH    80.0f
-#define BUTTON_HEIGHT   60.0f
-#define BUTTON_SPACE    20.0f
+#define BUTTON_Y    52.0f
+#define BUTTON_WIDTH    95.0f
+#define BUTTON_HEIGHT   51.0f
+#define BUTTON_SPACE    30.0f
 
 
 @implementation NoteToolDrawerBar
@@ -23,6 +23,8 @@
 @synthesize parentRect;
 @synthesize arrowIV;
 @synthesize buttonArray;
+@synthesize imageNameNArray;
+@synthesize imageNameHArray;
 
 - (id)initWithFrame:(CGRect)frame parentView:(UIView *)parentview
 {
@@ -30,13 +32,14 @@
     if (self) {
         // Initialization code
         //初始化抽屉
-        [self setBackgroundColor:[UIColor redColor]];
         self.parentView = parentview;
         parentRect = parentView.frame;
         parentRect.size.width = parentView.frame.size.height;
         parentRect.size.height = parentView.frame.size.width;
         
-        
+        UIImageView *background = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"ppt_toolbox_bg"]];
+        [background setFrame:CGRectMake(0, 0, background.frame.size.width, background.frame.size.height)];
+        [self addSubview:background];
         
         UIView *touchView = [[UIView alloc]initWithFrame:CGRectMake(frame.size.width - 40, 0, 40, frame.size.height)];
         [touchView setBackgroundColor:[UIColor yellowColor]];
@@ -53,7 +56,7 @@
         [arrowIV setBackgroundColor:[UIColor blueColor]];
         [touchView addSubview:arrowIV];
         
-        closePoint = CGPointMake(0 - 40, parentRect.size.height / 2);
+        closePoint = CGPointMake(0 - 30, parentRect.size.height / 2);
         openPoint = CGPointMake(frame.size.width / 2, parentRect.size.height / 2);
         self.center = closePoint;
         
@@ -64,11 +67,14 @@
 }
 
 - (void)initButton{
-    CGFloat topButtonY = BUTTON_Y;
+    imageNameNArray = [[NSMutableArray alloc]initWithObjects:@"ppt_toolbox_colorpicker_bg",@"ppt_toolbox_pencil",@"ppt_toolbox_brush",@"ppt_toolbox_eraser",@"ppt_toolbox_camera",@"ppt_toolbox_recorder", nil];
+    imageNameHArray = [[NSMutableArray alloc]initWithObjects:@"ppt_toolbox_colorpicker_bg_active",@"ppt_toolbox_pencil_active",@"ppt_toolbox_brush_active",@"ppt_toolbox_eraser_active",@"ppt_toolbox_camera_active",@"ppt_toolbox_recorder_active", nil];    CGFloat topButtonY = BUTTON_Y;
     buttonArray = [[NSMutableArray alloc]init];
     for (int i = 0 ; i < 6; i ++) {
         UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(BUTTON_X, topButtonY, BUTTON_WIDTH, BUTTON_HEIGHT)];
-        [button setBackgroundColor:[UIColor grayColor]];
+//        [button setBackgroundColor:[UIColor grayColor]];
+        UIImage *image = [UIImage imageNamed:[imageNameNArray objectAtIndex:i]];
+        [button setBackgroundImage:image forState:UIControlStateNormal];
         [button setTag:i + 1];
         [button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
         [buttonArray addObject:button];

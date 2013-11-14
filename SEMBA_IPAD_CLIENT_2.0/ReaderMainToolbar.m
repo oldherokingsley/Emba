@@ -39,16 +39,16 @@
 
 #pragma mark Constants
 
-#define BUTTON_X 8.0f
-#define BUTTON_Y 8.0f
+#define BUTTON_X 5.0f
+#define BUTTON_Y 28.0f
 #define BUTTON_SPACE 8.0f
 #define BUTTON_HEIGHT 30.0f
 
 #define DONE_BUTTON_WIDTH 56.0f
-#define THUMBS_BUTTON_WIDTH 40.0f
+#define THUMBS_BUTTON_WIDTH 120.0f
 #define PRINT_BUTTON_WIDTH 40.0f
 #define EMAIL_BUTTON_WIDTH 40.0f
-#define MARK_BUTTON_WIDTH 40.0f
+#define MARK_BUTTON_WIDTH 120.0f
 
 #define TITLE_HEIGHT 28.0f
 
@@ -69,6 +69,9 @@
 
 	if ((self = [super initWithFrame:frame]))
 	{
+        UIImage *image = [UIImage imageNamed:@"nav_bar_bg.png"];
+        UIImageView *bg = [[UIImageView alloc]initWithImage:image];
+        [self addSubview:bg];
 		CGFloat viewWidth = self.bounds.size.width;
 
 		UIImage *imageH = [UIImage imageNamed:@"Reader-Button-H"];
@@ -77,77 +80,91 @@
 		UIImage *buttonH = [imageH stretchableImageWithLeftCapWidth:5 topCapHeight:0];
 		UIImage *buttonN = [imageN stretchableImageWithLeftCapWidth:5 topCapHeight:0];
 
-		CGFloat titleX = BUTTON_X; CGFloat titleWidth = (viewWidth - (titleX + titleX));
+		CGFloat titleX = BUTTON_X;
+        CGFloat titleWidth = (viewWidth - (titleX + titleX));
 
 		CGFloat leftButtonX = BUTTON_X; // Left button start X position
 
-#if (READER_STANDALONE == FALSE) // Option
+//#if (READER_STANDALONE == FALSE) // Option
 
-		UIButton *doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
-
+		UIButton *doneButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    
 		doneButton.frame = CGRectMake(leftButtonX, BUTTON_Y, DONE_BUTTON_WIDTH, BUTTON_HEIGHT);
-		[doneButton setTitle:NSLocalizedString(@"Done", @"button") forState:UIControlStateNormal];
-		[doneButton setTitleColor:[UIColor colorWithWhite:0.0f alpha:1.0f] forState:UIControlStateNormal];
-		[doneButton setTitleColor:[UIColor colorWithWhite:1.0f alpha:1.0f] forState:UIControlStateHighlighted];
+		[doneButton setTitle:@"返回" forState:UIControlStateNormal];
+        [doneButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 0)];
+        [doneButton setTintColor:[UIColor redColor]];
+        [doneButton.titleLabel setFont:[UIFont systemFontOfSize:17]];
+        [doneButton setImage:[UIImage imageNamed:@"ppt_nav_back"] forState:UIControlStateNormal];
+        [doneButton setImageEdgeInsets:UIEdgeInsetsMake(4, 2, 4, 2)];
+		[doneButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
 		[doneButton addTarget:self action:@selector(doneButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-		[doneButton setBackgroundImage:buttonH forState:UIControlStateHighlighted];
-		[doneButton setBackgroundImage:buttonN forState:UIControlStateNormal];
-		doneButton.titleLabel.font = [UIFont systemFontOfSize:14.0f];
 		doneButton.autoresizingMask = UIViewAutoresizingNone;
 		doneButton.exclusiveTouch = YES;
 
-		[self addSubview:doneButton]; leftButtonX += (DONE_BUTTON_WIDTH + BUTTON_SPACE);
+		[self addSubview:doneButton];
+        leftButtonX += (DONE_BUTTON_WIDTH + BUTTON_SPACE);
 
-		titleX += (DONE_BUTTON_WIDTH + BUTTON_SPACE); titleWidth -= (DONE_BUTTON_WIDTH + BUTTON_SPACE);
+		titleX += (DONE_BUTTON_WIDTH + BUTTON_SPACE);
+        titleWidth -= (DONE_BUTTON_WIDTH + BUTTON_SPACE);
 
-#endif // end of READER_STANDALONE Option
+//#endif // end of READER_STANDALONE Option
 
-#if (READER_ENABLE_THUMBS == TRUE) // Option
 
-		UIButton *thumbsButton = [UIButton buttonWithType:UIButtonTypeCustom];
 
-		thumbsButton.frame = CGRectMake(leftButtonX, BUTTON_Y, THUMBS_BUTTON_WIDTH, BUTTON_HEIGHT);
-		[thumbsButton setImage:[UIImage imageNamed:@"Reader-Thumbs"] forState:UIControlStateNormal];
+        CGFloat rightButtonX = viewWidth; // Right button start X position
+        rightButtonX -= (THUMBS_BUTTON_WIDTH + BUTTON_SPACE);
+        NSLog(@"rightX %f",rightButtonX);
+        
+		UIButton *thumbsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+
+		thumbsButton.frame = CGRectMake(rightButtonX, BUTTON_Y, THUMBS_BUTTON_WIDTH, BUTTON_HEIGHT);
+		[thumbsButton setImage:[UIImage imageNamed:@"ppt_nav_bookmarklist"] forState:UIControlStateNormal];
+        [thumbsButton setImageEdgeInsets:UIEdgeInsetsMake(7, 0, 7,0)];
+        [thumbsButton setTintColor:[UIColor redColor]];
+        [thumbsButton setTitle:@"查看书签" forState:UIControlStateNormal];
+        [thumbsButton.titleLabel setFont:[UIFont systemFontOfSize:17]];
+        [thumbsButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+        [thumbsButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 16, 0, 0)];
 		[thumbsButton addTarget:self action:@selector(thumbsButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-		[thumbsButton setBackgroundImage:buttonH forState:UIControlStateHighlighted];
-		[thumbsButton setBackgroundImage:buttonN forState:UIControlStateNormal];
-		thumbsButton.autoresizingMask = UIViewAutoresizingNone;
+//		[thumbsButton setBackgroundImage:buttonH forState:UIControlStateHighlighted];
+//		[thumbsButton setBackgroundImage:buttonN forState:UIControlStateNormal];
+		thumbsButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 		thumbsButton.exclusiveTouch = YES;
 
 		[self addSubview:thumbsButton]; //leftButtonX += (THUMBS_BUTTON_WIDTH + BUTTON_SPACE);
 
-		titleX += (THUMBS_BUTTON_WIDTH + BUTTON_SPACE); titleWidth -= (THUMBS_BUTTON_WIDTH + BUTTON_SPACE);
 
-#endif // end of READER_ENABLE_THUMBS Option
 
-#if (READER_BOOKMARKS == TRUE || READER_ENABLE_MAIL == TRUE || READER_ENABLE_PRINT == TRUE)
-
-		CGFloat rightButtonX = viewWidth; // Right button start X position
-
-#endif // end of READER_BOOKMARKS || READER_ENABLE_MAIL || READER_ENABLE_PRINT Options
-
-#if (READER_BOOKMARKS == TRUE) // Option
 
 		rightButtonX -= (MARK_BUTTON_WIDTH + BUTTON_SPACE);
-
-		UIButton *flagButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        NSLog(@"rightX %f",rightButtonX);
+		UIButton *flagButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 
 		flagButton.frame = CGRectMake(rightButtonX, BUTTON_Y, MARK_BUTTON_WIDTH, BUTTON_HEIGHT);
-		//[flagButton setImage:[UIImage imageNamed:@"Reader-Mark-N"] forState:UIControlStateNormal];
+		[flagButton setImage:[UIImage imageNamed:@"ppt_nav_bookmark"] forState:UIControlStateNormal];
+        [flagButton setTintColor:[UIColor redColor]];
+        [flagButton.titleLabel setFont:[UIFont systemFontOfSize:17]];
+        [flagButton setImageEdgeInsets:UIEdgeInsetsMake(5, 0, 5, 0)];
+        [flagButton setTitle:@"添加书签" forState:UIControlStateNormal];
+        [flagButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+        [flagButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 20, 0, 0)];
 		[flagButton addTarget:self action:@selector(markButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-		[flagButton setBackgroundImage:buttonH forState:UIControlStateHighlighted];
-		[flagButton setBackgroundImage:buttonN forState:UIControlStateNormal];
+//		[flagButton setBackgroundImage:buttonH forState:UIControlStateHighlighted];
+//		[flagButton setBackgroundImage:buttonN forState:UIControlStateNormal];
 		flagButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 		flagButton.exclusiveTouch = YES;
 
-		[self addSubview:flagButton]; titleWidth -= (MARK_BUTTON_WIDTH + BUTTON_SPACE);
+		[self addSubview:flagButton];
+        titleWidth -= (MARK_BUTTON_WIDTH + BUTTON_SPACE);
 
-		markButton = flagButton; markButton.enabled = NO; markButton.tag = NSIntegerMin;
+		markButton = flagButton;
+        markButton.enabled = NO;
+        markButton.tag = NSIntegerMin;
 
-		markImageN = [UIImage imageNamed:@"Reader-Mark-N"]; // N image
-		markImageY = [UIImage imageNamed:@"Reader-Mark-Y"]; // Y image
+		markImageN = [UIImage imageNamed:@"ppt_nav_bookmark"]; // N image
+		markImageY = [UIImage imageNamed:@"ppt_nav_bookmark_active"]; // Y image
 
-#endif // end of READER_BOOKMARKS Option
+/*
 
 #if (READER_ENABLE_MAIL == TRUE) // Option
 
@@ -174,7 +191,8 @@
 		}
 
 #endif // end of READER_ENABLE_MAIL Option
-
+*/
+        /*
 #if (READER_ENABLE_PRINT == TRUE) // Option
 
 		if (object.password == nil) // We can only print documents without passwords
@@ -200,6 +218,7 @@
 		}
 
 #endif // end of READER_ENABLE_PRINT Option
+         */
 
 		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
 		{
@@ -211,7 +230,7 @@
 			titleLabel.font = [UIFont systemFontOfSize:19.0f];
 			titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 			titleLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
-			titleLabel.textColor = [UIColor colorWithWhite:0.0f alpha:1.0f];
+			titleLabel.textColor = [UIColor redColor];
 			titleLabel.shadowColor = [UIColor colorWithWhite:0.65f alpha:1.0f];
 			titleLabel.backgroundColor = [UIColor clearColor];
 			titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);

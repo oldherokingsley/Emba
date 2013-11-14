@@ -58,10 +58,10 @@
         [imageView setBackgroundColor:[UIColor clearColor]];
 		imageView = [[UIImageView alloc] initWithFrame:rect];
         NSLog(@"初始化");
-//		imageView.autoresizesSubviews = NO;
-//		imageView.userInteractionEnabled = NO;
-//		imageView.autoresizingMask = UIViewAutoresizingNone;
-//		imageView.contentMode = UIViewContentModeScaleAspectFit;
+		imageView.autoresizesSubviews = NO;
+		imageView.userInteractionEnabled = NO;
+		imageView.autoresizingMask = UIViewAutoresizingNone;
+		imageView.contentMode = UIViewContentModeScaleAspectFit;
 
 		[self addSubview:imageView];
 	}

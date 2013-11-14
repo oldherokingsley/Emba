@@ -53,8 +53,8 @@
 #define THUMB_SMALL_WIDTH 22
 #define THUMB_SMALL_HEIGHT 28
 
-#define THUMB_LARGE_WIDTH 32
-#define THUMB_LARGE_HEIGHT 42
+#define THUMB_LARGE_WIDTH 22//32
+#define THUMB_LARGE_HEIGHT 28//42
 
 #define PAGE_NUMBER_WIDTH 96.0f
 #define PAGE_NUMBER_HEIGHT 30.0f
@@ -112,7 +112,8 @@
 
 		ReaderThumbRequest *request = [ReaderThumbRequest newForView:pageThumbView fileURL:fileURL password:phrase guid:guid page:page size:size];
 
-		UIImage *image = [[ReaderThumbCache sharedInstance] thumbRequest:request priority:YES]; // Request the thumb
+//		UIImage *image = [[ReaderThumbCache sharedInstance] thumbRequest:request priority:YES]; // Request the thumb
+        UIImage *image = [UIImage imageNamed:@"ppt_indicator_purple.png"];
 
 		UIImage *thumb = ([image isKindOfClass:[UIImage class]] ? image : nil); [pageThumbView showImage:thumb];
 	}
@@ -144,19 +145,25 @@
 		self.userInteractionEnabled = YES;
 		self.contentMode = UIViewContentModeRedraw;
 		self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-		self.backgroundColor = [UIColor clearColor];
-
-		CAGradientLayer *layer = (CAGradientLayer *)self.layer;
-		UIColor *liteColor = [UIColor colorWithWhite:0.82f alpha:0.8f];
-		UIColor *darkColor = [UIColor colorWithWhite:0.32f alpha:0.8f];
-		layer.colors = [NSArray arrayWithObjects:(id)liteColor.CGColor, (id)darkColor.CGColor, nil];
-
-		CGRect shadowRect = self.bounds; shadowRect.size.height = 4.0f; shadowRect.origin.y -= shadowRect.size.height;
+        UIColor *image = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ppt_indicator_bg.png"]];
+		self.backgroundColor = image;//[UIColor clearColor];
+        
+//		CAGradientLayer *layer = (CAGradientLayer *)self.layer;
+//		UIColor *liteColor = [UIColor colorWithWhite:0.82f alpha:0.8f];
+//		UIColor *darkColor = [UIColor colorWithWhite:0.32f alpha:0.8f];
+//		layer.colors = [NSArray arrayWithObjects:(id)liteColor.CGColor, (id)darkColor.CGColor, nil];
+        
+        //上面阴影
+        /*
+		CGRect shadowRect = self.bounds;
+        shadowRect.size.height = 4.0f;
+        shadowRect.origin.y -= shadowRect.size.height;
 
 		ReaderPagebarShadow *shadowView = [[ReaderPagebarShadow alloc] initWithFrame:shadowRect];
 
 		[self addSubview:shadowView]; // Add the shadow to the view
-
+         */
+        
 		CGFloat numberY = (0.0f - (PAGE_NUMBER_HEIGHT + PAGE_NUMBER_SPACE));
 		CGFloat numberX = ((self.bounds.size.width - PAGE_NUMBER_WIDTH) / 2.0f);
 		CGRect numberRect = CGRectMake(numberX, numberY, PAGE_NUMBER_WIDTH, PAGE_NUMBER_HEIGHT);
@@ -193,8 +200,6 @@
 		[self addSubview:pageNumberView]; // Add page numbers display view
         
         CGRect rect = self.bounds;
-//        rect.origin.x += 150;
-//        rect.size.width -= 300;
 		trackControl = [[ReaderTrackControl alloc] initWithFrame:rect]; // Track control view
 
 		[trackControl addTarget:self action:@selector(trackViewTouchDown:) forControlEvents:UIControlEventTouchDown];
@@ -223,7 +228,7 @@
 
 - (void)layoutSubviews
 {
-	CGRect controlRect = CGRectInset(self.bounds, 4.0f, 0.0f);
+	CGRect controlRect = CGRectInset(trackControl.bounds, 4.0f, 0.0f);
 
 	CGFloat thumbWidth = (THUMB_SMALL_WIDTH + THUMB_SMALL_GAP);
 
@@ -231,7 +236,8 @@
 
 	NSInteger pages = [document.pageCount integerValue]; // Pages
 
-	if (thumbs > pages) thumbs = pages; // No more than total pages
+	if (thumbs > pages)
+        thumbs = pages; // No more than total pages
 
 	CGFloat controlWidth = ((thumbs * thumbWidth) - THUMB_SMALL_GAP);
 
@@ -266,7 +272,8 @@
 
 	CGFloat heightDelta = (controlRect.size.height - THUMB_SMALL_HEIGHT);
 
-	NSInteger thumbY = (heightDelta / 2.0f); NSInteger thumbX = 0; // Initial X, Y
+	NSInteger thumbY = (heightDelta / 2.0f);
+    NSInteger thumbX = 0; // Initial X, Y
 
 	CGRect thumbRect = CGRectMake(thumbX, thumbY, THUMB_SMALL_WIDTH, THUMB_SMALL_HEIGHT);
 
@@ -274,7 +281,9 @@
 
 	for (NSInteger thumb = 0; thumb < thumbs; thumb++) // Iterate through needed thumbs
 	{
-		NSInteger page = ((stride * thumb) + 1); if (page > pages) page = pages; // Page
+		NSInteger page = ((stride * thumb) + 1);
+        if (page > pages)
+            page = pages; // Page
 
 		NSNumber *key = [NSNumber numberWithInteger:page]; // Page number key for thumb view
 
@@ -291,7 +300,7 @@
 			ReaderThumbRequest *thumbRequest = [ReaderThumbRequest newForView:smallThumbView fileURL:fileURL password:phrase guid:guid page:page size:size];
 
 //			UIImage *image = [[ReaderThumbCache sharedInstance] thumbRequest:thumbRequest priority:NO]; // Request the thumb
-            UIImage *image = [UIImage imageNamed:@"ppt_indicator_purple"];
+            UIImage *image = [UIImage imageNamed:@"ppt_indicator_grey.png"];
             
 			if ([image isKindOfClass:[UIImage class]])
             {
@@ -577,9 +586,9 @@
 		self.backgroundColor = [UIColor clearColor];
         imageView.backgroundColor = [UIColor clearColor];
 
-		imageView.layer.borderColor = [UIColor colorWithWhite:0.4f alpha:0.6f].CGColor;
+//		imageView.layer.borderColor = [UIColor colorWithWhite:0.4f alpha:0.6f].CGColor;
 
-		imageView.layer.borderWidth = 1.0f; // Give the thumb image view a border
+//		imageView.layer.borderWidth = 1.0f; // Give the thumb image view a border
 	}
 
 	return self;
