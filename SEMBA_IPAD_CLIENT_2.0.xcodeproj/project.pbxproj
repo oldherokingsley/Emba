@@ -97,6 +97,7 @@
 		9C0203E91834BBFF00060D96 /* bookmark_edit_item_bg@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0203DF1834BBFF00060D96 /* bookmark_edit_item_bg@2X.png */; };
 		9C0203EA1834BBFF00060D96 /* bookmark_edit_nav_bar.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0203E01834BBFF00060D96 /* bookmark_edit_nav_bar.png */; };
 		9C0203EB1834BBFF00060D96 /* bookmark_edit_nav_bar@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C0203E11834BBFF00060D96 /* bookmark_edit_nav_bar@2X.png */; };
+		9C0203F21835FAED00060D96 /* UITextView+category.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0203F11835FAED00060D96 /* UITextView+category.m */; };
 		9C0F8AB0181F5BC100FEFABA /* CoursewareItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0F8AAF181F5BC100FEFABA /* CoursewareItem.m */; };
 		9C0F8AB3181FB88C00FEFABA /* CoursewareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0F8AB2181FB88C00FEFABA /* CoursewareViewController.m */; };
 		9C0F8AB618210C8A00FEFABA /* ASIHTTPRequest+category.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0F8AB518210C8A00FEFABA /* ASIHTTPRequest+category.m */; };
@@ -291,6 +292,8 @@
 		9C0203DF1834BBFF00060D96 /* bookmark_edit_item_bg@2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bookmark_edit_item_bg@2X.png"; sourceTree = "<group>"; };
 		9C0203E01834BBFF00060D96 /* bookmark_edit_nav_bar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bookmark_edit_nav_bar.png; sourceTree = "<group>"; };
 		9C0203E11834BBFF00060D96 /* bookmark_edit_nav_bar@2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bookmark_edit_nav_bar@2X.png"; sourceTree = "<group>"; };
+		9C0203F01835FAED00060D96 /* UITextView+category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+category.h"; sourceTree = "<group>"; };
+		9C0203F11835FAED00060D96 /* UITextView+category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+category.m"; sourceTree = "<group>"; };
 		9C0F8AAE181F5BC100FEFABA /* CoursewareItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoursewareItem.h; sourceTree = "<group>"; };
 		9C0F8AAF181F5BC100FEFABA /* CoursewareItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoursewareItem.m; sourceTree = "<group>"; };
 		9C0F8AB1181FB88C00FEFABA /* CoursewareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoursewareViewController.h; sourceTree = "<group>"; };
@@ -509,6 +512,15 @@
 				5931752B181F8E4B000BBC4F /* DDMenuController.m */,
 			);
 			name = Host;
+			sourceTree = "<group>";
+		};
+		9C0203EC1835FAA100060D96 /* UITextView+category */ = {
+			isa = PBXGroup;
+			children = (
+				9C0203F01835FAED00060D96 /* UITextView+category.h */,
+				9C0203F11835FAED00060D96 /* UITextView+category.m */,
+			);
+			name = "UITextView+category";
 			sourceTree = "<group>";
 		};
 		9C0F8AB718210C9000FEFABA /* ASIHTTPRequest+category */ = {
@@ -767,6 +779,7 @@
 		9CBD15D9181E68D800075BDF /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				9C0203EC1835FAA100060D96 /* UITextView+category */,
 				9C9240AE1830AF6800415735 /* MRCircularProgressView */,
 				9CBD15CE181E674E00075BDF /* UITapGestureRecognizer+category */,
 				9CBD15D5181E68BA00075BDF /* UIButton+associate */,
@@ -1156,6 +1169,7 @@
 				2BB815471830AE0200736512 /* Course.m in Sources */,
 				9CBD15FE181E692800075BDF /* ReaderThumbRender.m in Sources */,
 				9CBD1641181E699D00075BDF /* ASIDownloadCache.m in Sources */,
+				9C0203F21835FAED00060D96 /* UITextView+category.m in Sources */,
 				9CBD1621181E695900075BDF /* ThumbsViewController.m in Sources */,
 				9C9240B51830B87600415735 /* MRWeakProxy.m in Sources */,
 				9CBD15C8181E50AA00075BDF /* MainPageViewController.m in Sources */,
