@@ -49,8 +49,7 @@
     NSThread *thread = [[NSThread alloc]initWithTarget:self selector:@selector(loadDataSelector:) object:nil];
     [thread start];
     self.navigationController.navigationBar.tintColor = [UIColor redColor];
-    
-    NSLog(@"%f %f %f %f",self.view.frame.origin.x,self.view.frame.origin.y,self.view.frame.size.width,self.view.frame.size.height);
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bar_bg"] forBarMetrics:UIBarMetricsDefault];
     self.title = @"课程";
 //    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
 //    [button setFrame:CGRectMake(10, 0, 44, 44)];

@@ -110,10 +110,10 @@
     for (int i = 0 ; i < [bookMarkedArray count]; i ++) {
         int page = [(NSNumber *)[bookMarkedArray objectAtIndex:i] integerValue];
         UIImage *image = [self getImageFromPDF:document.fileURL :page];
-        NSLog(@"size %f,%f",image.size.width,image.size.height);
+//        NSLog(@"size %f,%f",image.size.width,image.size.height);
         
         [originalImageArray addObject:image];
-        NSLog(@"page %d image %@ string %@",page,image,[document.markTexts objectForKey:[NSString stringWithFormat:@"%d",page]]);
+//        NSLog(@"page %d image %@ string %@",page,image,[document.markTexts objectForKey:[NSString stringWithFormat:@"%d",page]]);
         NSString *text = [document.markTexts objectForKey:[NSString stringWithFormat:@"%d",page]];
         [originalTextArray addObject:text];
         
@@ -121,7 +121,7 @@
         
         [displayImageArray addObject:image];
     }
-    NSLog(@"finish");
+//    NSLog(@"finish");
 //    displayTextArray = originalTextArray;
 //    displayImageArray = originalImageArray;
     
@@ -138,7 +138,7 @@
     markToolBar.delegate = self;
     
     [self.view addSubview:markToolBar];
-    NSLog(@"center %f,%f",markTableView.center.x,markTableView.center.y);
+//    NSLog(@"center %f,%f",markTableView.center.x,markTableView.center.y);
     
     
 	// Do any additional setup after loading the view.
@@ -178,10 +178,10 @@
     pageRect.origin = CGPointZero;
 //    CGRect mediaBoxRect = cgpdf
     pageAngle = CGPDFPageGetRotationAngle(page);
-    NSLog(@"pageAngle %d",pageAngle);
+//    NSLog(@"pageAngle %d",pageAngle);
     //开启图片绘制 上下文
     UIGraphicsBeginImageContext(pageRect.size);
-    NSLog(@"page size %f %f",pageRect.size.width,pageRect.size.height);
+//    NSLog(@"page size %f %f",pageRect.size.width,pageRect.size.height);
     CGContextRef context = UIGraphicsGetCurrentContext();
     
     // 设置白色背景
@@ -230,7 +230,7 @@
     {
         num = self.displayImageArray.count / ITEM_NUM_IN_ROW + 1;
     }
-    NSLog(@"num %d",num);
+//    NSLog(@"num %d",num);
 
     return num;
 }
@@ -394,6 +394,7 @@
     [toolBar.backButton setHidden:NO];
     [toolBar.editButton setHidden:NO];
     isEdit = NO;
+    NSLog(@"finish");
     for (int i = 0; i < [deleteMarkedArray count]; i ++) {
         int index = [(NSNumber *)[deleteMarkedArray objectAtIndex:i] integerValue];
         int page = [(NSNumber *)[bookMarkedArray objectAtIndex:index] integerValue];
@@ -408,6 +409,7 @@
         int index = [str intValue];
         int page = [(NSNumber *)[bookMarkedArray objectAtIndex:index] integerValue];
         NSLog(@"page %d",page);
+//        [document.markTexts removeObjectForKey:[NSString stringWithFormat:@"%d",page]];
         [document.markTexts setObject:text forKey:[NSString stringWithFormat:@"%d",page]];
         [originalTextArray replaceObjectAtIndex:index withObject:text];
     }
@@ -432,14 +434,25 @@
 
 #pragma UITextView delegate
 - (void)textViewDidEndEditing:(UITextView *)textView{
+    
     NSLog(@"end");
-    NSDictionary *dict = textView.myDict;
+    /*NSDictionary *dict = textView.myDict;
     int index = [(NSNumber *)[dict objectForKey:@"index"] intValue];
     NSString *text = textView.text;
     [replaceTextDictionary setObject:text forKey:[NSString stringWithFormat:@"%d",index]];
     [displayTextArray replaceObjectAtIndex:index withObject:text];
     
     [markTableView reloadData];
+     
+     */
+}
+- (void)textViewDidChange:(UITextView *)textView{
+    NSLog(@"change");
+    NSDictionary *dict = textView.myDict;
+    int index = [(NSNumber *)[dict objectForKey:@"index"] intValue];
+    NSString *text = textView.text;
+    [replaceTextDictionary setObject:text forKey:[NSString stringWithFormat:@"%d",index]];
+    [displayTextArray replaceObjectAtIndex:index withObject:text];
 }
 
 @end

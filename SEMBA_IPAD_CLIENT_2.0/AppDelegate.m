@@ -9,13 +9,23 @@
 #import "AppDelegate.h"
 #import "WelcomeViewController.h"
 #import "Dao.h"
+#import "MainPageViewController.h"
+#import "MenuController.h"
+#import "DDMenuController.h"
 #import "SysbsModel.h"
 @implementation AppDelegate
 @synthesize window;
+@synthesize hostController;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    MainPageViewController *mainController = [[MainPageViewController alloc] init];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:mainController];
+    hostController = [[DDMenuController alloc] initWithRootViewController:navController];
+    MenuController *menuController = [[MenuController alloc] init];
+    hostController.leftViewController = menuController;
+    
     window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds]; // Main application window
     window.backgroundColor = [UIColor whiteColor];
     WelcomeViewController *rootViewController = [[WelcomeViewController alloc]init];
