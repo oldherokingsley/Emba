@@ -16,8 +16,6 @@
 #import "RegisterController.h"
 #import "RegisterContentController.h"
 
-#define kMenuTextColor [UIColor whiteColor]
-
 @interface MenuController ()
 {
     NSMutableArray *titleArray;
@@ -33,6 +31,10 @@
 @synthesize helpBtn;
 @synthesize nameLabel;
 @synthesize settingBtn;
+@synthesize registerLabel;
+@synthesize backgroundImg;
+@synthesize hostController;
+@synthesize noticeView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -48,44 +50,104 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    hostController = (DDMenuController*)((AppDelegate*)[[UIApplication sharedApplication] delegate]).hostController;
+    
     currentRow = 0;
     
+    float originY = 19.5;
+    float menuWidth = 238;
+    
+    //Background Image
+    CGRect backgroundFrame = CGRectMake(0, originY, menuWidth, self.view.frame.size.width - originY);
+    backgroundImg = [[UIImageView alloc] init];
+    backgroundImg.frame = backgroundFrame;
+    [self.view addSubview:backgroundImg];
+    
+    //headImg
+    CGRect headFrame = CGRectMake(53.5, 50, 134, 144);
     headImg = [[UIImageView alloc] init];
-    headImg.frame = CGRectMake(50, 40, 100, 100);
+    headImg.frame = headFrame;
     headImg.backgroundColor = [UIColor blackColor];
     [self.view addSubview:headImg];
     
+    //UserNameLabel
+    CGRect nameFrame = CGRectMake(0, 200, menuWidth, 35);
     nameLabel = [[UILabel alloc] init];
-    nameLabel.frame = CGRectMake(60, 150, 70, 30);
+    nameLabel.frame = nameFrame;
     nameLabel.text = @"李开花";
-    nameLabel.textColor = kMenuTextColor;
-    nameLabel.backgroundColor = [UIColor blackColor];
-    nameLabel.font = [UIFont fontWithName:@"Arial" size:15.0f];
+    nameLabel.textColor = [UIColor whiteColor];
+    nameLabel.backgroundColor = [UIColor clearColor];
+    nameLabel.font = [UIFont fontWithName:@"Helti SC" size:24.0f];
+    nameLabel.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:nameLabel];
     
+    //Menu TableView
+    CGRect listFrame = CGRectMake(0, 233.5, menuWidth, 210);
     list = [[UITableView alloc] init];
-    list.frame = CGRectMake(0, 200, 220, 220);
-    list.backgroundColor = [UIColor blackColor];
+    list.frame = listFrame;
+    list.backgroundColor = [UIColor clearColor];
     list.delegate = self;
     list.dataSource = self;
     [list setScrollEnabled:NO];
     [self.view addSubview:list];
     
+    //RegisterButton
+    CGRect registerFrame = CGRectMake(54, listFrame.origin.y + listFrame.size.height + 63.5, 104, 96);
     registerBtn = [[UIButton alloc] init];
-    registerBtn.frame = CGRectMake(60, 500, 100, 100);
-    registerBtn.backgroundColor = [UIColor blackColor];
+    registerBtn.frame = registerFrame;
+    registerBtn.backgroundColor = [UIColor clearColor];
     [registerBtn addTarget:self action:@selector(registerBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:registerBtn];
     
-    helpBtn = [[UIButton alloc] init];
-    helpBtn.frame = CGRectMake(0, 730, 30, 30);
-    helpBtn.backgroundColor = [UIColor blackColor];
-    [self.view addSubview:helpBtn];
+    //RegisterLabel
+    CGRect registerLabelFrame = CGRectMake(0, registerFrame.origin.y + registerFrame.size.height + 10, menuWidth, 40);
+    registerLabel = [[UILabel alloc] init];
+    registerLabel.frame = registerLabelFrame;
+    registerLabel.text = @"签到";
+    registerLabel.textColor = [UIColor whiteColor];
+    registerLabel.backgroundColor = [UIColor clearColor];
+    registerLabel.font = [UIFont fontWithName:@"Helti SC" size:18.0f];
+    registerLabel.textAlignment = NSTextAlignmentCenter;
+    [self.view addSubview:registerLabel];
     
+    //Help Button
+    CGRect helpFrame = CGRectMake(0, 0, 0, 0);
+    helpBtn = [[UIButton alloc] init];
+    helpBtn.frame = helpFrame;
+    helpBtn.backgroundColor = [UIColor blackColor];
+    //[self.view addSubview:helpBtn];
+    
+    //setting Button
+    CGRect settingFrame = CGRectMake(200, listFrame.origin.y + listFrame.size.height + 270, 26, 26);
     settingBtn = [[UIButton alloc] init];
-    settingBtn.frame = CGRectMake(210, 730, 30, 30);
-    settingBtn.backgroundColor = [UIColor blackColor];
+    settingBtn.frame = settingFrame;
+    settingBtn.backgroundColor = [UIColor clearColor];
     [self.view addSubview:settingBtn];
+    
+    [self setImageAndBackground];
+    
+    //the view contain the noticeView
+    noticeView = [[UIView alloc] initWithFrame:CGRectMake(menuWidth, 0, 1024- menuWidth, 768)];
+    NoticeController *controller = [[NoticeController alloc] init];
+    UINavigationController *navController = [[UINavigationController alloc] init];
+    navController.view.frame = CGRectMake(0, 0, 1024-250, 60);
+    
+    [noticeView addSubview:navController.view];
+    [noticeView addSubview:controller.view];
+    [noticeView setAlpha:0];
+    [noticeView setHidden:YES];
+    [hostController.view addSubview:noticeView];
+}
+
+- (void)setImageAndBackground
+{
+    [backgroundImg setImage:[UIImage imageNamed:@"news center-menu.png"]];
+    
+    [headImg setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"news center-circle on the menu.png"]]];
+    
+    [registerBtn setImage:[UIImage imageNamed:@"news center-sign.png"] forState:UIControlStateNormal];
+    
+    [settingBtn setImage:[UIImage imageNamed:@"news center-setting.png"] forState:UIControlStateNormal];
 }
 
 - (void)didReceiveMemoryWarning
@@ -136,7 +198,8 @@
 
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DDMenuController *hostController = (DDMenuController*)((AppDelegate*)[[UIApplication sharedApplication] delegate]).hostController;
+    //hostController.rootViewController.view.userInteractionEnabled = YES;
+    
     if(currentRow == (NSInteger *)indexPath.row){
         [list deselectRowAtIndexPath:indexPath animated:YES];
         return;
@@ -147,21 +210,55 @@
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
         controller.title = [titleArray objectAtIndex:indexPath.row];
         [hostController setRootController:navController animated:YES];
+        
+        if(noticeView.isHidden == NO){
+            noticeView.alpha = 0.0;
+            [noticeView setHidden:YES];
+        }
+        /*
+        if(hostController.view didAddSubview:noticeView){
+            [noticeView remo]
+        }*/
     }else if(indexPath.row == 2){
         EvaluateController *controller = [[EvaluateController alloc] init];
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
         controller.title = [titleArray objectAtIndex:indexPath.row];
         [hostController setRootController:navController animated:YES];
+        
+        if(noticeView.isHidden == NO){
+            noticeView.alpha = 0.0;
+            [noticeView setHidden:YES];
+        }
+        
     }else if(indexPath.row == 3){
         ScheduleController *controller = [[ScheduleController alloc] init];
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
         controller.title = [titleArray objectAtIndex:indexPath.row];
         [hostController setRootController:navController animated:YES];
+        
+
+        if(noticeView.isHidden == NO){
+            noticeView.alpha = 0.0;
+            [noticeView setHidden:YES];
+        }
     }else if(indexPath.row == 4){
-        NoticeController *controller = [[NoticeController alloc] init];
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-        controller.title = [titleArray objectAtIndex:indexPath.row];
-        [hostController setRootController:navController animated:YES];
+        [hostController.rootViewController.view setHidden:YES];
+        //[hostController setRootController:nil animated:NO];
+     //   if(noticeView.hidden == YES){
+//[hostController.view addSubview:noticeView];
+            [hostController.tap setEnabled:NO];
+            [noticeView setHidden:NO];
+            [self.view bringSubviewToFront:noticeView];
+            [noticeView setFrame:CGRectMake(1024, 0, noticeView.frame.size.width, noticeView.frame.size.height)];
+            [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+                noticeView.alpha = 1.0;
+                noticeView.frame = CGRectMake(250, 0, noticeView.frame.size.width, noticeView.frame.size.height);
+            } completion:^(BOOL finished) {
+                
+            }];
+        
+     //   }
+
     }
     
     currentRow = (NSInteger*)indexPath.row;

@@ -9,9 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "NoticeTableView.h"
 
-@interface NoticeController : UIViewController
+@interface NoticeController : UIViewController<UISearchBarDelegate>
 
-@property (nonatomic, retain) UITextField *search;
+@property (nonatomic, retain) UISearchBar *searchBar;
 @property (nonatomic, retain) NoticeTableView *noticeTableView;
+@property (nonatomic, retain) UIView *naviBarView;
+
+@property (nonatomic, retain) NSMutableArray *dataArray;
+@property (nonatomic, retain) NSMutableArray *originDataArray;
 
 @end

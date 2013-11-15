@@ -65,14 +65,17 @@ typedef enum {
 @property(nonatomic,strong) UIViewController *rightViewController;
 @property(nonatomic,strong) UIViewController *rootViewController;
 
-@property(nonatomic,readonly) UITapGestureRecognizer *tap;
+@property(nonatomic,retain) UITapGestureRecognizer *tap;
 @property(nonatomic,readonly) UIPanGestureRecognizer *pan;
+
+@property (nonatomic, strong) UIView *noticeView;
 
 - (void)setRootController:(UIViewController *)controller animated:(BOOL)animated; // used to push a new controller on the stack
 - (void)showRootController:(BOOL)animated; // reset to "home" view controller
 - (void)showRightController:(BOOL)animated;  // show right
 - (void)showLeftController:(BOOL)animated;  // show left
 
+- (void)showNoticeView;
 @end
 
 @protocol DDMenuControllerDelegate 

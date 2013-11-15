@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DataItem.h"
 
 @interface NoticeTableView : UITableView<UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, strong) NSMutableArray *titleArray;
-@property (nonatomic, strong) NSMutableArray *contentArray;
-@property (nonatomic, strong) NSMutableArray *cellArray;
-@property (nonatomic, strong) NSMutableArray *dateArray;
+@property (nonatomic, strong) NSMutableArray *dataArray;
+
+- (void)setTableViewData: (NSMutableArray *)dataArray;
 
 @end

@@ -58,7 +58,7 @@
         
         rotateBtn = [[UIButton alloc] init];
         rotateBtn.frame = kRotateButtonFrame;
-        [rotateBtn setImage:[UIImage imageNamed:@"disclosure.png"] forState:UIControlStateNormal];
+        [rotateBtn setImage:[UIImage imageNamed:@"setting_back.png"] forState:UIControlStateNormal];
         [rotateBtn setBackgroundColor:[UIColor blackColor]];
         [self addSubview:rotateBtn];
     }
@@ -70,16 +70,16 @@
 - (void)rotateExpandBtnToExpanded
 {
     [UIView beginAnimations:@"rotateDisclosureButt" context:nil];
-    [UIView setAnimationDuration:0.2];
-    rotateBtn.transform = CGAffineTransformMakeRotation(M_PI*1.5);
+    [UIView setAnimationDuration:0.3];
+    rotateBtn.transform = CGAffineTransformMakeRotation(M_PI*1.0);
     [UIView commitAnimations];
 }
 
 - (void)rotateExpandBtnToCollapsed
 {
     [UIView beginAnimations:@"rotateDisclosureButt" context:nil];
-    [UIView setAnimationDuration:0.2];
-    rotateBtn.transform = CGAffineTransformMakeRotation(M_PI*2.5);
+    [UIView setAnimationDuration:0.3];
+    rotateBtn.transform = CGAffineTransformMakeRotation(M_PI*2.0);
     [UIView commitAnimations];
 }
 

@@ -25,6 +25,7 @@
     hostController = [[DDMenuController alloc] initWithRootViewController:navController];
     MenuController *menuController = [[MenuController alloc] init];
     hostController.leftViewController = menuController;
+    //menuController.delegate = hostController.self;
     
     window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds]; // Main application window
     window.backgroundColor = [UIColor whiteColor];

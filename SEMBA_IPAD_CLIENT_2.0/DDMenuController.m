@@ -25,8 +25,9 @@
 //
 
 #import "DDMenuController.h"
+#import "NoticeController.h"
 
-#define kMenuFullWidth 320.0f
+#define kMenuFullWidth 238.0f
 #define kMenuDisplayedWidth 280.0f
 #define kMenuOverlayWidth (self.view.bounds.size.width - kMenuDisplayedWidth)
 #define kMenuBounceOffset 10.0f
@@ -48,6 +49,8 @@
 
 @synthesize tap=_tap;
 @synthesize pan=_pan;
+
+@synthesize noticeView=_noticeView;
 
 
 - (id)initWithRootViewController:(UIViewController*)controller {
@@ -82,6 +85,8 @@
         [tap setEnabled:NO];
         _tap = tap;
     }
+    
+    
     
 }
 
@@ -485,15 +490,16 @@
     _menuFlags.showingLeftView = YES;
     [self showShadow:YES];
 
-    UIView *view = self.leftViewController.view;
+    UIView *leftView = self.leftViewController.view;
 	CGRect frame = self.view.bounds;
 	frame.size.width = kMenuFullWidth;
-    view.frame = frame;
-    [self.view insertSubview:view atIndex:0];
+    leftView.frame = frame;
+    NSLog(@"2");
+    [self.view insertSubview:leftView atIndex:0];
     [self.leftViewController viewWillAppear:animated];
     
     frame = _root.view.frame;
-    frame.origin.x = CGRectGetMaxX(view.frame) - (kMenuFullWidth - kMenuDisplayedWidth);
+    frame.origin.x = CGRectGetMaxX(leftView.frame) - (kMenuFullWidth - kMenuDisplayedWidth);
     
     BOOL _enabled = [UIView areAnimationsEnabled];
     if (!animated) {
@@ -524,6 +530,7 @@
     if (_menuFlags.respondsToWillShowViewController) {
         [self.delegate menuController:self willShowViewController:self.rightViewController];
     }
+    
     _menuFlags.showingRightView = YES;
     [self showShadow:YES];
 
@@ -552,6 +559,16 @@
     if (!animated) {
         [UIView setAnimationsEnabled:_enabled];
     }
+}
+
+- (void)showNoticeView
+{
+    [_tap setEnabled:NO];
+    
+    if(_noticeView && _noticeView.superview){
+        [_noticeView removeFromSuperview];
+    }
+
 }
 
 
@@ -615,7 +632,7 @@
     
     if (_menuFlags.showingLeftView) {
         
-        [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+        //[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
         
         // slide out then come back with the new root
         __block DDMenuController *selfRef = self;
