@@ -12,6 +12,7 @@
 #import "DDMenuController.h"
 #import "Dao.h"
 #import "SysbsModel.h"
+#import "AppDelegate.h"
 
 BOOL keyBoardIsAppear;
 BOOL shouldLogin;
@@ -100,14 +101,8 @@ BOOL shouldLogin;
     
 }
 - (void)jumpToMainPage{
-    MainPageViewController *mainController = [[MainPageViewController alloc] init];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:mainController];
-    DDMenuController *hostController;
-    hostController = [[DDMenuController alloc] initWithRootViewController:navController];
-    MenuController *menuController = [[MenuController alloc] init];
-    hostController.leftViewController = menuController;
-    
-    
+    DDMenuController *hostController = (DDMenuController*)((AppDelegate*)[[UIApplication sharedApplication] delegate]).hostController;
+
     [self presentViewController:hostController animated:YES completion:nil];
     
 }

@@ -57,7 +57,7 @@
 //        rect = CGRectMake(0, 0, 100, 100);
         [imageView setBackgroundColor:[UIColor clearColor]];
 		imageView = [[UIImageView alloc] initWithFrame:rect];
-        NSLog(@"初始化");
+//        NSLog(@"初始化");
 		imageView.autoresizesSubviews = NO;
 		imageView.userInteractionEnabled = NO;
 		imageView.autoresizingMask = UIViewAutoresizingNone;
