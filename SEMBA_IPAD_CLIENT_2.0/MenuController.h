@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MenuCell.h"
 
-@interface MenuController : UIViewController
+@interface MenuController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, retain) UIImageView *headImg;
 @property (nonatomic, retain) UILabel *nameLabel;
@@ -16,5 +17,7 @@
 @property (nonatomic, retain) UIButton *registerBtn;
 @property (nonatomic, retain) UIButton *helpBtn;
 @property (nonatomic, retain) UIButton *settingBtn;
+
+- (IBAction)registerBtnPressed:(id)sender;
 
 @end

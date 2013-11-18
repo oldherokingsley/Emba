@@ -30,6 +30,8 @@
 @property (nonatomic) CGRect parentRect;
 @property (nonatomic, retain) UIImageView *arrowIV;
 @property (nonatomic, retain) NSMutableArray *buttonArray;
+@property (nonatomic, retain) NSMutableArray *imageNameNArray;
+@property (nonatomic, retain) NSMutableArray *imageNameHArray;
 - (void)handlePan:(UIPanGestureRecognizer *)recognizer;
 - (void)handleTap:(UITapGestureRecognizer *)recognizer;
 

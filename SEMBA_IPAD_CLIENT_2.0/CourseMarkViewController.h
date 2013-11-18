@@ -19,7 +19,7 @@
 
 @end
 
-@interface CourseMarkViewController : UIViewController <UITableViewDataSource,UITableViewDelegate,MarkToolBarDelegate>
+@interface CourseMarkViewController : UIViewController <UITableViewDataSource,UITableViewDelegate,MarkToolBarDelegate,UITextViewDelegate>
 
 @property (nonatomic, weak, readwrite) id <CourseMarkViewDelegate>delegate;
 @property (nonatomic, retain) UITableView *markTableView;
@@ -30,6 +30,7 @@
 @property (nonatomic, retain) NSMutableArray *originalTextArray;
 @property (nonatomic, retain) NSMutableArray *bookMarkedArray;
 @property (nonatomic, retain) NSMutableArray *deleteMarkedArray;
+@property (nonatomic, retain) NSMutableDictionary *replaceTextDictionary;
 @property (nonatomic) CGRect imageRect;
 @property (nonatomic, retain) MarkToolBar *markToolBar;
 @property (nonatomic) int pageAngle;
