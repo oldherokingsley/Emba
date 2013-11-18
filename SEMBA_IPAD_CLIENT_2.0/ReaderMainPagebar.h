@@ -37,6 +37,8 @@
 @required // Delegate protocols
 
 - (void)pagebar:(ReaderMainPagebar *)pagebar gotoPage:(NSInteger)page;
+- (void)pagebar:(ReaderMainPagebar *)pagebar leftAction:(UIButton *)button;
+- (void)pagebar:(ReaderMainPagebar *)pagebar rightAction:(UIButton *)button;
 
 @end
 

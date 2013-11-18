@@ -84,6 +84,7 @@ NSString *NOTEFolderName = @"NOTE";
     [self.courseTableView setSectionIndexColor:[UIColor clearColor]];
     [self.courseTableView setAllowsSelection:NO];
     
+    
     [self.view addSubview:self.courseTableView];
     
     NSThread *thread = [[NSThread alloc]initWithTarget:self selector:@selector(initDatas) object:nil];

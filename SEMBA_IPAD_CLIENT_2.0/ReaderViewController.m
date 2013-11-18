@@ -97,8 +97,8 @@
 
 #define STATUS_HEIGHT 20.0f
 
-#define TOOLBAR_HEIGHT 44.0f
-#define PAGEBAR_HEIGHT 48.0f
+#define TOOLBAR_HEIGHT 64.0f//44.0f
+#define PAGEBAR_HEIGHT 46.0f
 
 #define NOTE_HEIGHT 100.0f
 
@@ -257,7 +257,7 @@
             
             float scale = targetRect.size.width / contentView.theContainerView.bounds.size.width;
             [contentView setZoomScale:scale];
-            NSLog(@"scale %f",scale);
+//            NSLog(@"scale %f",scale);
 //            [theScrollView setContentOffset:CGPointZero];
 //            CGPoint point = CGPointZero;
 //            point.y += 10.0;
@@ -353,7 +353,7 @@
         return;
     }
     
-    NSLog(@"pagenumber %d offset %f",[document.pageNumber intValue],theScrollView.contentOffset.x);
+//    NSLog(@"pagenumber %d offset %f",[document.pageNumber intValue],theScrollView.contentOffset.x);
     NSString *fileName = [NSString stringWithFormat:@"%d%@",[document.pageNumber intValue], @".plist"];
     NSString *filePath=[[NSString alloc]initWithString:[self.notePath stringByAppendingPathComponent:fileName]];
 
@@ -403,6 +403,7 @@
         
         beforeSize = drawingView.image.size;
         NSLog(@"remove %f %f",beforeSize.width,beforeSize.height);
+        //        NSLog(@"remove %f %f",beforeSize.width,beforeSize.height);
         [drawingView removeFromSuperview];
         drawingView = nil;
     }
@@ -420,8 +421,13 @@
     if (beforeSize.width != CGSizeZero.width) {
         scale = nowSize.width / beforeSize.width;
     }
+<<<<<<< HEAD
     NSLog(@"scale %f %f %f",scale,nowSize.width,beforeSize.width);
     NSLog(@"now scale %f maxScale %f",newContentView.zoomScale,newContentView.maximumZoomScale);
+=======
+//    NSLog(@"scale %f %f %f",scale,nowSize.width,beforeSize.width);
+//    NSLog(@"now scale %f maxScale %f",newContentView.zoomScale,newContentView.maximumZoomScale);
+>>>>>>> fe2131fa6f8519b67637ff2c9cc350299f051839
     UIImage *scaleImage = [self scaleImage:noteImage toScale:scale];
     drawNewView = [[ACEDrawingView alloc]initWithFrame:CGRectMake(theScrollView.contentOffset.x + rect.origin.x + 4.0f - rect2.origin.x - 4.0f, rect.origin.y + 4.0f - rect2.origin.y - 4.0f, rect.size.width, rect.size.height) :scaleImage];
     
@@ -472,7 +478,7 @@
     NSString *fileName = [NSString stringWithFormat:@"%d%@",[document.pageNumber intValue], @".plist"];
     
     NSString *filePath=[[NSString alloc]initWithString:[self.notePath stringByAppendingPathComponent:fileName]];
-    NSLog(@"path %@",filePath);
+//    NSLog(@"path %@",filePath);
     NSDictionary *noteDateDic = [[NSDictionary alloc]initWithObjectsAndKeys:imageData,@"imageData", nil];
     
     
@@ -590,12 +596,12 @@
     noteRect.size.height = NOTE_HEIGHT;
     noteRect.origin.y = (viewRect.size.height - NOTE_HEIGHT);
 
-    NSLog(@"%f %f %f %f",noteRect.origin.x,noteRect.origin.y,noteRect.size.width,noteRect.size.height);
+//    NSLog(@"%f %f %f %f",noteRect.origin.x,noteRect.origin.y,noteRect.size.width,noteRect.size.height);
 //    noteToolbar = [[NoteToolbar alloc] initWithFrame:CGRectMake(0, 648, 1024, 100)];
 //    noteToolbar.delegate = self;
 //    [self.view addSubview:noteToolbar];
     
-    noteToolDrawerBar = [[NoteToolDrawerBar alloc]initWithFrame:CGRectMake(0, 0, 160, 568) parentView:self.view];
+    noteToolDrawerBar = [[NoteToolDrawerBar alloc]initWithFrame:CGRectMake(0, 0, 141, 583) parentView:self.view];
     noteToolDrawerBar.delegate = self;
     [self.view addSubview:noteToolDrawerBar];
     
@@ -754,24 +760,38 @@
 
 //初始化书签编辑框
 - (void)initMarkEditView{
-    markEditView = [[UIView alloc]initWithFrame:CGRectMake(1024 - 300, 44 + 40, 200, 100)];
-    [markEditView setBackgroundColor:[UIColor redColor]];
+    UIImage *image = [UIImage imageNamed:@"ppt_popup_bg"];
+    markEditView = [[UIView alloc]initWithFrame:CGRectMake((1024 - image.size.width) / 2,(768 - image.size.height) / 2, image.size.width, image.size.height)];
+    UIColor *background = [UIColor colorWithPatternImage:image];
+    [markEditView setBackgroundColor:background];
     [markEditView setAlpha:0.0f];
     [self.view addSubview:markEditView];
     
-    markField = [[UITextField alloc]initWithFrame:CGRectMake((markEditView.bounds.size.width - 150) / 2, 20, 150, 50)];
-    [markField setPlaceholder:@"请输入书签名称"];
+    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(143, 45, 160, 40)];
+    [label setText:@"添加成功"];
+    [label setTextColor:[UIColor colorWithRed:216.0 / 255 green:65.0 / 255 blue:87.0 / 255 alpha:1.0]];
+    [label setFont:[UIFont systemFontOfSize:36]];
+    [markEditView addSubview:label];
+    
+    markField = [[UITextField alloc]initWithFrame:CGRectMake(36, 120, image.size.width - 36 * 2, 47)];
+    [markField setBackground:[UIImage imageNamed:@"ppt_popup_editbookmarkname"]];
+    [markField setPlaceholder:@"为该书签页命名"];
     [markEditView addSubview:markField];
 
+    int button_height = 60;
     UIButton *sureButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [sureButton setFrame:CGRectMake(20, markField.frame.origin.y + 30, 70, 50)];
+    [sureButton setFrame:CGRectMake(0, markEditView.frame.size.height - button_height, image.size.width / 2, button_height)];
     [sureButton setTitle:@"确定" forState:UIControlStateNormal];
+    [sureButton setTintColor:[UIColor colorWithRed:69.0 / 255 green:69.0 / 255 blue:69.0 / 255 alpha:1.0]];
+    [sureButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
     [sureButton addTarget:self action:@selector(sureAction:) forControlEvents:UIControlEventTouchUpInside];
     [markEditView addSubview:sureButton];
     
     UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [cancelButton setFrame:CGRectMake(markEditView.bounds.size.width - 50 - 70, markField.frame.origin.y + 30, 70, 50)];
+    [cancelButton setFrame:CGRectMake(image.size.width / 2, markEditView.frame.size.height - button_height, image.size.width / 2, button_height)];
     [cancelButton setTitle:@"取消" forState:UIControlStateNormal];
+    [cancelButton setTintColor:[UIColor colorWithRed:69.0 / 255 green:69.0 / 255 blue:69.0 / 255 alpha:1.0]];
+    [cancelButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
     [cancelButton addTarget:self action:@selector(cancelAction:) forControlEvents:UIControlEventTouchUpInside];
     [markEditView addSubview:cancelButton];
     
@@ -785,7 +805,7 @@
     int page = [document.pageNumber intValue];
 //    NSLog(@"")
     if (text == nil) {
-        text = @" ";
+        text = [NSString stringWithFormat:@"Page %d",page];
     }
     [document.markTexts setObject:text forKey:[NSString stringWithFormat:@"%d",page]];
 }
@@ -794,6 +814,11 @@
 -(void)cancelAction:(id)sender
 {
     [self showMarkEditView:markEditView];
+    NSString *text = markField.text;
+    int page = [document.pageNumber intValue];
+    text = [NSString stringWithFormat:@"Page %d",page];
+    [document.markTexts setObject:text forKey:[NSString stringWithFormat:@"%d",page]];
+
 }
 
 //初始化滑动条
@@ -838,7 +863,7 @@
 }
 - (void)widthChange:(UISlider *)sender{
     self.drawNewView.lineWidth = sender.value;
-    NSLog(@"%f",sender.value);
+//    NSLog(@"%f",sender.value);
 }
 - (void)alphaChange:(UISlider *)sender{
     self.drawNewView.lineAlpha = sender.value;
@@ -876,7 +901,7 @@
 }
 
 - (void)tappedInNoteToolbar:(NoteToolbar *)toolbar choiceErase:(UIButton *)button{
-    NSLog(@"eraser");
+//    NSLog(@"eraser");
     currentToolType = ACEDrawingToolTypeEraser;
     [self startDraw];
 }
@@ -1016,6 +1041,11 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+    [mainPagebar updatePagebar];
+    if (markEditView.alpha == 1) {
+        [self showMarkEditView:markEditView];
+    }
+
 	__block NSInteger page = 0;
     
 
@@ -1041,6 +1071,10 @@
 	[self showDocumentPage:theScrollView.tag]; // Show page
 
 	theScrollView.tag = 0; // Clear page number tag
+    [mainPagebar updatePagebar];
+    if (markEditView.alpha == 1) {
+        [self showMarkEditView:markEditView];
+    }
 }
 
 #pragma mark UIGestureRecognizerDelegate methods
@@ -1056,6 +1090,7 @@
 
 - (void)decrementPageNumber
 {
+    
 	if (theScrollView.tag == 0) // Scroll view did end
 	{
 		NSInteger page = [document.pageNumber integerValue];
@@ -1077,10 +1112,12 @@
 			theScrollView.tag = (page - 1); // Decrement page number
 		}
 	}
+    
 }
 
 - (void)incrementPageNumber
 {
+    
 	if (theScrollView.tag == 0) // Scroll view did end
 	{
 		NSInteger page = [document.pageNumber integerValue];
@@ -1100,13 +1137,16 @@
 			theScrollView.tag = (page + 1); // Increment page number
 		}
 	}
+    
 }
 
 - (void)handleSingleTap:(UITapGestureRecognizer *)recognizer
 {
 	if (recognizer.state == UIGestureRecognizerStateRecognized)
 	{
-        
+        if (markEditView.alpha == 1) {
+            [self showMarkEditView:markEditView];
+        }
 		CGRect viewRect = recognizer.view.bounds; // View bounds
 
 		CGPoint point = [recognizer locationInView:recognizer.view];
@@ -1115,7 +1155,7 @@
 
 		if (CGRectContainsPoint(areaRect, point)) // Single tap is inside the area
 		{
-            NSLog(@"in");
+//            NSLog(@"in");
 			NSInteger page = [document.pageNumber integerValue]; // Current page #
 
 			NSNumber *key = [NSNumber numberWithInteger:page]; // Page number key
@@ -1156,6 +1196,7 @@
 						NSInteger value = [target integerValue]; // Number
 
 						[self showDocumentPage:value]; // Show the page
+                        
 					}
 				}
 			}
@@ -1174,6 +1215,7 @@
 //                        [self viewAppear:eraserWidthView];
 //                        [self viewAppear:markerWidthView];
 					}
+                    
 				}
 			}
 
@@ -1186,7 +1228,7 @@
        
 		if (CGRectContainsPoint(nextPageRect, point)) // page++ area
 		{
-             NSLog(@"out");
+//             NSLog(@"out");
 			[self incrementPageNumber]; return;
 		}
 
@@ -1195,7 +1237,7 @@
 
 		if (CGRectContainsPoint(prevPageRect, point)) // page-- area
 		{
-             NSLog(@"out");
+//             NSLog(@"out");
 			[self decrementPageNumber]; return;
 		}
         
@@ -1206,7 +1248,7 @@
 {
 	if (recognizer.state == UIGestureRecognizerStateRecognized)
 	{
-        NSLog(@"two");
+//        NSLog(@"two");
 		CGRect viewRect = recognizer.view.bounds; // View bounds
 
 		CGPoint point = [recognizer locationInView:recognizer.view];
@@ -1284,6 +1326,9 @@
 
 		lastHideTime = [NSDate date];
 	}
+    if (markEditView.alpha == 1) {
+        [self showMarkEditView:markEditView];
+    }
 }
 
 
@@ -1316,24 +1361,11 @@
 
 - (void)tappedInToolbar:(ReaderMainToolbar *)toolbar thumbsButton:(UIButton *)button
 {
-    /*
-	if (printInteraction != nil) [printInteraction dismissAnimated:NO]; // Dismiss
-
-	ThumbsViewController *thumbsViewController = [[ThumbsViewController alloc] initWithReaderDocument:document];
-
-	thumbsViewController.delegate = self;
-    thumbsViewController.title = self.title;
-
-	thumbsViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-	thumbsViewController.modalPresentationStyle = UIModalPresentationFullScreen;
-
-	[self presentViewController:thumbsViewController animated:YES completion:nil];
-     */
+    
     CourseMarkViewController *courseMarkViewController = [[CourseMarkViewController alloc]initWithReaderDocument:document];
     courseMarkViewController.delegate = self;
     
     [self presentViewController:courseMarkViewController animated:YES completion:nil];
-//    [self.navigationController pushViewController:courseMarkViewController animated:YES];
 }
 
 - (void)tappedInToolbar:(ReaderMainToolbar *)toolbar printButton:(UIButton *)button
@@ -1427,7 +1459,7 @@
 - (void)tappedInToolbar:(ReaderMainToolbar *)toolbar markButton:(UIButton *)button
 {
     
-    [self showMarkEditView:markEditView];
+    
 	if (printInteraction != nil) [printInteraction dismissAnimated:YES];
 
 	NSInteger page = [document.pageNumber integerValue];
@@ -1440,11 +1472,13 @@
 	}
 	else // Add the bookmarked page index to the bookmarks set
 	{
+        [self showMarkEditView:markEditView];
 		[mainToolbar setBookmarkState:YES];
         [document.bookmarks addIndex:page];
-        [document.markTexts setObject:@" " forKey:[NSString stringWithFormat:@"%d",page]];
-        
+        NSString *text = [NSString stringWithFormat:@"Page %d",page];
+        [document.markTexts setObject:text forKey:[NSString stringWithFormat:@"%d",page]];
 	}
+    
 }
 - (void)showMarkEditView:(UIView *)view
 {
@@ -1456,15 +1490,17 @@
         view.frame = rect;
         view.alpha = 1.0;
         [UIView commitAnimations];
+        [markField setText:nil];
     }
     else if (view.alpha == 1){
         [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationDuration:0.5];
+        [UIView setAnimationDuration:0.3];
         CGRect rect = view.frame;
         rect.origin.y += 20;
         view.frame = rect;
         view.alpha = 0.0;
         [UIView commitAnimations];
+        
     }
 }
 
@@ -1499,6 +1535,12 @@
 - (void)pagebar:(ReaderMainPagebar *)pagebar gotoPage:(NSInteger)page
 {
 	[self showDocumentPage:page]; // Show the page
+}
+- (void)pagebar:(ReaderMainPagebar *)pagebar leftAction:(UIButton *)button{
+    [self decrementPageNumber];
+}
+- (void)pagebar:(ReaderMainPagebar *)pagebar rightAction:(UIButton *)button{
+    [self incrementPageNumber];
 }
 
 #pragma mark UIApplication notification methods
@@ -1595,7 +1637,7 @@
 
 #pragma NoteToolDrawerBar delegate
 - (void)tappedInNoteToolDrawerBar:(NoteToolDrawerBar *)toolDrawerBar toolAction:(UIButton *)button{
-    NSLog(@"tag %d",button.tag);
+//    NSLog(@"tag %d",button.tag);
 //    swatchView.hidden = YES;
 //    penWidthView.hidden = YES;
 //    eraserWidthView.hidden = YES;
