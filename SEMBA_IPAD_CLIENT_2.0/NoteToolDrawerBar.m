@@ -188,11 +188,9 @@
 }
 
 - (void)handleTap:(UITapGestureRecognizer *)recognizer{
-//    if (!isOpen) {
-//        [self.delegate drawerOpen:self];
-//    } else{
-//        [self.delegate drawerClose:self];
-//    }
+    [self openOrCloseToolBar];
+}
+- (void)openOrCloseToolBar{
     [UIView animateWithDuration:0.75 delay:0.15 options:UIViewAnimationOptionTransitionCurlUp animations:^{
         if (isOpen) {
             self.center = closePoint;

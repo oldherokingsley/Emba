@@ -14,5 +14,6 @@
 @property (nonatomic, retain) NSString *PDFPath;
 @property (nonatomic, retain) NSString *PDFName;
 @property (nonatomic, retain) UIImage *PDFFirstImage;
+@property (nonatomic, retain) NSString *cid;
 
 @end

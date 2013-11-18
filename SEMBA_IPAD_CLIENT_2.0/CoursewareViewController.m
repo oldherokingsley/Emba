@@ -75,7 +75,9 @@ NSString *NOTEFolderName = @"NOTE";
     }
     [self.downloadQueue setMaxConcurrentOperationCount:MAX_DOWNLOAD_NUM];      //最大同时下载数
     [self.downloadQueue setShowAccurateProgress:YES];        //是否显示详细进度
-    
+    [self.downloadQueue setRequestDidFailSelector:@selector(queueFailed)];
+    [self.downloadQueue setRequestDidFinishSelector:@selector(queueFinished)];
+    [self.downloadQueue setRequestDidStartSelector:@selector(queueStarted)];
     
     self.courseTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.height, self.view.frame.size.width)];
     self.courseTableView.delegate = self;
@@ -108,6 +110,16 @@ NSString *NOTEFolderName = @"NOTE";
     [searchView addSubview:searchBar];
     
     self.navigationItem.titleView = searchView;
+}
+
+- (void) queueFailed{
+    NSLog(@"failed");
+}
+- (void) queueFinished{
+    NSLog(@"finished");
+}
+- (void) queueStarted{
+    NSLog(@"started");
 }
 
 - (void) initDatas{
@@ -208,12 +220,23 @@ NSString *NOTEFolderName = @"NOTE";
 - (void)viewDidDisappear:(BOOL)animated
 {
 	[super viewDidDisappear:animated];
-    for (ASIHTTPRequest *request in self.downloadQueue.operations) {
+    /*for (ASIHTTPRequest *request in self.downloadQueue.operations) {
         [request clearDelegatesAndCancel];
+        
     }
+    [self.downloadQueue cancelAllOperations];
+    
     NSLog(@"disappear");
+     */
 }
-
+- (void)dealloc
+{
+    
+    NSLog(@"out");
+//    self.downloadQueue 
+//    [self.downloadQueue cancelAllOperations];
+    
+}
 - (void)viewDidUnload
 {
 #ifdef DEBUG
@@ -294,6 +317,11 @@ NSString *NOTEFolderName = @"NOTE";
 - (void)dismissReaderViewController:(ReaderViewController *)viewController
 {
 #if (DEMO_VIEW_CONTROLLER_PUSH == TRUE)
+    
+    for (ASIHTTPRequest *request in self.downloadQueue.operations) {
+        [request clearDelegatesAndCancel];
+        NSLog(@"cancel");
+    }
 
 	[self.navigationController popViewControllerAnimated:YES];
 
@@ -492,7 +520,7 @@ NSString *NOTEFolderName = @"NOTE";
     [request setDownloadProgressDelegate:progress];//设置每个任务的进度条信息
     NSDictionary *myDict = [NSDictionary dictionaryWithObjectsAndKeys:item,@"item", nil];
     [request setMyDict:myDict];
-    [[self downloadQueue] addOperation:request];
+    [self.downloadQueue addOperation:request];
     
 }
 //下载所有课件
@@ -722,7 +750,7 @@ NSString *NOTEFolderName = @"NOTE";
 {
     [self searchBar:self.searchBar textDidChange:nil];
     [self.searchBar resignFirstResponder];
-    NSLog(@"cancel");
+//    NSLog(@"cancel");
 }
 
 

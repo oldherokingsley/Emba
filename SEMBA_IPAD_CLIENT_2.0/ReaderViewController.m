@@ -46,10 +46,14 @@
 #define kPenAlphaMax            1.0f
 #define kPenAlphaDefault        1.0f
 
+#define kMarkAlphaDefault       0.5f
+
 #define SWATCH_VIEW_TAG     111111
 #define PEN_VIEW_TAG        222222
 #define MARKER_VIEW_TAG     333333
 #define ERASER_VIEW_TAG     444444
+
+#define PEN_WIDTH_SLIDER_TAG  111111
 
 
 @interface ReaderViewController () <UIScrollViewDelegate, UIGestureRecognizerDelegate, MFMailComposeViewControllerDelegate,
@@ -393,10 +397,19 @@
     CGRect rect = newContentView.theContainerView.frame;
     CGRect rect2 = newContentView.bounds;
     
+    NSLog(@"frame %f %f %f %f",rect.origin.x,rect.origin.y,rect.size.width,rect.size.height);
+    CGPoint point = theScrollView.bounds.origin;
+    CGSize size = theScrollView.bounds.size;
+    
+    NSLog(@"theScrollView frame %f %f %f %f",point.x,point.y,size.width,size.height);
+
     CGSize beforeSize;
     if (drawingView != nil) {
         
         beforeSize = drawingView.image.size;
+        NSLog(@"remove %f %f",beforeSize.width,beforeSize.height);
+        //        NSLog(@"remove %f %f",beforeSize.width,beforeSize.height);
+
 //        NSLog(@"remove %f %f",beforeSize.width,beforeSize.height);
         [drawingView removeFromSuperview];
         drawingView = nil;
@@ -415,10 +428,14 @@
     if (beforeSize.width != CGSizeZero.width) {
         scale = nowSize.width / beforeSize.width;
     }
+
+    NSLog(@"scale %f %f %f",scale,nowSize.width,beforeSize.width);
+    NSLog(@"now scale %f maxScale %f",newContentView.zoomScale,newContentView.maximumZoomScale);
 //    NSLog(@"scale %f %f %f",scale,nowSize.width,beforeSize.width);
 //    NSLog(@"now scale %f maxScale %f",newContentView.zoomScale,newContentView.maximumZoomScale);
     NSLog(@"scale %f %f %f",scale,nowSize.width,beforeSize.width);
     NSLog(@"now scale %f maxScale %f",newContentView.zoomScale,newContentView.maximumZoomScale);
+
     UIImage *scaleImage = [self scaleImage:noteImage toScale:scale];
     drawNewView = [[ACEDrawingView alloc]initWithFrame:CGRectMake(theScrollView.contentOffset.x + rect.origin.x + 4.0f - rect2.origin.x - 4.0f, rect.origin.y + 4.0f - rect2.origin.y - 4.0f, rect.size.width, rect.size.height) :scaleImage];
     
@@ -459,6 +476,7 @@
 //保存笔记
 - (void)saveDraw{
 
+    NSLog(@"save");
     UIImage *image = drawNewView.image;
     
     NSData *imageData = UIImagePNGRepresentation(image);
@@ -625,9 +643,9 @@
     CGFloat buttonWidth = 60.0f;
     CGFloat buttonHeight = 60.0f;
     CGFloat viewY = 100.0f + 40.0f;
-    CGFloat viewX = 120.0f;
+    CGFloat viewX = 160.0f;
     //colorNum * buttonWidth + 4 * 10  + 40
-    swatchView = [[UIView alloc]initWithFrame:CGRectMake(viewX, viewY, colorNum * buttonWidth + 4 * 10  + 40, buttonHeight)];
+    swatchView = [[UIView alloc]initWithFrame:CGRectMake(0, viewY, colorNum * buttonWidth + 4 * 10  + 40, buttonHeight)];
     [swatchView setBackgroundColor:[UIColor grayColor]];
     NSArray *colorArray = [[NSArray alloc]initWithObjects:[UIColor blackColor],[UIColor redColor],[UIColor greenColor],[UIColor blueColor],[UIColor yellowColor],[UIColor whiteColor], nil];
     for (int i = 0; i < colorNum; i ++) {
@@ -640,46 +658,68 @@
     swatchView.hidden = YES;
     [self.view addSubview:swatchView];
     
-    viewY += (buttonHeight + 20);
-    penWidthView = [[UIView alloc]initWithFrame:CGRectMake(viewX, viewY, 200, 60)];
-    [penWidthView setBackgroundColor:[UIColor grayColor]];
-    UISlider *penWidthSlider = [[UISlider alloc]initWithFrame:CGRectMake(25, 15, 150, 29)];
+    CGFloat outButtonHeight = 73.0f;
+    
+    viewY += (outButtonHeight + 10);
+    penWidthView = [[UIView alloc]initWithFrame:CGRectMake(viewX, viewY, 214, 57)];
+    UIColor *penBg = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ppt_toolbox_pencil_adjust_bg"]];
+    [penWidthView setBackgroundColor:penBg];
+    UISlider *penWidthSlider = [[UISlider alloc]initWithFrame:CGRectMake(15, 12, 185, 29)];
+//    [penWidthSlider setTintColor:[UIColor redColor]];
+    [penWidthSlider setMaximumTrackImage:[UIImage imageNamed:@"ppt_toolbox_eraser_adjust_bar_active"] forState:UIControlStateNormal];
+    [penWidthSlider setMinimumTrackImage:[UIImage imageNamed:@"ppt_toolbox_eraser_adjust_bar_inactive"] forState:UIControlStateNormal];
+//    [penWidthSlider setThumbImage:[UIImage imageNamed:@"ppt_toolbox_eraser_adjust_handle"] forState:UIControlStateNormal];
+    
     [penWidthSlider setMinimumValue:kPenWidthMin];
     [penWidthSlider setMaximumValue:kPenWidthMax];
     [penWidthSlider addTarget:self action:@selector(widthChange:) forControlEvents:UIControlEventValueChanged];
     [penWidthSlider setValue:kPenWidthDefault];
     penWidthSlider.backgroundColor = [UIColor clearColor];
+    [penWidthSlider setTag:PEN_WIDTH_SLIDER_TAG];
     [penWidthView addSubview:penWidthSlider];
     penWidthView.hidden = YES;
     [self.view addSubview:penWidthView];
     
-    viewY += (buttonHeight + 20);
-    markerWidthView = [[UIView alloc]initWithFrame:CGRectMake(viewX, viewY, 200, 60)];
-    [markerWidthView setBackgroundColor:[UIColor grayColor]];
-    UISlider *markerWidthSlider = [[UISlider alloc]initWithFrame:CGRectMake(25, 15, 150, 29)];
+    viewY += (outButtonHeight + 10);
+    markerWidthView = [[UIView alloc]initWithFrame:CGRectMake(viewX, viewY, 214, 57)];
+    UIColor *markerBg = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ppt_toolbox_pencil_adjust_bg"]];
+    [markerWidthView setBackgroundColor:markerBg];
+    UISlider *markerWidthSlider = [[UISlider alloc]initWithFrame:CGRectMake(15, 12, 185, 29)];
+    [markerWidthSlider setMaximumTrackImage:[UIImage imageNamed:@"ppt_toolbox_eraser_adjust_bar_active"] forState:UIControlStateNormal];
+    [markerWidthSlider setMinimumTrackImage:[UIImage imageNamed:@"ppt_toolbox_eraser_adjust_bar_inactive"] forState:UIControlStateNormal];
+//    [markerWidthSlider setThumbImage:[UIImage imageNamed:@"ppt_toolbox_eraser_adjust_handle"] forState:UIControlStateNormal];
     [markerWidthSlider setMinimumValue:kPenWidthMin];
     [markerWidthSlider setMaximumValue:kPenWidthMax];
     [markerWidthSlider addTarget:self action:@selector(widthChange:) forControlEvents:UIControlEventValueChanged];
     [markerWidthSlider setValue:kPenWidthDefault];
     [markerWidthSlider setBackgroundColor:[UIColor clearColor]];
+    [markerWidthSlider setTag:PEN_WIDTH_SLIDER_TAG];
     [markerWidthView addSubview:markerWidthSlider];
     markerWidthView.hidden = YES;
     [self.view addSubview:markerWidthView];
     
-    viewY += (buttonHeight + 20);
-    eraserWidthView = [[UIView alloc]initWithFrame:CGRectMake(viewX, viewY, 300, 60)];
-    [eraserWidthView setBackgroundColor:[UIColor grayColor]];
-    UISlider *eraserWidthSlider = [[UISlider alloc]initWithFrame:CGRectMake(25, 15, 150, 29)];
+    viewY += (outButtonHeight + 10 + 5);
+    eraserWidthView = [[UIView alloc]initWithFrame:CGRectMake(viewX, viewY, 310, 58)];
+    UIColor *eraserBg = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ppt_toolbox_eraser_adjust_bg"]];
+    [eraserWidthView setBackgroundColor:eraserBg];
+    UISlider *eraserWidthSlider = [[UISlider alloc]initWithFrame:CGRectMake(15, 12, 185, 29)];
+    [eraserWidthSlider setMaximumTrackImage:[UIImage imageNamed:@"ppt_toolbox_eraser_adjust_bar_active"] forState:UIControlStateNormal];
+    [eraserWidthSlider setMinimumTrackImage:[UIImage imageNamed:@"ppt_toolbox_eraser_adjust_bar_inactive"] forState:UIControlStateNormal];
+//    [eraserWidthSlider setThumbImage:[UIImage imageNamed:@"ppt_toolbox_eraser_adjust_handle"] forState:UIControlStateNormal];
     [eraserWidthSlider setMinimumValue:kPenWidthMin];
     [eraserWidthSlider setMaximumValue:kPenWidthMax];
     [eraserWidthSlider addTarget:self action:@selector(widthChange:) forControlEvents:UIControlEventValueChanged];
     [eraserWidthSlider setValue:kPenWidthDefault];
     [eraserWidthSlider setBackgroundColor:[UIColor clearColor]];
+    [eraserWidthSlider setTag:PEN_WIDTH_SLIDER_TAG];
     eraserWidthView.hidden = YES;
     [eraserWidthView addSubview:eraserWidthSlider];
     
-    UIButton *clearButton = [[UIButton alloc]initWithFrame:CGRectMake(200, 10, 100, 40)];
+    UIButton *clearButton = [[UIButton alloc]initWithFrame:CGRectMake(210, 12, 81, 34)];
+    [clearButton setBackgroundImage:[UIImage imageNamed:@"ppt_toolbox_eraser_delete_all"] forState:UIControlStateNormal];
     [clearButton setTitle:@"清空全部" forState:UIControlStateNormal];
+//    [clearButton setTintColor:[UIColor redColor]];
+    [clearButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
     [clearButton addTarget:self action:@selector(clearAction:) forControlEvents:UIControlEventTouchUpInside];
     [eraserWidthView addSubview:clearButton];
     [self.view addSubview:eraserWidthView];
@@ -747,6 +787,7 @@
     UIButton *originalButton = [noteToolDrawerBar.buttonArray objectAtIndex:0];
     [originalButton setBackgroundColor:color];
     self.drawNewView.lineColor = color;
+    [self viewDisappear:swatchView];
 }
 
 //初始化书签编辑框
@@ -795,7 +836,7 @@
     NSString *text = markField.text;
     int page = [document.pageNumber intValue];
 //    NSLog(@"")
-    if (text == nil) {
+    if (text == nil || [text isEqualToString:@""]) {
         text = [NSString stringWithFormat:@"Page %d",page];
     }
     [document.markTexts setObject:text forKey:[NSString stringWithFormat:@"%d",page]];
@@ -1091,9 +1132,11 @@
 		if ((maxPage > minPage) && (page != minPage))
 		{
             
-            [self saveDraw];
-            [self stopDraw];
-            
+//            [self saveDraw];
+//            [self stopDraw];
+            if (noteToolDrawerBar.center.x == noteToolDrawerBar.openPoint.x) {
+                [noteToolDrawerBar openOrCloseToolBar];
+            }
 			CGPoint contentOffset = theScrollView.contentOffset;
 
 			contentOffset.x -= theScrollView.bounds.size.width; // -= 1
@@ -1117,8 +1160,12 @@
 
 		if ((maxPage > minPage) && (page != maxPage))
 		{
-            [self saveDraw];
-            [self stopDraw];
+            if (noteToolDrawerBar.center.x == noteToolDrawerBar.openPoint.x) {
+                [noteToolDrawerBar openOrCloseToolBar];
+            }
+            
+//            [self saveDraw];
+//            [self stopDraw];
 			CGPoint contentOffset = theScrollView.contentOffset;
 
 			contentOffset.x += theScrollView.bounds.size.width; // += 1
@@ -1492,6 +1539,7 @@
         view.alpha = 0.0;
         [UIView commitAnimations];
         
+        
     }
 }
 
@@ -1518,13 +1566,16 @@
 
 - (void)thumbsViewController:(ThumbsViewController *)viewController gotoPage:(NSInteger)page
 {
-	[self showDocumentPage:page]; // Show the page
+    [self showDocumentPage:page]; // Show the page
 }
 
 #pragma mark ReaderMainPagebarDelegate methods
 
 - (void)pagebar:(ReaderMainPagebar *)pagebar gotoPage:(NSInteger)page
 {
+    if (noteToolDrawerBar.center.x == noteToolDrawerBar.openPoint.x) {
+        [noteToolDrawerBar openOrCloseToolBar];
+    }
 	[self showDocumentPage:page]; // Show the page
 }
 - (void)pagebar:(ReaderMainPagebar *)pagebar leftAction:(UIButton *)button{
@@ -1639,15 +1690,15 @@
     [self viewDisappear:markerWidthView];
     switch (button.tag) {
         case 1:         //选择颜色
-            if (button.selected) {
+//            if (button.selected) {
 //                swatchView.hidden = NO;
 //                [self swatchAppear:swatchView];
                 [self viewAppear:swatchView];
-            } else{
+//            } else{
 //                swatchView.hidden = YES;
 //                [self swatchDisappear:swatchView];
-                [self viewDisappear:swatchView];
-            }
+//                [self viewDisappear:swatchView];
+//            }
             
             break;
         case 2:         //选择钢笔
@@ -1655,10 +1706,11 @@
                 currentToolType = ACEDrawingToolTypePen;
                 drawNewView.drawTool = ACEDrawingToolTypePen;
                 drawNewView.lineAlpha = 1.0f;
-//                penWidthView.hidden = NO;
+                UISlider *penWidthSlider = (UISlider *)[penWidthView viewWithTag:PEN_WIDTH_SLIDER_TAG];
+                drawNewView.lineWidth = penWidthSlider.value;
                 [self viewAppear:penWidthView];
             } else{
-//                penWidthView.hidden = YES;
+
                 [self viewDisappear:penWidthView];
             }
             break;
@@ -1666,17 +1718,27 @@
             if (button.selected) {
                 currentToolType = ACEDrawingToolTypePen;
                 drawNewView.drawTool = ACEDrawingToolTypePen;
-                drawNewView.lineAlpha = 0.5f;
-//                markerWidthView.hidden = NO;
+                drawNewView.lineAlpha = kMarkAlphaDefault;
+                UISlider *markWidthSlider = (UISlider *)[markerWidthView viewWithTag:PEN_WIDTH_SLIDER_TAG];
+                drawNewView.lineWidth = markWidthSlider.value;
                 [self viewAppear:markerWidthView];
             } else{
-//                markerWidthView.hidden = YES;
                 [self viewDisappear:markerWidthView];
             }
             break;
         case 4:         //选择橡皮
             if (button.selected) {
-                currentToolType = ACEDrawingToolTypeEraser;
+                if (currentToolType == ACEDrawingToolTypePen) {
+                    UISlider *eraserWidthSlider = (UISlider *)[eraserWidthView viewWithTag:PEN_WIDTH_SLIDER_TAG];
+                    if (drawNewView.lineAlpha == 1.0f) {
+                        UISlider *penWidthSlider = (UISlider *)[penWidthView viewWithTag:PEN_WIDTH_SLIDER_TAG];
+                        [eraserWidthSlider setValue:penWidthSlider.value];
+                    } else if (drawNewView.lineAlpha == kMarkAlphaDefault){
+                        UISlider *markWidthSlider = (UISlider *)[markerWidthView viewWithTag:PEN_WIDTH_SLIDER_TAG];
+                        [eraserWidthSlider setValue:markWidthSlider.value];
+                    }
+                }
+                                currentToolType = ACEDrawingToolTypeEraser;
                 drawNewView.drawTool = ACEDrawingToolTypeEraser;
 //                eraserWidthView.hidden = NO;
                 [self viewAppear:eraserWidthView];
