@@ -393,10 +393,19 @@
     CGRect rect = newContentView.theContainerView.frame;
     CGRect rect2 = newContentView.bounds;
     
+    NSLog(@"frame %f %f %f %f",rect.origin.x,rect.origin.y,rect.size.width,rect.size.height);
+    CGPoint point = theScrollView.bounds.origin;
+    CGSize size = theScrollView.bounds.size;
+    
+    NSLog(@"theScrollView frame %f %f %f %f",point.x,point.y,size.width,size.height);
+
     CGSize beforeSize;
     if (drawingView != nil) {
         
         beforeSize = drawingView.image.size;
+        NSLog(@"remove %f %f",beforeSize.width,beforeSize.height);
+        //        NSLog(@"remove %f %f",beforeSize.width,beforeSize.height);
+
 //        NSLog(@"remove %f %f",beforeSize.width,beforeSize.height);
         [drawingView removeFromSuperview];
         drawingView = nil;
@@ -415,10 +424,14 @@
     if (beforeSize.width != CGSizeZero.width) {
         scale = nowSize.width / beforeSize.width;
     }
+
+    NSLog(@"scale %f %f %f",scale,nowSize.width,beforeSize.width);
+    NSLog(@"now scale %f maxScale %f",newContentView.zoomScale,newContentView.maximumZoomScale);
 //    NSLog(@"scale %f %f %f",scale,nowSize.width,beforeSize.width);
 //    NSLog(@"now scale %f maxScale %f",newContentView.zoomScale,newContentView.maximumZoomScale);
     NSLog(@"scale %f %f %f",scale,nowSize.width,beforeSize.width);
     NSLog(@"now scale %f maxScale %f",newContentView.zoomScale,newContentView.maximumZoomScale);
+
     UIImage *scaleImage = [self scaleImage:noteImage toScale:scale];
     drawNewView = [[ACEDrawingView alloc]initWithFrame:CGRectMake(theScrollView.contentOffset.x + rect.origin.x + 4.0f - rect2.origin.x - 4.0f, rect.origin.y + 4.0f - rect2.origin.y - 4.0f, rect.size.width, rect.size.height) :scaleImage];
     

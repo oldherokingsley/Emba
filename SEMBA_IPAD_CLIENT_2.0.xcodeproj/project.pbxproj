@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		2B5AA8C91830EBFC00CC0DBD /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9240B71830D01800415735 /* LoginViewController.m */; };
 		2B5AA8CA1830ECBB00CC0DBD /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C9240B81830D01800415735 /* LoginViewController.xib */; };
+		2B98B0FB1839DAD900EBA2E0 /* SetUpView.h in Sources */ = {isa = PBXBuildFile; fileRef = 2B98B0F91839DAD900EBA2E0 /* SetUpView.h */; };
+		2B98B0FC1839DAD900EBA2E0 /* SetUpView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B98B0FA1839DAD900EBA2E0 /* SetUpView.m */; };
 		2BB8153A1830AD7C00736512 /* Dao.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BB815391830AD7B00736512 /* Dao.m */; };
 		2BB815471830AE0200736512 /* Course.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BB8153C1830AE0200736512 /* Course.m */; };
 		2BB815481830AE0200736512 /* File.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BB8153E1830AE0200736512 /* File.m */; };
@@ -274,6 +276,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2B98B0F91839DAD900EBA2E0 /* SetUpView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SetUpView.h; sourceTree = "<group>"; };
+		2B98B0FA1839DAD900EBA2E0 /* SetUpView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SetUpView.m; sourceTree = "<group>"; };
 		2BB815381830AD7B00736512 /* Dao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dao.h; sourceTree = "<group>"; };
 		2BB815391830AD7B00736512 /* Dao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Dao.m; sourceTree = "<group>"; };
 		2BB8153B1830AE0200736512 /* Course.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Course.h; sourceTree = "<group>"; };
@@ -638,6 +642,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2B98B0F81839DA8100EBA2E0 /* SetUp */ = {
+			isa = PBXGroup;
+			children = (
+				2B98B0F91839DAD900EBA2E0 /* SetUpView.h */,
+				2B98B0FA1839DAD900EBA2E0 /* SetUpView.m */,
+			);
+			name = SetUp;
+			sourceTree = "<group>";
+		};
 		2BB815361830ACFA00736512 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -1128,6 +1141,7 @@
 		9CBD164F181E69D000075BDF /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				2B98B0F81839DA8100EBA2E0 /* SetUp */,
 				599703071835FF4800EB9DF6 /* NoticeCenter */,
 				599703061835FF3E00EB9DF6 /* Register */,
 				599703051835FF3700EB9DF6 /* Schedule */,
@@ -1388,6 +1402,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B98B0FB1839DAD900EBA2E0 /* SetUpView.h in Sources */,
+				2B98B0FC1839DAD900EBA2E0 /* SetUpView.m in Sources */,
 				59D096D81836004D0097C6AC /* EvaluateController.m in Sources */,
 				2B5AA8C91830EBFC00CC0DBD /* LoginViewController.m in Sources */,
 				5931752C181F8E4B000BBC4F /* DDMenuController.m in Sources */,
