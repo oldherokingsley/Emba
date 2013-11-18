@@ -417,6 +417,8 @@
     }
 //    NSLog(@"scale %f %f %f",scale,nowSize.width,beforeSize.width);
 //    NSLog(@"now scale %f maxScale %f",newContentView.zoomScale,newContentView.maximumZoomScale);
+    NSLog(@"scale %f %f %f",scale,nowSize.width,beforeSize.width);
+    NSLog(@"now scale %f maxScale %f",newContentView.zoomScale,newContentView.maximumZoomScale);
     UIImage *scaleImage = [self scaleImage:noteImage toScale:scale];
     drawNewView = [[ACEDrawingView alloc]initWithFrame:CGRectMake(theScrollView.contentOffset.x + rect.origin.x + 4.0f - rect2.origin.x - 4.0f, rect.origin.y + 4.0f - rect2.origin.y - 4.0f, rect.size.width, rect.size.height) :scaleImage];
     
