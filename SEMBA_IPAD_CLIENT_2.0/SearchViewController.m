@@ -19,7 +19,8 @@
 #import "ASIHTTPRequest+category.h"
 #import "ReaderDocument.h"
 #import "ReaderViewController.h"
-
+#import "UITapGestureRecognizer+category.h"
+#import "CoursewareViewController.h"
 NSString *PDFFolderName2 = @"PDF";
 NSString *NOTEFolderName2 = @"NOTE";
 #define PROGRESS_TAG 111111
@@ -39,10 +40,12 @@ NSString *NOTEFolderName2 = @"NOTE";
 @synthesize coursewareOriginArray;
 @synthesize coursewareSV;
 @synthesize courseNumLabel;
-@synthesize coursewareNumLabe;
+@synthesize coursewareNumLabel;
 @synthesize buttonArray;
 @synthesize downloadQueue;
 @synthesize progressArray;
+@synthesize buttonDisplayArray;
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -57,8 +60,20 @@ NSString *NOTEFolderName2 = @"NOTE";
 {
     [super viewDidLoad];
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithTitle:@"返回" style:UIBarButtonItemStyleBordered target:self action:@selector(backToMainPage:)];
-    self.navigationItem.leftBarButtonItem = backItem;
+    [backItem setImage:[UIImage imageNamed:@"pptsearch_cancle"]];
+    [self.navigationItem setHidesBackButton:YES];
+    self.navigationItem.rightBarButtonItem = backItem;
     
+    self.searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0, 0, 1024 - 50 - 100, 44)];
+    [self.searchBar setSearchBarStyle:UISearchBarStyleMinimal];
+    self.searchBar.delegate = self;
+    [self.searchBar becomeFirstResponder];
+    
+    UIView *searchView = [[UIView alloc]initWithFrame:CGRectMake(50, 0, 1024 - 50 - 100, 44)];
+    searchView.backgroundColor = [UIColor clearColor];
+    [searchView addSubview:searchBar];
+    self.navigationItem.titleView = searchBar;
+
     if (![self downloadQueue]) {
         [self setDownloadQueue:[[ASINetworkQueue alloc]init]];
     }
@@ -70,29 +85,32 @@ NSString *NOTEFolderName2 = @"NOTE";
 //    [self.downloadQueue setRequestDidFailSelector:@selector(queueFailed)];
 //    [self.downloadQueue setRequestDidFinishSelector:@selector(queueFinished)];
 //    [self.downloadQueue setRequestDidStartSelector:@selector(queueStarted)];
-    [self initSrollViewDatas];
+//    [self initSrollViewDatas];
     
     CGFloat viewY = 40;
-    coursewareNumLabe = [[UILabel alloc]initWithFrame:CGRectMake(50, viewY, 300, 50)];
-    [coursewareNumLabe setTextColor:[UIColor redColor]];
-    [coursewareNumLabe setText:@"共找到0个课件"];
-    [self.view addSubview:coursewareNumLabe];
+    coursewareNumLabel = [[UILabel alloc]initWithFrame:CGRectMake(50, viewY, 300, 50)];
+    [coursewareNumLabel setTextColor:[UIColor redColor]];
+    [coursewareNumLabel setText:@"共找到0个课件"];
+    [self.view addSubview:coursewareNumLabel];
     
     viewY += (50 + 0);
     coursewareSV = [[UIScrollView alloc]initWithFrame:CGRectMake(50, viewY, 1024 - 50, 280)];
     [self.view addSubview:coursewareSV];
     
-    viewY += (280 + 40);
+    viewY += (280);
     courseNumLabel = [[UILabel alloc]
                       initWithFrame:CGRectMake(50, viewY, 300, 50)];
-    [courseNumLabel setText:@"共找到0个课件"];
+    [courseNumLabel setText:@"共找到0个课程"];
     [courseNumLabel setTextColor:[UIColor redColor]];
     [self.view addSubview:courseNumLabel];
     
     viewY += (50 + 0);
     courseSV = [[UIScrollView alloc]initWithFrame:CGRectMake(50, viewY, 1024 - 50, 280)];
     [self.view addSubview:courseSV];
-    [self setScrollViewDatas];
+//    [self setScrollViewDatas];
+    
+    NSThread *thread = [[NSThread alloc]initWithTarget:self selector:@selector(initSrollViewDatas) object:nil];
+    [thread start];
     
 	// Do any additional setup after loading the view.
 }
@@ -112,6 +130,10 @@ NSString *NOTEFolderName2 = @"NOTE";
 }
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
+    
+    
+}
+- (void)dealloc{
     for (ASIHTTPRequest *request in self.downloadQueue.operations) {
         NSLog(@"cancel");
         [request clearDelegatesAndCancel];
@@ -120,7 +142,6 @@ NSString *NOTEFolderName2 = @"NOTE";
         [progress removeLink];
     }
 
-    
 }
 
 - (void) initSrollViewDatas{
@@ -130,6 +151,8 @@ NSString *NOTEFolderName2 = @"NOTE";
     coursewareDisplayArray = [[NSMutableArray alloc]init];
     coursewareOriginArray = [[NSMutableArray alloc]init];
     progressArray = [[NSMutableArray alloc]init];
+    buttonDisplayArray = [[NSMutableArray alloc]init];
+    
     SysbsModel *sysbsModel = [SysbsModel getSysbsModel];
     MyCourse *myCourse = sysbsModel.myCourse;
     courseOriginArray = myCourse.courseArr;
@@ -160,11 +183,21 @@ NSString *NOTEFolderName2 = @"NOTE";
 
         }
     }
+    [self performSelectorOnMainThread:@selector(setScrollViewDatas) withObject:nil waitUntilDone:YES];
     
 }
 
 - (void) setScrollViewDatas{
+    for (UIView *subView in courseSV.subviews) {
+        [subView removeFromSuperview];
+    }
+    for (UIView *subView in coursewareSV.subviews) {
+        [subView removeFromSuperview];
+    }
+    [coursewareNumLabel setText:[NSString stringWithFormat:@"共找到%d个课件",[coursewareDisplayArray count]]];
+    [courseNumLabel setText:[NSString stringWithFormat:@"共找到%d个课程",[courseDisplayArray count]]];
     [coursewareSV setContentSize:CGSizeMake([coursewareDisplayArray count] * 250, 280)];
+    buttonArray = [NSMutableArray array];
     for (int i = 0; i < [coursewareDisplayArray count]; i ++) {
         UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(250 * i + 24, 20, 226, 180)];
         [button setTag:i + 1];
@@ -207,7 +240,7 @@ NSString *NOTEFolderName2 = @"NOTE";
             
             //            NSLog(@"PDFFirstImage %d",index);
             [button setImage:PDFFirstImage forState:UIControlStateNormal];
-            [button setImageEdgeInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
+            [button setImageEdgeInsets:UIEdgeInsetsMake(2, 2, 2, 2)];
             
             
             //            [button removeTarget:nil action:nil forControlEvents:UIControlEventTouchUpInside];
@@ -223,7 +256,7 @@ NSString *NOTEFolderName2 = @"NOTE";
             [button setImage:nil forState:UIControlStateNormal];
             [button addTarget:self action:@selector(courseItemAction:) forControlEvents:UIControlEventTouchUpInside];
         }
-        UIImage *image = [UIImage imageNamed:@"download_ppt.png"];
+        UIImage *image = [UIImage imageNamed:@"pptsearch_ppt"];
         [button setBackgroundImage:image forState:UIControlStateNormal];
         
         
@@ -235,7 +268,25 @@ NSString *NOTEFolderName2 = @"NOTE";
         
         [coursewareSV addSubview:button];
         [coursewareSV addSubview:label];
+        [courseSV setContentOffset:CGPointZero];
+        [coursewareSV setContentOffset:CGPointZero];
     }
+    
+    int courseNumber = [courseDisplayArray count];
+    [self.courseSV setContentSize:CGSizeMake(courseNumber * 250,280)];
+    for (int i = 0;  i < courseNumber; i ++) {
+        Course *course = [courseDisplayArray objectAtIndex:i];
+        
+        NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:course.courseName,@"courseName",course.teacherName,@"teachName",@"2013/11/11",@"date", nil];
+        CourseItem *courseItem = [[CourseItem alloc]initWithFrame:CGRectMake(20 + i * 250,20, 235, 235) :dict];
+        UITapGestureRecognizer *singleTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(jumpToCourseware:)];
+        NSDictionary *myDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:course.cid],@"tag", nil];
+        [singleTapGesture setMyDict:myDict];
+        
+        [courseItem addGestureRecognizer:singleTapGesture];
+        [self.courseSV addSubview:courseItem];
+    }
+
 
 }
 
@@ -284,6 +335,18 @@ NSString *NOTEFolderName2 = @"NOTE";
 	}
     
     
+}
+
+//跳转到课件页面
+- (void)jumpToCourseware:(id)sender
+{
+    UITapGestureRecognizer *gesture = (UITapGestureRecognizer *)sender;
+    NSDictionary *myDict = gesture.myDict;
+    int index = [(NSNumber *)[myDict objectForKey:@"tag"] integerValue];
+    
+    CoursewareViewController *coursewareViewController = [[CoursewareViewController alloc]init];
+    coursewareViewController.courseFolderName = [NSString stringWithFormat:@"%d",index];
+    [self.navigationController pushViewController:coursewareViewController animated:YES];
 }
 
 //点击单个课件下载
@@ -518,5 +581,75 @@ NSString *NOTEFolderName2 = @"NOTE";
 #endif // DEMO_VIEW_CONTROLLER_PUSH
 }
 
+#pragma serchBar delegate
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText;
+{
+    
+}
+
+-(void) searchBarSearchButtonClicked:(UISearchBar *)_searchBar {
+    [self searchBar:self.searchBar textDidChange:self.searchBar.text];
+    [self.searchBar resignFirstResponder];
+    NSString *searchText = _searchBar.text;
+    NSLog(@"click");
+    if (searchText!=nil && searchText.length>0) {
+        self.coursewareDisplayArray= [NSMutableArray array];
+        self.buttonDisplayArray = [NSMutableArray array];
+        for (int i = 0 ; i < [coursewareOriginArray count];i ++) {
+            CoursewareItem *item = [coursewareOriginArray objectAtIndex:i];
+//            UIButton *button = [buttonArray objectAtIndex:i];
+            if ([self isMatch:searchText :item.PDFName]) {
+                [self.coursewareDisplayArray addObject:item];
+//                [self.buttonDisplayArray addObject:button];
+                //                NSLog(@"%d",[displayArray count]);
+            }
+        }
+        
+        self.courseDisplayArray = [NSMutableArray array];
+        for (int i = 0; i < [courseOriginArray count]; i ++) {
+            Course *course = [courseOriginArray objectAtIndex:i];
+            if ([self isMatch:searchText :course.courseName]) {
+                [self.courseDisplayArray addObject:course];
+            }
+        }
+        
+//        [self.courseTableView reloadData];
+        [self setScrollViewDatas];
+    }
+    else
+    {
+        self.coursewareDisplayArray = [NSMutableArray arrayWithArray:coursewareOriginArray];
+        self.buttonDisplayArray = [NSMutableArray arrayWithArray:buttonArray];
+//        [self.courseTableView reloadData];
+        [self setScrollViewDatas];
+    }
+
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *) searchBar
+{
+    [self searchBar:self.searchBar textDidChange:nil];
+    [self.searchBar resignFirstResponder];
+    //    NSLog(@"cancel");
+}
+
+- (BOOL)isMatch:(NSString *)searchText :(NSString *)originalText{
+    BOOL result = YES;
+    int start = 0;
+    for (int i = 0; i < searchText.length; i ++) {
+        unichar c = [searchText characterAtIndex:i];
+        for (int k = start; k < originalText.length; k ++) {
+            if (c == [originalText characterAtIndex:k]) {
+                start = k + 1;
+                break;
+            }
+            if (k == originalText.length - 1) {
+                result = NO;
+            }
+        }
+    }
+    
+    return result;
+}
 
 @end

@@ -39,7 +39,7 @@
         [courseImg setImage:courseImage];
         [self addSubview:courseImg];
         
-        nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(120, 10, 50, 30)];
+        nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 10, 200, 30)];
         nameLabel.text = courseName;
         nameLabel.textColor = [UIColor blackColor];
         nameLabel.font = [UIFont fontWithName:@"Heiti SC" size:20.0];

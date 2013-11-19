@@ -109,6 +109,17 @@ NSString *NOTEFolderName = @"NOTE";
     searchView.backgroundColor = [UIColor clearColor];
     [searchView addSubview:searchBar];
     
+    int cid = [courseFolderName intValue];
+    SysbsModel *sysbsModel = [SysbsModel getSysbsModel];
+    MyCourse *myCourse = sysbsModel.myCourse;
+    Course *course = [myCourse findCourse:cid];
+    NSString *title = course.courseName;
+    UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(400 - 100, 0, 200, 44)];
+    [titleLabel setText:title];
+    [titleLabel setTextColor:[UIColor redColor]];
+    [titleLabel setTextAlignment:NSTextAlignmentCenter];
+    [titleLabel setFont:[UIFont systemFontOfSize:19]];
+    [searchView addSubview:titleLabel];
     self.navigationItem.titleView = searchView;
 }
 
@@ -209,13 +220,6 @@ NSString *NOTEFolderName = @"NOTE";
 - (void)viewWillDisappear:(BOOL)animated
 {
 	[super viewWillDisappear:animated];
-    
-    for (ASIHTTPRequest *request in self.downloadQueue.operations) {
-        [request clearDelegatesAndCancel];
-    }
-    for (MRCircularProgressView *progress in progressArray) {
-        [progress removeLink];
-    }
 
 #if (DEMO_VIEW_CONTROLLER_PUSH == TRUE)
 
@@ -439,7 +443,7 @@ NSString *NOTEFolderName = @"NOTE";
             
 //            NSLog(@"PDFFirstImage %d",index);
             [button setImage:PDFFirstImage forState:UIControlStateNormal];
-            [button setImageEdgeInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
+            [button setImageEdgeInsets:UIEdgeInsetsMake(2, 2, 2, 2)];
             
             
 //            [button removeTarget:nil action:nil forControlEvents:UIControlEventTouchUpInside];
@@ -455,7 +459,7 @@ NSString *NOTEFolderName = @"NOTE";
             [button setImage:nil forState:UIControlStateNormal];
             [button addTarget:self action:@selector(courseItemAction:) forControlEvents:UIControlEventTouchUpInside];
         }
-        UIImage *image = [UIImage imageNamed:@"download_ppt.png"];
+        UIImage *image = [UIImage imageNamed:@"pptsearch_ppt"];
         [button setBackgroundImage:image forState:UIControlStateNormal];
 
         
@@ -719,7 +723,7 @@ NSString *NOTEFolderName = @"NOTE";
         for (int i = 0 ; i < [originalArray count];i ++) {
             CoursewareItem *item = [originalArray objectAtIndex:i];
             UIButton *button = [buttonArray objectAtIndex:i % buttonNumber];
-            if ([item.PDFName rangeOfString:searchText options:NSCaseInsensitiveSearch].length >0 ) {
+            if ([self isMatch:searchText :item.PDFName]) {
                 [self.displayArray addObject:item];
                 [self.displayButtonArray addObject:button];
 //                NSLog(@"%d",[displayArray count]);
@@ -747,6 +751,32 @@ NSString *NOTEFolderName = @"NOTE";
     [self searchBar:self.searchBar textDidChange:nil];
     [self.searchBar resignFirstResponder];
 //    NSLog(@"cancel");
+}
+- (BOOL)isMatch:(NSString *)searchText :(NSString *)originalText{
+    BOOL result = YES;
+    int start = 0;
+    for (int i = 0; i < searchText.length; i ++) {
+        unichar c = [searchText characterAtIndex:i];
+        for (int k = start; k < originalText.length; k ++) {
+            if (c == [originalText characterAtIndex:k]) {
+                start = k + 1;
+                break;
+            }
+            if (k == originalText.length - 1) {
+                result = NO;
+            }
+        }
+    }
+    
+    return result;
+}
+- (void)dealloc{
+    for (ASIHTTPRequest *request in self.downloadQueue.operations) {
+        [request clearDelegatesAndCancel];
+    }
+    for (MRCircularProgressView *progress in progressArray) {
+        [progress removeLink];
+    }
 }
 
 

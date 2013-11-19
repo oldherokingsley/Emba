@@ -52,7 +52,15 @@
     [thread start];
     self.navigationController.navigationBar.tintColor = [UIColor redColor];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bar_bg"] forBarMetrics:UIBarMetricsDefault];
-    self.title = @"课程";
+    
+    UILabel * titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 44)];
+    [titleLabel setFont:[UIFont systemFontOfSize:19]];
+    [titleLabel setTextAlignment:NSTextAlignmentCenter];
+    [titleLabel setTextColor:[UIColor redColor]];
+    [titleLabel setText:@"课程"];
+    self.navigationItem.titleView = titleLabel;
+//    self.title = @"课程";
+    
     
     UIBarButtonItem *searchButton = [[UIBarButtonItem alloc]initWithTitle:@"搜索" style:UIBarButtonItemStyleBordered target:self action:@selector(searchButtonAction:)];
     self.navigationItem.rightBarButtonItem = searchButton;

@@ -10,7 +10,7 @@
 #import "ASINetworkQueue.h"
 #import "ReaderViewController.h"
 #import "ASIHTTPRequest.h"
-@interface SearchViewController : UIViewController <ReaderViewControllerDelegate,UIScrollViewDelegate,ASIHTTPRequestDelegate>
+@interface SearchViewController : UIViewController <ReaderViewControllerDelegate,UIScrollViewDelegate,ASIHTTPRequestDelegate,UISearchBarDelegate>
 
 
 @property (nonatomic, retain) UIScrollView *coursewareSV;
@@ -20,9 +20,10 @@
 @property (nonatomic, retain) NSMutableArray *coursewareOriginArray;
 @property (nonatomic, retain) NSMutableArray *courseDisplayArray;
 @property (nonatomic, retain) NSMutableArray *coursewareDisplayArray;
-@property (nonatomic, retain) UILabel *coursewareNumLabe;
+@property (nonatomic, retain) UILabel *coursewareNumLabel;
 @property (nonatomic, retain) UILabel *courseNumLabel;
 @property (nonatomic, retain) NSMutableArray *buttonArray;
 @property (retain , nonatomic) ASINetworkQueue *downloadQueue;
 @property (nonatomic, retain) NSMutableArray *progressArray;
+@property (nonatomic, retain) NSMutableArray *buttonDisplayArray;
 @end
