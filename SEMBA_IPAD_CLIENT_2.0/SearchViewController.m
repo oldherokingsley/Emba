@@ -42,6 +42,7 @@ NSString *NOTEFolderName2 = @"NOTE";
 @synthesize coursewareNumLabe;
 @synthesize buttonArray;
 @synthesize downloadQueue;
+@synthesize progressArray;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -61,6 +62,7 @@ NSString *NOTEFolderName2 = @"NOTE";
     if (![self downloadQueue]) {
         [self setDownloadQueue:[[ASINetworkQueue alloc]init]];
     }
+    [self.downloadQueue reset];
     [self.downloadQueue setMaxConcurrentOperationCount:MAX_DOWNLOAD_NUM];      //最大同时下载数
     [self.downloadQueue setShowAccurateProgress:YES];        //是否显示详细进度
     [self.downloadQueue setShouldCancelAllRequestsOnFailure:NO];
@@ -105,22 +107,20 @@ NSString *NOTEFolderName2 = @"NOTE";
 }
 
 - (void) backToMainPage:(UIBarButtonItem *)backItem{
-    
-    [self.downloadQueue reset];
-//    [self.downloadQueue setDelegate:nil];
-//    [self.downloadQueue cancelAllOperations];
-//    for (ASIHTTPRequest *request in self.downloadQueue.operations) {
-//        if ([request isExecuting]) {
-//            [request clearDelegatesAndCancel];
-//            NSLog(@"cancel");
-//            [request setDelegate:nil];
-//            [request cancel];
-    
-            
-//        }
-//    }
-//    [self.downloadQueue reset];
+
     [self.navigationController popViewControllerAnimated:YES];
+}
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    for (ASIHTTPRequest *request in self.downloadQueue.operations) {
+        NSLog(@"cancel");
+        [request clearDelegatesAndCancel];
+    }
+    for (MRCircularProgressView *progress in progressArray) {
+        [progress removeLink];
+    }
+
+    
 }
 
 - (void) initSrollViewDatas{
@@ -129,6 +129,7 @@ NSString *NOTEFolderName2 = @"NOTE";
     courseDisplayArray = [[NSMutableArray alloc]init];
     coursewareDisplayArray = [[NSMutableArray alloc]init];
     coursewareOriginArray = [[NSMutableArray alloc]init];
+    progressArray = [[NSMutableArray alloc]init];
     SysbsModel *sysbsModel = [SysbsModel getSysbsModel];
     MyCourse *myCourse = sysbsModel.myCourse;
     courseOriginArray = myCourse.courseArr;
@@ -175,6 +176,7 @@ NSString *NOTEFolderName2 = @"NOTE";
         [progressView setTag:PROGRESS_TAG];
         //            [progressView setProgressViewStyle:UIProgressViewStyleBar];
         [button addSubview:progressView];
+        [self.progressArray addObject:progressView];
         
         
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(250 * i + 24, 280 - 20 - 50, 226, 50)];
@@ -314,12 +316,14 @@ NSString *NOTEFolderName2 = @"NOTE";
         NSLog(@"return");
         return;
     }
+    
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
     
-    ASIHTTPRequest *tempRequest = [[ASIHTTPRequest alloc]init];
     //判断是否已经存在队列中，
-    for (tempRequest in [self.downloadQueue operations]) {
+    for (ASIHTTPRequest *tempRequest in [self.downloadQueue operations]) {
         if ([tempRequest.originalURL isEqual:request.originalURL]) {
+            [tempRequest clearDelegatesAndCancel];
+            [request clearDelegatesAndCancel];
             return;
         }
     }
@@ -331,9 +335,12 @@ NSString *NOTEFolderName2 = @"NOTE";
     [request setTag:index];
     [request setDelegate:self];
 //    [request clearDelegatesAndCancel];
+    
     [request setDidFinishSelector:@selector(requestDone:)];     //下载完成处理
     [request setDidFailSelector:@selector(requestWentWrong:)];  //下载出错处理
     [request setDownloadProgressDelegate:progress];//设置每个任务的进度条信息
+    [request setShowAccurateProgress:YES];
+    
     NSDictionary *myDict = [NSDictionary dictionaryWithObjectsAndKeys:item,@"item", nil];
     [request setMyDict:myDict];
     [request setShouldContinueWhenAppEntersBackground:YES];
@@ -366,7 +373,7 @@ NSString *NOTEFolderName2 = @"NOTE";
     [progressView setHidden:YES];
     NSLog(@"finish");
 }
-
+/*
 //下载后加载图片
 - (void) loadImageThred:(NSDictionary *)dict{
     ASIHTTPRequest *request = (ASIHTTPRequest *)[dict objectForKey:@"request"];
@@ -398,10 +405,12 @@ NSString *NOTEFolderName2 = @"NOTE";
     [progressView setHidden:YES];
     
 }
+ */
 
 //下载出错处理
 - (void) requestWentWrong:(ASIHTTPRequest *)request{
     NSLog(@"download error : %@",request.error );
+    
     UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"出错啦！" message:@"网络连接出错，请检查网络！" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
     [alertView show];
     
@@ -410,7 +419,6 @@ NSString *NOTEFolderName2 = @"NOTE";
     //    UIProgressView *progressView = (UIProgressView *)[button viewWithTag:PROGRESS_TAG];
     MRCircularProgressView *progressView = (MRCircularProgressView *)[button viewWithTag:PROGRESS_TAG];
     [progressView setHidden:YES];
-    
 }
 
 
@@ -489,16 +497,6 @@ NSString *NOTEFolderName2 = @"NOTE";
     //return image;
     //    CGPDFDocumentRelease(document), document = NULL;
 }
-
-//- (void)dealloc{
-
-    
-//    [self.downloadQueue cancelAllOperations];
-//    [self.downloadQueue reset];
-//    self.downloadQueue = nil;
-
-    //    [super dealloc];
-//}
 
 - (void)didReceiveMemoryWarning
 {

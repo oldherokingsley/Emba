@@ -79,10 +79,10 @@ NSString *NOTEFolderName = @"NOTE";
     [self.downloadQueue setRequestDidFinishSelector:@selector(queueFinished)];
     [self.downloadQueue setRequestDidStartSelector:@selector(queueStarted)];
     
-    self.courseTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.height, self.view.frame.size.width)];
+    self.courseTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.height, self.view.frame.size.width - 64)];
     self.courseTableView.delegate = self;
     self.courseTableView.dataSource = self;
-    [self.courseTableView setSeparatorColor:[UIColor clearColor]];
+//    [self.courseTableView setSeparatorColor:[UIColor clearColor]];
     [self.courseTableView setSectionIndexColor:[UIColor clearColor]];
     [self.courseTableView setAllowsSelection:NO];
     
@@ -209,6 +209,13 @@ NSString *NOTEFolderName = @"NOTE";
 - (void)viewWillDisappear:(BOOL)animated
 {
 	[super viewWillDisappear:animated];
+    
+    for (ASIHTTPRequest *request in self.downloadQueue.operations) {
+        [request clearDelegatesAndCancel];
+    }
+    for (MRCircularProgressView *progress in progressArray) {
+        [progress removeLink];
+    }
 
 #if (DEMO_VIEW_CONTROLLER_PUSH == TRUE)
 
@@ -220,22 +227,11 @@ NSString *NOTEFolderName = @"NOTE";
 - (void)viewDidDisappear:(BOOL)animated
 {
 	[super viewDidDisappear:animated];
-    /*for (ASIHTTPRequest *request in self.downloadQueue.operations) {
-        [request clearDelegatesAndCancel];
-        
-    }
-    [self.downloadQueue cancelAllOperations];
     
-    NSLog(@"disappear");
-     */
-}
-- (void)dealloc
-{
-    
-    NSLog(@"out");
-//    self.downloadQueue 
 //    [self.downloadQueue cancelAllOperations];
     
+    NSLog(@"disappear");
+//     */
 }
 - (void)viewDidUnload
 {

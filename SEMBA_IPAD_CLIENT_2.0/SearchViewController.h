@@ -24,4 +24,5 @@
 @property (nonatomic, retain) UILabel *courseNumLabel;
 @property (nonatomic, retain) NSMutableArray *buttonArray;
 @property (retain , nonatomic) ASINetworkQueue *downloadQueue;
+@property (nonatomic, retain) NSMutableArray *progressArray;
 @end
