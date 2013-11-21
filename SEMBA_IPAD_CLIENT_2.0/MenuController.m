@@ -151,7 +151,7 @@
     [blurView addGestureRecognizer:tapGesture];
     [hostController.view addSubview:blurView];
 
-    setupView = [[SetUpView alloc]initWithDefault];
+    setupView = [[SetUpView alloc]initWithDefault:hostController];
     setupView.delegate = self;
     setupView.alpha = 0.0f;
     [hostController.view addSubview:setupView];

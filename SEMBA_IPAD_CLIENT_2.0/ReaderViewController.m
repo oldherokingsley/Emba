@@ -263,6 +263,7 @@
             [contentView setZoomScale:scale];
 //            NSLog(@"scale %f",scale);
 //            [theScrollView setContentOffset:CGPointZero];
+            [contentView setContentOffset:CGPointZero];
 //            CGPoint point = CGPointZero;
 //            point.y += 10.0;
 //            [contentView setContentOffset:point];

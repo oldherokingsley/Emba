@@ -7,21 +7,23 @@
 //
 
 #import "SetUpView.h"
-
+#import "SetupViewController.h"
 #define SCREENWIDTH 1024
 #define SCREENHEIGHT 768
 #define SETUPWIDTH 405
-#define SETUPHEIGHT 455
+#define SETUPHEIGHT 499
 @implementation SetUpView
 @synthesize isPushvar,isAutoDownLoad;
 @synthesize closeButton,downloadLabel,pushLabel,isDownLoad,isPush;
 @synthesize changePasswdButton ,logoutButton;
 @synthesize feedBackButton,aboutUsButton;
+@synthesize outViewController;
 float durationOfAnimation = 2.0f;
 
--(id)initWithDefault{
+-(id)initWithDefault:controler{
     NSLog(@"hero");
-    return [self initWithFrame:CGRectMake(SCREENWIDTH/2-SETUPWIDTH/2, SETUPHEIGHT / 2 + 200, SETUPWIDTH, SETUPHEIGHT)];
+    outViewController = controler;
+    return [self initWithFrame:CGRectMake(SCREENWIDTH/2-SETUPWIDTH/2, SETUPHEIGHT / 2 + 100, SETUPWIDTH, SETUPHEIGHT)];
 }
 
 -(void)slideIn{
@@ -75,16 +77,32 @@ float durationOfAnimation = 2.0f;
         isPushvar =  [(NSNumber*)[userDefault objectForKey:@"isPush"] boolValue];
         
         isAutoDownLoad = NO;
+        SetupViewController *rootViewController = [[SetupViewController alloc]init];
+        [rootViewController setTitle:@"设置"];
+        rootViewController.delegate = self;
+        UINavigationController *navigationController = [[UINavigationController alloc]initWithRootViewController:rootViewController];
+        [navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+        [navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"setting_nav_bar"] forBarMetrics:UIBarMetricsDefault];
+        [navigationController.view setFrame:CGRectMake(0, 0, SETUPWIDTH, SETUPHEIGHT)];
+        [rootViewController.view setFrame:CGRectMake(0, 0, SETUPWIDTH, SETUPHEIGHT)];
+        
+//        [outViewController presentViewController:navigationController animated:NO completion:nil];
+        [outViewController addChildViewController:navigationController];
+//        [outViewController addChildViewController:rootViewController];
+        [self addSubview:navigationController.view];
+//        [self addSubview:rootViewController.view];
+//        [rootViewController viewWillAppear:NO];
+        
         UIColor *bgColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"setting_bg"]];
 //        [self setBackgroundColor:[UIColor blueColor]];
         [self setBackgroundColor:bgColor];
-        [self initWithBar];
+    /*    [self initWithBar];
         [self initWithDownLoad];
         [self initWithPush];
         [self initWithChangePasswd];
         [self initWithLogout];
         [self initWithFeedBack];
-        [self initWithAboutUs];
+        [self initWithAboutUs];*/
     }
     return self;
 }
@@ -244,6 +262,11 @@ float durationOfAnimation = 2.0f;
         [userdefault setObject:temp forKey:@"isPush"];
         isPushvar = isPush.on;
     }
+}
+
+#pragma SetupViewControllerDelegate mark
+- (void)logoutAccount{
+    [self.delegate logoutAccount];
 }
 
 

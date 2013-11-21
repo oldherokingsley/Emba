@@ -209,6 +209,9 @@
 		9CB99085183DDB270082BAF5 /* setting_text_field_dot@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CB9906D183DDB270082BAF5 /* setting_text_field_dot@2X.png */; };
 		9CB99086183DDB270082BAF5 /* setting_text_field.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CB9906E183DDB270082BAF5 /* setting_text_field.png */; };
 		9CB99087183DDB270082BAF5 /* setting_text_field@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CB9906F183DDB270082BAF5 /* setting_text_field@2X.png */; };
+		9CB9908A183E00390082BAF5 /* SetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB99089183E00390082BAF5 /* SetupViewController.m */; };
+		9CB9908D183E386E0082BAF5 /* ChangePswViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB9908C183E386E0082BAF5 /* ChangePswViewController.m */; };
+		9CB99090183F01260082BAF5 /* FeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB9908F183F01260082BAF5 /* FeedbackViewController.m */; };
 		9CBD1587181E4DFB00075BDF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CBD1586181E4DFB00075BDF /* Foundation.framework */; };
 		9CBD1589181E4DFB00075BDF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CBD1588181E4DFB00075BDF /* CoreGraphics.framework */; };
 		9CBD158B181E4DFB00075BDF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CBD158A181E4DFB00075BDF /* UIKit.framework */; };
@@ -521,6 +524,12 @@
 		9CB9906D183DDB270082BAF5 /* setting_text_field_dot@2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "setting_text_field_dot@2X.png"; sourceTree = "<group>"; };
 		9CB9906E183DDB270082BAF5 /* setting_text_field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = setting_text_field.png; sourceTree = "<group>"; };
 		9CB9906F183DDB270082BAF5 /* setting_text_field@2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "setting_text_field@2X.png"; sourceTree = "<group>"; };
+		9CB99088183E00390082BAF5 /* SetupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetupViewController.h; sourceTree = "<group>"; };
+		9CB99089183E00390082BAF5 /* SetupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetupViewController.m; sourceTree = "<group>"; };
+		9CB9908B183E386E0082BAF5 /* ChangePswViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangePswViewController.h; sourceTree = "<group>"; };
+		9CB9908C183E386E0082BAF5 /* ChangePswViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangePswViewController.m; sourceTree = "<group>"; };
+		9CB9908E183F01260082BAF5 /* FeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedbackViewController.h; sourceTree = "<group>"; };
+		9CB9908F183F01260082BAF5 /* FeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedbackViewController.m; sourceTree = "<group>"; };
 		9CBD1583181E4DFB00075BDF /* SEMBA_IPAD_CLIENT_2.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SEMBA_IPAD_CLIENT_2.0.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CBD1586181E4DFB00075BDF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9CBD1588181E4DFB00075BDF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -669,6 +678,12 @@
 			children = (
 				2B98B0F91839DAD900EBA2E0 /* SetUpView.h */,
 				2B98B0FA1839DAD900EBA2E0 /* SetUpView.m */,
+				9CB99088183E00390082BAF5 /* SetupViewController.h */,
+				9CB99089183E00390082BAF5 /* SetupViewController.m */,
+				9CB9908B183E386E0082BAF5 /* ChangePswViewController.h */,
+				9CB9908C183E386E0082BAF5 /* ChangePswViewController.m */,
+				9CB9908E183F01260082BAF5 /* FeedbackViewController.h */,
+				9CB9908F183F01260082BAF5 /* FeedbackViewController.m */,
 			);
 			name = SetUp;
 			sourceTree = "<group>";
@@ -1087,7 +1102,6 @@
 			children = (
 				9CB99057183DDAFF0082BAF5 /* SetUp */,
 				59082C09183B3A810005BF6C /* notice&menu */,
-				59082C09183B3A810005BF6C /* notice&menu */,
 				9C1E14001834734D00D2F52E /* Courseware */,
 				9C0F8ACA1827635600FEFABA /* Reader */,
 				9CBD1644181E69B900075BDF /* main_course.png */,
@@ -1407,9 +1421,9 @@
 				59F0DBF1183DD5C000E4EEE5 /* ppt_toolbox_recorder.png in Resources */,
 				59082C4B183B3AA70005BF6C /* news center-white line on the menu@2X.png in Resources */,
 				59F0DBED183DD5C000E4EEE5 /* ppt_toolbox_pencil.png in Resources */,
+				9CB99074183DDB270082BAF5 /* setting_item_bg.png in Resources */,
 				9CBD159F181E4DFB00075BDF /* Images.xcassets in Resources */,
 				9CBD15CA181E535F00075BDF /* Main.storyboard in Resources */,
-				9CB99074183DDB270082BAF5 /* setting_item_bg.png in Resources */,
 				59F0DBD8183DD5C000E4EEE5 /* ppt_toolbox_eraser_active@2X.png in Resources */,
 				9C0F8ADB1827636200FEFABA /* Reader-Button-N@2x.png in Resources */,
 				59082C47183B3AA70005BF6C /* news center-sign@2X.png in Resources */,
@@ -1452,6 +1466,15 @@
 				9CB99085183DDB270082BAF5 /* setting_text_field_dot@2X.png in Resources */,
 				59F0DBC6183DD5C000E4EEE5 /* ppt_toolbox_black@2X.png in Resources */,
 				9CB99073183DDB270082BAF5 /* setting_button@2X.png in Resources */,
+				59082C4A183B3AA70005BF6C /* news center-white line on the menu.png in Resources */,
+				9C0F8AE41827636200FEFABA /* Reader-Thumbs.png in Resources */,
+				59F0DBCF183DD5C000E4EEE5 /* ppt_toolbox_camera.png in Resources */,
+				59082C3F183B3AA70005BF6C /* news center-pen@2X.png in Resources */,
+				9C0F8AE41827636200FEFABA /* Reader-Thumbs.png in Resources */,
+				59082C4C183B3AA70005BF6C /* news center.png in Resources */,
+				59F0DBE5183DD5C000E4EEE5 /* ppt_toolbox_green.png in Resources */,
+				59F0DBBC183DD5C000E4EEE5 /* ppt_nav_bookmark@2X.png in Resources */,
+				59F0DBC6183DD5C000E4EEE5 /* ppt_toolbox_black@2X.png in Resources */,
 				59082C4A183B3AA70005BF6C /* news center-white line on the menu.png in Resources */,
 				9C0F8AE41827636200FEFABA /* Reader-Thumbs.png in Resources */,
 				9C0203E81834BBFF00060D96 /* bookmark_edit_item_bg.png in Resources */,
@@ -1510,6 +1533,9 @@
 				9C0203D61834BBEE00060D96 /* bookmark_tag.png in Resources */,
 				9C0F8ADE1827636200FEFABA /* Reader-Mark-N.png in Resources */,
 				59F0DBF2183DD5C000E4EEE5 /* ppt_toolbox_recorder@2X.png in Resources */,
+				9C0203D61834BBEE00060D96 /* bookmark_tag.png in Resources */,
+				9C0F8ADE1827636200FEFABA /* Reader-Mark-N.png in Resources */,
+				59F0DBF2183DD5C000E4EEE5 /* ppt_toolbox_recorder@2X.png in Resources */,
 				59F0DBEB183DD5C000E4EEE5 /* ppt_toolbox_pencil_adjust_bg.png in Resources */,
 				9C0F8AE51827636200FEFABA /* Reader-Thumbs@2x.png in Resources */,
 				9C0203EB1834BBFF00060D96 /* bookmark_edit_nav_bar@2X.png in Resources */,
@@ -1541,6 +1567,7 @@
 				9CB99077183DDB270082BAF5 /* setting_nav_back@2X.png in Resources */,
 				59082C3A183B3AA70005BF6C /* news center-next mail.png in Resources */,
 				9CB9907A183DDB270082BAF5 /* setting_right_arrow.png in Resources */,
+				59082C3A183B3AA70005BF6C /* news center-next mail.png in Resources */,
 				59F0DBAC183DD5C000E4EEE5 /* ppt_indicator_bg@2X.png in Resources */,
 				59082C3B183B3AA70005BF6C /* news center-next mail@2X.png in Resources */,
 				9C0F8AE61827636200FEFABA /* Reader-Button-H.png in Resources */,
@@ -1588,6 +1615,11 @@
 				9C0203E41834BBFF00060D96 /* bookmark_edit_changename.png in Resources */,
 				9CB99080183DDB270082BAF5 /* setting_switch_on.png in Resources */,
 				9CB9907C183DDB270082BAF5 /* setting_switch_handle.png in Resources */,
+				59F0DBB8183DD5C000E4EEE5 /* ppt_nav_bar@2X.png in Resources */,
+				59F0DBC3183DD5C000E4EEE5 /* ppt_toolbox_bg.png in Resources */,
+				59F0DBE7183DD5C000E4EEE5 /* ppt_toolbox_help.png in Resources */,
+				9C0203E51834BBFF00060D96 /* bookmark_edit_changename@2X.png in Resources */,
+				9C0203E41834BBFF00060D96 /* bookmark_edit_changename.png in Resources */,
 				59F0DBCA183DD5C000E4EEE5 /* ppt_toolbox_brush_active@2X.png in Resources */,
 				59F0DBC8183DD5C000E4EEE5 /* ppt_toolbox_blue@2X.png in Resources */,
 				59082C34183B3AA70005BF6C /* news center-colourful thin line.png in Resources */,
@@ -1624,6 +1656,7 @@
 				2BB8154A1830AE0200736512 /* RecommendBook.m in Sources */,
 				9C51BF8B182B80BF0071A1D1 /* MarkToolBar.m in Sources */,
 				9CBD1619181E695900075BDF /* ReaderConstants.m in Sources */,
+				9CB9908A183E00390082BAF5 /* SetupViewController.m in Sources */,
 				9CBD163C181E699D00075BDF /* ASIAuthenticationDialog.m in Sources */,
 				2BB815481830AE0200736512 /* File.m in Sources */,
 				9CBD1622181E695900075BDF /* ThumbsMainToolbar.m in Sources */,
@@ -1648,6 +1681,7 @@
 				9C9240B11830AF8E00415735 /* MRCircularProgressView.m in Sources */,
 				9CBD1626181E697800075BDF /* Reachability.m in Sources */,
 				2BB815491830AE0200736512 /* MyCourse.m in Sources */,
+				9CB99090183F01260082BAF5 /* FeedbackViewController.m in Sources */,
 				9CBD161A181E695900075BDF /* ReaderDocument.m in Sources */,
 				9CBD15F8181E692700075BDF /* CGPDFDocument.m in Sources */,
 				9CBD163E181E699D00075BDF /* ASIFormDataRequest.m in Sources */,
@@ -1685,6 +1719,7 @@
 				9CBD1593181E4DFB00075BDF /* main.m in Sources */,
 				9CBD161D181E695900075BDF /* ReaderMainPagebar.m in Sources */,
 				59D096F91836010C0097C6AC /* MenuCell.m in Sources */,
+				9CB9908D183E386E0082BAF5 /* ChangePswViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

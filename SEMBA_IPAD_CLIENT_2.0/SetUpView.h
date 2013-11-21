@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SetupViewController.h"
 @class SetUpView;
 @protocol SetUpViewDelegate <NSObject>
 
@@ -16,7 +17,7 @@
 - (void)logoutAccount;
 
 @end
-@interface SetUpView : UIView
+@interface SetUpView : UIView <SetupViewControllerDelegate>
 
 
 @property BOOL isPushvar;
@@ -34,8 +35,9 @@
 
 @property (strong,nonatomic)UISwitch *isDownLoad;
 @property (strong,nonatomic)UISwitch *isPush;
+@property (nonatomic, retain)UIViewController *outViewController;
 
--(id)initWithDefault;
+-(id)initWithDefault:(UIViewController *)controler;
 -(void)slideIn;
 
 - (void)hideSetupView;
