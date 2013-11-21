@@ -41,7 +41,7 @@
 
 @end
 
-@interface ReaderViewController : UIViewController <ACEDrawingViewDelegate,UIActionSheetDelegate,CourseMarkViewDelegate,NoteToolDrawerBarDelegate>{
+@interface ReaderViewController : UIViewController <ACEDrawingViewDelegate,UIActionSheetDelegate,CourseMarkViewDelegate,NoteToolDrawerBarDelegate,UITextFieldDelegate>{
     ACEDrawingToolType currentToolType;
 }
 

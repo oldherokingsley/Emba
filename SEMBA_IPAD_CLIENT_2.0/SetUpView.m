@@ -10,19 +10,18 @@
 
 #define SCREENWIDTH 1024
 #define SCREENHEIGHT 768
-#define SETUPWIDTH 350
-#define SETUPHEIGHT 500
+#define SETUPWIDTH 405
+#define SETUPHEIGHT 455
 @implementation SetUpView
 @synthesize isPushvar,isAutoDownLoad;
 @synthesize closeButton,downloadLabel,pushLabel,isDownLoad,isPush;
 @synthesize changePasswdButton ,logoutButton;
 @synthesize feedBackButton,aboutUsButton;
-
 float durationOfAnimation = 2.0f;
 
 -(id)initWithDefault{
     NSLog(@"hero");
-    return [self initWithFrame:CGRectMake(SCREENWIDTH/2-SETUPWIDTH/2, -SETUPHEIGHT, SETUPWIDTH, SETUPHEIGHT)];
+    return [self initWithFrame:CGRectMake(SCREENWIDTH/2-SETUPWIDTH/2, SETUPHEIGHT / 2 + 200, SETUPWIDTH, SETUPHEIGHT)];
 }
 
 -(void)slideIn{
@@ -42,6 +41,28 @@ float durationOfAnimation = 2.0f;
     NSLog(@"%f",self.frame.origin.y);
 }
 
+- (void)hideSetupView{
+    CGRect rect = self.frame;
+    rect.origin.y += 200;
+    [UIView animateWithDuration:0.5f animations:^{
+        self.frame = rect;
+        self.alpha = 0.0f;
+    } completion:^(BOOL finished){
+        
+    }];
+}
+- (void)showSetupView{
+    CGRect rect = self.frame;
+    rect.origin.y -= 200;
+    [UIView animateWithDuration:0.5f animations:^{
+        self.frame = rect;
+        self.alpha = 1.0f;
+    } completion:^(BOOL finished){
+    
+    }];
+}
+
+
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -54,7 +75,9 @@ float durationOfAnimation = 2.0f;
         isPushvar =  [(NSNumber*)[userDefault objectForKey:@"isPush"] boolValue];
         
         isAutoDownLoad = NO;
-        [self setBackgroundColor:[UIColor blueColor]];
+        UIColor *bgColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"setting_bg"]];
+//        [self setBackgroundColor:[UIColor blueColor]];
+        [self setBackgroundColor:bgColor];
         [self initWithBar];
         [self initWithDownLoad];
         [self initWithPush];
@@ -67,10 +90,13 @@ float durationOfAnimation = 2.0f;
 }
 
 -(void)initWithBar{
-    CGRect frame = CGRectMake(0, 0, self.frame.size.width, 50);
+    CGRect frame = CGRectMake(0, 0, self.frame.size.width, 44);
     UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:frame];
     [self addSubview:toolBar];
-    [toolBar setBackgroundColor:[UIColor redColor]];
+    [toolBar setBackgroundImage:[UIImage imageNamed:@"setting_nav_bar"] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+//    UIColor *bgColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"setting_nav_back"]];
+//    [toolBar setBackgroundColor:[UIColor redColor]];
+//    [toolBar setBackgroundColor:bgColor];
     [self initWithButton:toolBar];
 }
          
@@ -165,8 +191,9 @@ float durationOfAnimation = 2.0f;
 
 -(void)logout:(id)sender{
     //调用注销回调
+    [self.delegate logoutAccount];
     NSLog(@"注销");
-    [self removeFromSuperview];
+//    [self removeFromSuperview];
 }
 
 -(void)changePasswd:(id)sender{
@@ -175,7 +202,8 @@ float durationOfAnimation = 2.0f;
 }
 
 -(void)close:(id)sender{
-    [self removeFromSuperview];
+//    [self removeFromSuperview];
+    [self.delegate closeSetUpView];
 }
 
 

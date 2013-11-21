@@ -8,13 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "MenuCell.h"
-
+#import "SetUpView.h"
 
 @class DDMenuController;
 
 @protocol menuControllerDelegate;
 
-@interface MenuController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+@interface MenuController : UIViewController<UITableViewDataSource, UITableViewDelegate,SetUpViewDelegate>
 
 @property (nonatomic, retain) UIImageView *backgroundImg;
 @property (nonatomic, retain) UIImageView *headImg;
@@ -27,7 +27,8 @@
 @property (nonatomic, retain) DDMenuController *hostController;
 @property (nonatomic, retain) UIView *noticeView;
 @property (nonatomic, assign) id <menuControllerDelegate> delegate;
-
+@property (nonatomic, retain) UIView *blurView;
+@property (nonatomic, retain) SetUpView *setupView;
 - (IBAction)registerBtnPressed:(id)sender;
 
 @end

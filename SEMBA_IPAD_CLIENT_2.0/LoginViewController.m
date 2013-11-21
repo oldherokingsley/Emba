@@ -101,7 +101,13 @@ BOOL shouldLogin;
     
 }
 - (void)jumpToMainPage{
-    DDMenuController *hostController = (DDMenuController*)((AppDelegate*)[[UIApplication sharedApplication] delegate]).hostController;
+//    DDMenuController *hostController = (DDMenuController*)((AppDelegate*)[[UIApplication sharedApplication] delegate]).hostController;
+    MainPageViewController *mainController = [[MainPageViewController alloc] init];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:mainController];
+    DDMenuController *hostController = [[DDMenuController alloc] initWithRootViewController:navController];
+    MenuController *menuController = [[MenuController alloc] init];
+    hostController.leftViewController = menuController;
+    menuController.hostController = hostController;
 
     [self presentViewController:hostController animated:YES completion:nil];
     

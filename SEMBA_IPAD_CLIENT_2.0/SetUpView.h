@@ -7,11 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+@class SetUpView;
+@protocol SetUpViewDelegate <NSObject>
 
+@required
+- (void)closeSetUpView;
+@optional
+- (void)logoutAccount;
+
+@end
 @interface SetUpView : UIView
+
 
 @property BOOL isPushvar;
 @property BOOL isAutoDownLoad;
+@property (nonatomic, assign) id <SetUpViewDelegate> delegate;
 
 @property (strong,nonatomic)UILabel *downloadLabel;
 @property (strong,nonatomic)UILabel *pushLabel;
@@ -27,4 +37,8 @@
 
 -(id)initWithDefault;
 -(void)slideIn;
+
+- (void)hideSetupView;
+- (void)showSetupView;
+
 @end

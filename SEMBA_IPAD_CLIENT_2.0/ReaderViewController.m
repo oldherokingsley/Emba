@@ -808,6 +808,7 @@
     markField = [[UITextField alloc]initWithFrame:CGRectMake(36, 120, image.size.width - 36 * 2, 47)];
     [markField setBackground:[UIImage imageNamed:@"ppt_popup_editbookmarkname"]];
     [markField setPlaceholder:@"为该书签页命名"];
+    markField.delegate = self;
     [markEditView addSubview:markField];
 
     int button_height = 60;
@@ -1816,5 +1817,33 @@
         [self viewAppear:eraserWidthView];
     }
 }
+#pragma Mark UITextFieldDelegate
+// 下面两个方法是为了防止TextView让键盘挡住的方法
+/*
+ 开始编辑UITextView的方法
+ */
+-(void) textFieldDidBeginEditing:(UITextField *)textField
+{
+    
+    CGRect curFrame = markEditView.frame;
+    [UIView animateWithDuration:0.3f animations:^{
+        markEditView.frame = CGRectMake(curFrame.origin.x, curFrame.origin.y - 200, curFrame.size.width, curFrame.size.height);
+    }];
+}
+
+/**
+ 结束编辑UITextView的方法，让原来的界面还原高度
+ */
+-(void) textFieldDidEndEditing:(UITextField *)textField
+{
+    
+    CGRect curFrame = markEditView.frame;
+    [UIView beginAnimations:@"drogDownKeyBoard" context:nil];
+    [UIView setAnimationDuration:0.3];
+    [UIView setAnimationDelegate:self];
+    markEditView.frame = CGRectMake(curFrame.origin.x, curFrame.origin.y + 200, curFrame.size.width, curFrame.size.height);
+    [UIView commitAnimations];
+}
+
 
 @end

@@ -15,6 +15,8 @@
 #import "NoticeController.h"
 #import "RegisterController.h"
 #import "RegisterContentController.h"
+#import "SetUpView.h"
+
 
 @interface MenuController ()
 {
@@ -35,6 +37,8 @@
 @synthesize backgroundImg;
 @synthesize hostController;
 @synthesize noticeView;
+@synthesize blurView;
+@synthesize setupView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -50,7 +54,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    hostController = (DDMenuController*)((AppDelegate*)[[UIApplication sharedApplication] delegate]).hostController;
+//    hostController = (DDMenuController*)((AppDelegate*)[[UIApplication sharedApplication] delegate]).hostController;
     
     currentRow = 0;
     
@@ -122,6 +126,7 @@
     settingBtn = [[UIButton alloc] init];
     settingBtn.frame = settingFrame;
     settingBtn.backgroundColor = [UIColor clearColor];
+    [settingBtn addTarget:self action:@selector(showSetupWindow) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:settingBtn];
     
     [self setImageAndBackground];
@@ -137,8 +142,59 @@
     [noticeView setAlpha:0];
     [noticeView setHidden:YES];
     [hostController.view addSubview:noticeView];
+    
+    blurView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1024, 768)];
+    [blurView setBackgroundColor:[UIColor blackColor]];
+    [blurView setAlpha:0.0f];
+    [blurView setHidden:YES];
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapSelector:)];
+    [blurView addGestureRecognizer:tapGesture];
+    [hostController.view addSubview:blurView];
+
+    setupView = [[SetUpView alloc]initWithDefault];
+    setupView.delegate = self;
+    setupView.alpha = 0.0f;
+    [hostController.view addSubview:setupView];
+}
+- (void)showSetupWindow{
+    [hostController.tap setEnabled:NO];
+    [self showBlur];
+    [setupView showSetupView];
 }
 
+- (void)tapSelector:(UITapGestureRecognizer *)gesture{
+    [setupView hideSetupView];
+    [self hideBlur];
+    [hostController.tap setEnabled:YES];
+}
+
+- (void)showBlur{
+    [blurView setHidden:NO];
+    [UIView animateWithDuration:0.5f animations:^{
+        [blurView setAlpha:0.5f];
+    } completion:^(BOOL finished){
+        
+    }];
+}
+- (void)hideBlur{
+    [UIView animateWithDuration:0.5f animations:^{
+        [blurView setAlpha:0.0f];
+    } completion:^(BOOL finished){
+        [blurView setHidden:YES];
+    }];
+}
+#pragma SetUpViewDelegate mark
+- (void)closeSetUpView{
+    [setupView hideSetupView];
+    [self hideBlur];
+    [hostController.tap setEnabled:YES];
+}
+- (void)logoutAccount{
+    [setupView hideSetupView];
+    [self hideBlur];
+    [hostController.tap setEnabled:YES];
+    [hostController dismissViewControllerAnimated:YES completion:nil];
+}
 - (void)setImageAndBackground
 {
     [backgroundImg setImage:[UIImage imageNamed:@"news center-menu.png"]];

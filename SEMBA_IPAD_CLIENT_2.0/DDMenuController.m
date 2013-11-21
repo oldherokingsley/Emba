@@ -632,7 +632,7 @@
     
     if (_menuFlags.showingLeftView) {
         
-        //[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+    //[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
         
         // slide out then come back with the new root
         __block DDMenuController *selfRef = self;
