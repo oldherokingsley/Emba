@@ -8,12 +8,14 @@
 
 #import "CourseMarkViewController.h"
 #import "UIButton+associate.h"
+#import "UITextView+category.h"
 
 #define ITEM_NUM_IN_ROW 4
 
 #define BUTTON_TAG 111111
 #define TEXT_FIELD_TAG 222222
 #define CLOSE_TAG 333333
+#define TEXT_IMAGE_TAG 444444
 
 @interface CourseMarkViewController ()
 {
@@ -34,6 +36,7 @@
 @synthesize markToolBar;
 @synthesize deleteMarkedArray;
 @synthesize pageAngle;
+@synthesize replaceTextDictionary;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -96,6 +99,8 @@
     originalImageArray = [[NSMutableArray alloc]init];
     bookMarkedArray = [[NSMutableArray alloc]init];
     deleteMarkedArray = [[NSMutableArray alloc]init];
+    replaceTextDictionary = [[NSMutableDictionary alloc]init];
+    
     [document.bookmarks enumerateIndexesUsingBlock: // Enumerate
      ^(NSUInteger page, BOOL *stop)
      {
@@ -105,10 +110,10 @@
     for (int i = 0 ; i < [bookMarkedArray count]; i ++) {
         int page = [(NSNumber *)[bookMarkedArray objectAtIndex:i] integerValue];
         UIImage *image = [self getImageFromPDF:document.fileURL :page];
-        NSLog(@"size %f,%f",image.size.width,image.size.height);
+//        NSLog(@"size %f,%f",image.size.width,image.size.height);
         
         [originalImageArray addObject:image];
-        NSLog(@"page %d image %@ string %@",page,image,[document.markTexts objectForKey:[NSString stringWithFormat:@"%d",page]]);
+//        NSLog(@"page %d image %@ string %@",page,image,[document.markTexts objectForKey:[NSString stringWithFormat:@"%d",page]]);
         NSString *text = [document.markTexts objectForKey:[NSString stringWithFormat:@"%d",page]];
         [originalTextArray addObject:text];
         
@@ -116,7 +121,7 @@
         
         [displayImageArray addObject:image];
     }
-    NSLog(@"finish");
+//    NSLog(@"finish");
 //    displayTextArray = originalTextArray;
 //    displayImageArray = originalImageArray;
     
@@ -133,7 +138,7 @@
     markToolBar.delegate = self;
     
     [self.view addSubview:markToolBar];
-    NSLog(@"center %f,%f",markTableView.center.x,markTableView.center.y);
+//    NSLog(@"center %f,%f",markTableView.center.x,markTableView.center.y);
     
     
 	// Do any additional setup after loading the view.
@@ -173,10 +178,10 @@
     pageRect.origin = CGPointZero;
 //    CGRect mediaBoxRect = cgpdf
     pageAngle = CGPDFPageGetRotationAngle(page);
-    NSLog(@"pageAngle %d",pageAngle);
+//    NSLog(@"pageAngle %d",pageAngle);
     //开启图片绘制 上下文
     UIGraphicsBeginImageContext(pageRect.size);
-    NSLog(@"page size %f %f",pageRect.size.width,pageRect.size.height);
+//    NSLog(@"page size %f %f",pageRect.size.width,pageRect.size.height);
     CGContextRef context = UIGraphicsGetCurrentContext();
     
     // 设置白色背景
@@ -225,7 +230,7 @@
     {
         num = self.displayImageArray.count / ITEM_NUM_IN_ROW + 1;
     }
-    NSLog(@"num %d",num);
+//    NSLog(@"num %d",num);
 
     return num;
 }
@@ -253,12 +258,20 @@
             [button setTag:BUTTON_TAG];
             [view addSubview:button];
             
-            UITextView *markText = [[UITextView alloc]initWithFrame:CGRectMake(imageRect.origin.x, 8 + imageRect.size.height, imageRect.size.width, 40)];
+            UITextView *markText = [[UITextView alloc]initWithFrame:CGRectMake(imageRect.origin.x + 50, 8 + imageRect.size.height, imageRect.size.width - 100, 40)];
             [markText setAllowsEditingTextAttributes:NO];
             [markText setTextColor:[UIColor colorWithRed:85.0 / 255 green:85.0 / 255 blue:85.0 / 255 alpha:1.0]];
             [markText setTag:TEXT_FIELD_TAG];
+            markText.delegate = self;
             [markText setTextAlignment:NSTextAlignmentCenter];
             [view addSubview:markText];
+            
+            UIImageView *textImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"bookmark_edit_changename"]];
+            [textImage setFrame:CGRectMake(imageRect.origin.x, markText.frame.origin.y, textImage.frame.size.width, textImage.frame.size.height)];
+            [textImage setHidden:YES];
+            [textImage setTag:TEXT_IMAGE_TAG];
+            [view addSubview:textImage];
+            
             
             UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
             [deleteButton setImage:[UIImage imageNamed:@"bookmark_edit_delete"] forState:UIControlStateNormal];
@@ -280,6 +293,7 @@
 //        UIImageView *imageView = (UIImageView *)[view viewWithTag:0];
         UIButton *button = (UIButton *)[view viewWithTag:BUTTON_TAG];
         UITextView *markText = (UITextView *)[view viewWithTag:TEXT_FIELD_TAG];
+        UIImageView *textImage = (UIImageView *)[view viewWithTag:TEXT_IMAGE_TAG];
         [markText setFont:[UIFont systemFontOfSize:15]];
         UIButton *deleteButton = (UIButton *)[view viewWithTag:CLOSE_TAG];
         int index = row * ITEM_NUM_IN_ROW + i;
@@ -294,10 +308,12 @@
         if (isEdit) {
             [deleteButton setHidden:NO];
             [markText setEditable:YES];
+            [textImage setHidden:NO];
             
         } else{
             [deleteButton setHidden:YES];
             [markText setEditable:NO];
+            [textImage setHidden:YES];
         }
         
         UIImage *image = [displayImageArray objectAtIndex:index];
@@ -312,7 +328,11 @@
             [button removeTarget:self action:@selector(gotoPageAction:) forControlEvents:UIControlEventTouchUpInside];
         }
         NSString *text = [displayTextArray objectAtIndex:index];
+        NSDictionary *myDict = [[NSDictionary alloc]initWithObjectsAndKeys:[NSNumber numberWithInt:index],@"index",nil];
+        [markText setMyDict:myDict];
+        
         [markText setText:text];
+        
     }
 
     
@@ -324,8 +344,8 @@
 {
     UIButton *button = (UIButton *)sender;
     NSDictionary *dict = button.myDict;
-    int index = [(NSNumber *)[dict objectForKey:@"index"] integerValue];
-    int page = [(NSNumber *)[bookMarkedArray objectAtIndex:index] integerValue];
+    int index = [(NSNumber *)[dict objectForKey:@"index"] intValue];
+    int page = [(NSNumber *)[bookMarkedArray objectAtIndex:index] intValue];
     [self.delegate courseMarkViewController:self gotoPage:page];
     [self.delegate dismissMarkViewControoler:self];
 //    [self.navigationController popViewControllerAnimated:YES];
@@ -345,6 +365,7 @@
     [deleteMarkedArray removeAllObjects];
     [displayImageArray removeAllObjects];
     [displayTextArray removeAllObjects];
+    [replaceTextDictionary removeAllObjects];
     
 //    displayImageArray = originalImageArray;
 //    displayTextArray = originalTextArray;
@@ -373,6 +394,7 @@
     [toolBar.backButton setHidden:NO];
     [toolBar.editButton setHidden:NO];
     isEdit = NO;
+    NSLog(@"finish");
     for (int i = 0; i < [deleteMarkedArray count]; i ++) {
         int index = [(NSNumber *)[deleteMarkedArray objectAtIndex:i] integerValue];
         int page = [(NSNumber *)[bookMarkedArray objectAtIndex:index] integerValue];
@@ -382,6 +404,16 @@
         [originalTextArray removeObjectAtIndex:index];
     }
     [deleteMarkedArray removeAllObjects];
+    for (NSString *str in [replaceTextDictionary allKeys]) {
+        NSString *text = [replaceTextDictionary objectForKey:str];
+        int index = [str intValue];
+        int page = [(NSNumber *)[bookMarkedArray objectAtIndex:index] integerValue];
+        NSLog(@"page %d",page);
+//        [document.markTexts removeObjectForKey:[NSString stringWithFormat:@"%d",page]];
+        [document.markTexts setObject:text forKey:[NSString stringWithFormat:@"%d",page]];
+        [originalTextArray replaceObjectAtIndex:index withObject:text];
+    }
+    [replaceTextDictionary removeAllObjects];
     
     [markTableView reloadData];
     
@@ -398,6 +430,29 @@
     
     [markTableView reloadData];
     
+}
+
+#pragma UITextView delegate
+- (void)textViewDidEndEditing:(UITextView *)textView{
+    
+    NSLog(@"end");
+    /*NSDictionary *dict = textView.myDict;
+    int index = [(NSNumber *)[dict objectForKey:@"index"] intValue];
+    NSString *text = textView.text;
+    [replaceTextDictionary setObject:text forKey:[NSString stringWithFormat:@"%d",index]];
+    [displayTextArray replaceObjectAtIndex:index withObject:text];
+    
+    [markTableView reloadData];
+     
+     */
+}
+- (void)textViewDidChange:(UITextView *)textView{
+    NSLog(@"change");
+    NSDictionary *dict = textView.myDict;
+    int index = [(NSNumber *)[dict objectForKey:@"index"] intValue];
+    NSString *text = textView.text;
+    [replaceTextDictionary setObject:text forKey:[NSString stringWithFormat:@"%d",index]];
+    [displayTextArray replaceObjectAtIndex:index withObject:text];
 }
 
 @end

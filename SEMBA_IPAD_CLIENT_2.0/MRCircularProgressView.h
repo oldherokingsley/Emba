@@ -47,4 +47,6 @@
  */
 - (void)setProgress:(float)progress animated:(BOOL)animated;
 
+- (void)removeLink;
+
 @end

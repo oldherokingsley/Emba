@@ -190,7 +190,12 @@
 #pragma mark - Control progress
 
 - (void)setProgress:(float)progress {
+    
+    
+    /*
     NSParameterAssert(progress >= 0 && progress <= 1);
+    
+    
     int beforePro = self.progress;
     BOOL animate;
     if (beforePro > progress) {
@@ -199,8 +204,24 @@
         animate = YES;
     }
     [self setProgress:progress animated:animate];
-    // Stop running animation
+    */
+     // Stop running animation
+    NSParameterAssert(progress >= 0 && progress <= 1);
+    if (self.progress == progress) {
+        return;
+    }
+    
+    if (self.displayLink) {
+        // Reuse current display link and manipulate animation params
+        self.startTime = CACurrentMediaTime();
+        self.fromProgress = self.progress;
+        self.toProgress = progress;
+    } else {
+        [self animateToProgress:progress];
+    }
+
     /*
+    // Stop running animation
     if (self.displayLink) {
         [self.displayLink removeFromRunLoop:NSRunLoop.mainRunLoop forMode:NSRunLoopCommonModes];
         self.displayLink = nil;
@@ -209,7 +230,12 @@
     _progress = progress;
     
     [self updateProgress];
-     */
+
+    
+//    _progress = progress;
+    
+//    [self updateProgress];
+    */
 }
 
 - (void)updateProgress {
@@ -240,8 +266,8 @@
             [self animateToProgress:progress];
         }
     } else {
-//        self.progress = progress;
-        _progress = progress;
+        self.progress = progress;
+//        _progress = progress;
         
         [self updateProgress];
     }
@@ -287,6 +313,12 @@
             [self updateLabel];
         });
     });
+}
+- (void)removeLink{
+    if (self.displayLink) {
+        [self.displayLink removeFromRunLoop:NSRunLoop.mainRunLoop forMode:NSRunLoopCommonModes];
+        self.displayLink = nil;
+    }
 }
 
 @end

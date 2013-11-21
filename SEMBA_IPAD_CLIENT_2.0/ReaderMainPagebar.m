@@ -214,9 +214,33 @@
 		[self updatePageNumberText:[document.pageNumber integerValue]];
 
 		miniThumbViews = [NSMutableDictionary new]; // Small thumbs
+        
+        
+        //初始化左右翻页键
+        UIButton *leftButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [leftButton setImage:[UIImage imageNamed:@"ppt_indicator_left_arrow"] forState:UIControlStateNormal];
+        [leftButton setImageEdgeInsets:UIEdgeInsetsMake(13, 17, 12, 17)];
+        [leftButton setFrame:CGRectMake(28, 0, 46, 46)];
+        [leftButton addTarget:self action:@selector(leftButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+        [leftButton setTintColor:[UIColor grayColor]];
+        [self addSubview:leftButton];
+        
+        UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [rightButton setImage:[UIImage imageNamed:@"ppt_indicator_right_arrow"] forState:UIControlStateNormal];
+        [rightButton setImageEdgeInsets:UIEdgeInsetsMake(13, 17, 12, 17)];
+        [rightButton setFrame:CGRectMake(1024 - 28 - 48, 0, 46, 46)];
+        [rightButton addTarget:self action:@selector(rightButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+        [rightButton setTintColor:[UIColor grayColor]];
+        [self addSubview:rightButton];
 	}
 
 	return self;
+}
+- (void)leftButtonAction:(UIButton *)button{
+    [self.delegate pagebar:self leftAction:button];
+}
+- (void)rightButtonAction:(UIButton *)button{
+    [self.delegate pagebar:self rightAction:button];
 }
 
 - (void)removeFromSuperview

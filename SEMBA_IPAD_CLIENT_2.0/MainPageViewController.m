@@ -7,6 +7,7 @@
 //
 
 #import "MainPageViewController.h"
+#import "SearchViewController.h"
 #import "CourseItem.h"
 #import "UITapGestureRecognizer+category.h"
 #import "CoursewareViewController.h"
@@ -15,6 +16,7 @@
 #import "Course.h"
 #import "SysbsModel.h"
 #import "User.h"
+
 
 
 #define START_Y 0
@@ -49,9 +51,19 @@
     NSThread *thread = [[NSThread alloc]initWithTarget:self selector:@selector(loadDataSelector:) object:nil];
     [thread start];
     self.navigationController.navigationBar.tintColor = [UIColor redColor];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bar_bg"] forBarMetrics:UIBarMetricsDefault];
     
-    NSLog(@"%f %f %f %f",self.view.frame.origin.x,self.view.frame.origin.y,self.view.frame.size.width,self.view.frame.size.height);
-    self.title = @"课程";
+    UILabel * titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 44)];
+    [titleLabel setFont:[UIFont systemFontOfSize:19]];
+    [titleLabel setTextAlignment:NSTextAlignmentCenter];
+    [titleLabel setTextColor:[UIColor redColor]];
+    [titleLabel setText:@"课程"];
+    self.navigationItem.titleView = titleLabel;
+//    self.title = @"课程";
+    
+    
+    UIBarButtonItem *searchButton = [[UIBarButtonItem alloc]initWithTitle:@"搜索" style:UIBarButtonItemStyleBordered target:self action:@selector(searchButtonAction:)];
+    self.navigationItem.rightBarButtonItem = searchButton;
 //    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
 //    [button setFrame:CGRectMake(10, 0, 44, 44)];
 //    [button setTitle:@"菜单" forState:UIControlStateNormal];
@@ -98,6 +110,11 @@
     [self.courseImageView addSubview:courseButton];
     
 	// Do any additional setup after loading the view.
+}
+
+- (void)searchButtonAction:(UIBarButtonItem *)button{
+    SearchViewController *searchViewController = [[SearchViewController alloc]init];
+    [self.navigationController pushViewController:searchViewController animated:YES];
 }
 
 - (void)loadDataSelector:(NSThread *)thread{

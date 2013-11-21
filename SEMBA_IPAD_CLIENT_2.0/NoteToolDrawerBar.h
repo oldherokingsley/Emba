@@ -40,6 +40,8 @@
 
 - (void)closeAllButton;
 
+- (void)openOrCloseToolBar;
+
 - (id)initWithFrame:(CGRect)frame parentView :(UIView *) parentview;
 
 @end

@@ -13,5 +13,5 @@
 @synthesize PDFName;
 @synthesize PDFPath;
 @synthesize PDFURL;
-
+@synthesize cid;
 @end
